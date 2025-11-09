@@ -9,5 +9,4 @@ public class MoruApplication {
     SpringApplication.run(MoruApplication.class, args);
     System.out.println("MoruApplication started");
   }
-  
 }

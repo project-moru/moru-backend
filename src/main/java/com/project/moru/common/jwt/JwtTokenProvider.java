@@ -27,8 +27,24 @@ public class JwtTokenProvider {
     return buildToken(username, refreshTokenValidity);
   }
   
+//  public String getUsername(String token) {
+//    return parseClaims(token).getSubject();
+//  }
+
   public String getUsername(String token) {
-    return parseClaims(token).getSubject();
+    try {
+      // 1. 토큰 파싱
+      Claims claims = Jwts.parserBuilder()
+              .setSigningKey(secretKey) // JWT 서명 키
+              .build()
+              .parseClaimsJws(token)
+              .getBody();
+
+      return claims.get("username", String.class);
+
+    } catch (Exception e) {
+      return null;
+    }
   }
   
   /** Token 생성 */
@@ -37,7 +53,8 @@ public class JwtTokenProvider {
     Date expiry = new Date(now.getTime() + validity);
     
     return Jwts.builder()
-        .setSubject(username)
+        .claim("username",username)
+//        .setSubject(username)
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(secretKey)

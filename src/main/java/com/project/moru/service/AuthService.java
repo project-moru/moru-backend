@@ -2,6 +2,7 @@ package com.project.moru.service;
 
 import com.project.moru.common.jwt.JwtTokenProvider;
 import com.project.moru.domain.dto.auth.RefreshTokenDto;
+import com.project.moru.domain.dto.auth.RefreshTokenResponseDto;
 import com.project.moru.domain.dto.user.LoginRequestDto;
 import com.project.moru.domain.dto.user.LoginResultDto;
 import com.project.moru.domain.entity.user.CustomUserDetails;
@@ -22,6 +23,10 @@ public class AuthService {
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider jwtTokenProvider;
   private final StringRedisTemplate redisTemplate;
+
+  private final long accessTokenValidity = 3600000;
+  private final long refreshTokenValidity = 25200000;
+
   
   public LoginResultDto login(LoginRequestDto loginRequestDto) {
     
@@ -53,14 +58,14 @@ public class AuthService {
   }
   
   public void logout(HttpServletRequest request) {
-    
     String accessToken = jwtTokenProvider.resolveToken(request);
     String username = jwtTokenProvider.getUsername(accessToken);
     
     // redis 사용자 refresh token 삭제
     redisTemplate.delete(username);
   }
-  
+
+
   private CustomUserDetails authenticateByUsernamePassword(String username, String password) {
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(username, password)
@@ -76,5 +81,31 @@ public class AuthService {
         refreshTokenDto.getDuration(),
         refreshTokenDto.getUnit()
     );
+  }
+
+  public RefreshTokenResponseDto refresh(String refreshToken){
+
+    if (!jwtTokenProvider.validateToken(refreshToken)) {
+      throw new RuntimeException("유효하지 않은 토큰 입니다.");
+    }
+
+    String username = jwtTokenProvider.getUsername(refreshToken);
+    String storedRefreshToken = redisTemplate.opsForValue().get(username);
+
+    if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
+      throw new RuntimeException("유효하지 않은 리프레시 토큰입니다.");
+    }
+
+    String newAccess = jwtTokenProvider.generateAccessToken(username);
+    String newRefresh = jwtTokenProvider.generateRefreshToken(username);
+
+    redisTemplate.delete(username);
+
+    redisTemplate.opsForValue().set( username, newRefresh, refreshTokenValidity, TimeUnit.MILLISECONDS);
+
+    return RefreshTokenResponseDto.builder()
+            .accessToken(newAccess)
+            .refreshToken(newRefresh)
+            .build();
   }
 }

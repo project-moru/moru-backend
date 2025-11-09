@@ -28,8 +28,8 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeRequests(auth -> auth
             .antMatchers(
-                "/api/auth/logout",
-                "/api/auth/refresh"
+                "/api/auth/logout"
+//                "/api/auth/refresh"
             ).authenticated()
             .antMatchers(
                 "/api/**",
@@ -38,7 +38,8 @@ public class SecurityConfig {
                 "/swagger-ui.html",
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
-                "/webjars/**"
+                "/webjars/**",
+                "/api/auth/refresh"
             ).permitAll()
             .anyRequest().authenticated()
         )
