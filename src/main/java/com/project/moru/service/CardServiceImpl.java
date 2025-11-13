@@ -7,6 +7,7 @@ import com.project.moru.domain.entity.user.User;
 import com.project.moru.repository.CardRepository;
 import com.project.moru.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,6 +18,7 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
+
     private CardRepository cardRepository;
     private UserRepository userRepository;
 
@@ -59,21 +61,24 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card modifyCard(CardUpdateRequestDto cardUpdateRequestDto, Long userId) {
+    public Card modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Card not found"));
 
-        Card modifyCard = Card.builder()
-                .user(user)
-                .cardContent(cardUpdateRequestDto.getCardContent())
-                .imageUrl(cardUpdateRequestDto.getImageUrl())
-                .isPublic(cardUpdateRequestDto.getIsPublic())
-                .imageUrl(cardUpdateRequestDto.getImageUrl())
-                .cardName(cardUpdateRequestDto.getCardName())
-                .build();
+        if (!card.getUser().getUserId().equals(userId)) {
+            // 권한이 없다면 예외 발생 (예: IllegalStateException, AccessDeniedException 등)
+            throw new AccessDeniedException("You do not have permission to modify this card.");
+        }
 
-        return cardRepository.save(modifyCard);
+        card.updateCard(
+                cardUpdateRequestDto.getCardName(),
+                cardUpdateRequestDto.getCardContent(),
+                cardUpdateRequestDto.getIsPublic(),
+                cardUpdateRequestDto.getImageUrl()
+        );
+
+        return cardRepository.save(card);
     }
 
     @Override

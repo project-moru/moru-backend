@@ -10,7 +10,7 @@ public interface CardService {
     Card findById(Long id);
     void deleteCardById(Long id, Long userId);
     Card saveCard(CardCreateRequestDto cardCreateRequestDto, Long userId);
-    Card modifyCard(CardUpdateRequestDto cardUpdateRequestDto, Long userId);
+    Card modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId);
     List<Card> findAll();
 
 }

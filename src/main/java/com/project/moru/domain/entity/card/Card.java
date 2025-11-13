@@ -45,8 +45,24 @@ public class Card extends BaseEntity {
     public void addViewCount() {
         this.viewCount++;
     }
+
     public void addLikeCount() {
         this.likeCount++;
+    }
+
+    public void updateCard(String cardName, String cardContent, Boolean isPublic, String imageUrl) {
+        if (cardName != null) {
+            this.cardName = cardName;
+        }
+        if (cardContent != null) {
+            this.cardContent = cardContent;
+        }
+        if (isPublic != null) {
+            this.isPublic = isPublic;
+        }
+        if (imageUrl != null) {
+            this.imageUrl = imageUrl;
+        }
     }
 }
 
