@@ -1,4 +1,4 @@
-package com.project.moru.domain.dto.user;
+package com.project.moru.domain.dto.auth;
 
 import lombok.*;
 
@@ -10,6 +10,6 @@ import lombok.*;
 @ToString(exclude = "accessToken")
 public class LoginResponseDto {
   private String username;
-  private String name;
+  private String nickname;
   private String accessToken;
 }
