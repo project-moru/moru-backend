@@ -1,5 +1,5 @@
 
-package com.project.moru.common;
+package com.project.moru.common.constant;
 
 import lombok.Getter;
 

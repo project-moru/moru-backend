@@ -1,6 +1,6 @@
 package com.project.moru.domain.dto.user;
 
-import com.project.moru.common.Job;
+import com.project.moru.common.constant.Job;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 

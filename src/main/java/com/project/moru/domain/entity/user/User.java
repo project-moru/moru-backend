@@ -1,7 +1,7 @@
 package com.project.moru.domain.entity.user;
 
-import com.project.moru.common.Job;
-import com.project.moru.common.Use;
+import com.project.moru.common.constant.Job;
+import com.project.moru.common.constant.Use;
 import com.project.moru.domain.dto.user.UserUpdateRequestDto;
 import lombok.*;
 
