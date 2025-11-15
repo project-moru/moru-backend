@@ -18,27 +18,33 @@ public class UserController {
   
   private final UserServiceImpl userService;
   
+  @PostMapping("/")
+  public ResponseEntity<ApiResponse<UserResponseDto>> create(@RequestBody UserCreateRequestDto userCreateRequestDto) {
+    return ResponseEntity.ok().body(ApiResponse.ok(userService.create(userCreateRequestDto)));
+  }
+  
   @GetMapping("/")
-  public ResponseEntity<ApiResponse<List<UserResponseDto>>> findAll() {
+  public ResponseEntity<ApiResponse<List<UserResponseDto>>> getAll() {
     return ResponseEntity.ok().body(ApiResponse.ok(userService.findAll()));
   }
   
   @GetMapping("/{id}")
-  public ResponseEntity<ApiResponse<UserResponseDto>> findById(@PathVariable Long id) {
+  public ResponseEntity<ApiResponse<UserResponseDto>> getById(@PathVariable Long id) {
     return ResponseEntity.ok().body(ApiResponse.ok(userService.findById(id)));
   }
   
-  @PostMapping("/")
-  public ResponseEntity<ApiResponse<UserResponseDto>> save(@RequestBody UserCreateRequestDto userCreateRequestDto) {
-    return ResponseEntity.ok().body(ApiResponse.ok(userService.save(userCreateRequestDto)));
-  }
-  
   @PatchMapping("/{id}")
-  public ResponseEntity<ApiResponse<UserResponseDto>> modify(
+  public ResponseEntity<ApiResponse<UserResponseDto>> update(
       @PathVariable Long id,
       @RequestBody UserUpdateRequestDto userUpdateRequestDto
       ) {
-    return ResponseEntity.ok().body(ApiResponse.ok(userService.modify(id, userUpdateRequestDto)));
+    return ResponseEntity.ok().body(ApiResponse.ok(userService.update(id, userUpdateRequestDto)));
+  }
+  
+  @PatchMapping("/{id}/use-yn")
+  public ResponseEntity<ApiResponse<Void>> convertActivate(@PathVariable Long id) {
+    userService.toggleUserUseYn(id);
+    return ResponseEntity.ok().body(ApiResponse.ok());
   }
   
   @DeleteMapping("/{id}")

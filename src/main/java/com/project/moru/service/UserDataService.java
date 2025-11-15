@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDataService {
-  List<User> findAll();
+  List<User> findAllUsers();
   
-  Optional<User> findById(Long userId);
+  Optional<User> findUserById(Long userId);
   
   User saveUser(User user);
   

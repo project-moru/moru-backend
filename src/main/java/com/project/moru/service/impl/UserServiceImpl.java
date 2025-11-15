@@ -24,18 +24,18 @@ public class UserServiceImpl implements UserService {
   
   @Override
   public List<UserResponseDto> findAll() {
-    return userConverter.toResList(userDataService.findAll());
+    return userConverter.toResList(userDataService.findAllUsers());
   }
   
   @Override
   public UserResponseDto findById(Long userId) {
     return userConverter.fromEntityToRes(
-        userDataService.findById(userId).orElseThrow()
+        userDataService.findUserById(userId).orElseThrow()
     );
   }
   
   @Override
-  public UserResponseDto save(UserCreateRequestDto userCreateRequestDto) {
+  public UserResponseDto create(UserCreateRequestDto userCreateRequestDto) {
     String password = userCreateRequestDto.getPassword();
     userCreateRequestDto.setPassword(passwordEncoder.encode(password));
     
@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService {
   }
   
   @Override
-  public UserResponseDto modify(Long id, UserUpdateRequestDto userUpdateRequestDto) {
-    User user = userDataService.findById(id).orElseThrow();
+  public UserResponseDto update(Long id, UserUpdateRequestDto userUpdateRequestDto) {
+    User user = userDataService.findUserById(id).orElseThrow();
     
     // 비밀번호 변경 시
     if (userUpdateRequestDto.getPassword() != null && !userUpdateRequestDto.getPassword().isBlank()) {
@@ -58,6 +58,13 @@ public class UserServiceImpl implements UserService {
     user.update(userUpdateRequestDto);
     
     return userConverter.fromEntityToRes(user);
+  }
+  
+  @Override
+  public void toggleUserUseYn(Long id) {
+    User user = userDataService.findUserById(id).orElseThrow();
+    
+    user.convertUseYn();
   }
   
   @Override

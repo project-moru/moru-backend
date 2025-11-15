@@ -16,10 +16,10 @@ public class UserDataServiceImpl implements UserDataService {
   private final UserRepository userRepository;
   
   @Override
-  public List<User> findAll() { return userRepository.findAll(); }
+  public List<User> findAllUsers() { return userRepository.findAll(); }
   
   @Override
-  public Optional<User> findById(Long userId) { return userRepository.findById(userId); }
+  public Optional<User> findUserById(Long userId) { return userRepository.findById(userId); }
   
   @Override
   public User saveUser(User user) {
