@@ -39,11 +39,9 @@ public class UserServiceImpl implements UserService {
     String password = userCreateRequestDto.getPassword();
     userCreateRequestDto.setPassword(passwordEncoder.encode(password));
     
-    User user = userDataService.saveUser(
-        userConverter.fromCreateReqToEntity(userCreateRequestDto)
-    );
+    User user = userConverter.fromCreateReqToEntity(userCreateRequestDto);
     
-    return userConverter.fromEntityToRes(user);
+    return userConverter.fromEntityToRes(userDataService.saveUser(user));
   }
   
   @Override

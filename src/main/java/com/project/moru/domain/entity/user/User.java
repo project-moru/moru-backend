@@ -34,7 +34,7 @@ public class User {
   
   @Enumerated(EnumType.STRING)
   @Column(name = "use_yn", nullable = false)
-  private Use useYn;
+  private Use useYn = Use.Y;
   
   public void update(UserUpdateRequestDto dto) {
     if (dto.getUsername() != null) this.username = dto.getUsername();

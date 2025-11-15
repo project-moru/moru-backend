@@ -1,6 +1,7 @@
 package com.project.moru.domain.dto.user;
 
 import com.project.moru.common.Job;
+import com.project.moru.common.Use;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,4 +15,5 @@ public class UserResponseDto {
   private final String password;
   private final String nickname;
   private final Job job;
+  private final Use useYn;
 }
