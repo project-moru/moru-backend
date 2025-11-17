@@ -22,7 +22,7 @@ public class CardController {
     
     @PostMapping("/")
     public ResponseEntity<ApiResponse<Card>> create(@RequestBody CardCreateRequestDto cardCreateRequestDto, @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, user.getUserId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(201, "Created", cardService.saveCard(cardCreateRequestDto, user.getUserId())));
     }
     
     @GetMapping("/")
