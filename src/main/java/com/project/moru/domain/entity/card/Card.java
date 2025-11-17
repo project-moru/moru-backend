@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Table(name = "card")
 public class Card extends BaseEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id")
     private Long cardId;
 
