@@ -1,35 +1,22 @@
 package com.project.moru.service;
 
-import com.project.moru.domain.dto.user.RegisterRequestDto;
-import com.project.moru.domain.entity.user.User;
-import com.project.moru.mapper.struct.UserConverter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import com.project.moru.domain.dto.user.UserCreateRequestDto;
+import com.project.moru.domain.dto.user.UserResponseDto;
+import com.project.moru.domain.dto.user.UserUpdateRequestDto;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
+import java.util.List;
+
+public interface UserService {
+  @Transactional(readOnly = true) List<UserResponseDto> findAll();
   
-  private final UserConverter userConverter;
-  private final PasswordEncoder passwordEncoder;
+  @Transactional(readOnly = true) UserResponseDto findById(Long userId);
   
-  private final UserDataService userDataService;
+  @Transactional UserResponseDto create(UserCreateRequestDto userCreateRequestDto);
   
-  public void registerUser(RegisterRequestDto request) {
-    // 1. 검증 로직
-    
-    // 2. 비밀번호 암호화
-    String password = request.getPassword();
-    request.setPassword(passwordEncoder.encode(password));
-    
-    System.out.println("before: " + request);
-    
-    // 3. DTO -> Entity 변환
-    User registerUserData = userConverter.toEntity(request);
-    
-    System.out.println("after: " + registerUserData);
-    
-    userDataService.saveUser(registerUserData);
-  }
+  @Transactional UserResponseDto update(Long id, UserUpdateRequestDto userUpdateRequestDto);
+  
+  @Transactional void toggleUserUseYn(Long id);
+  
+  @Transactional void delete(Long userId);
 }

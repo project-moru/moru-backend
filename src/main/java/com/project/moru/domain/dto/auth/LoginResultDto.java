@@ -1,4 +1,4 @@
-package com.project.moru.domain.dto.user;
+package com.project.moru.domain.dto.auth;
 
 import lombok.*;
 
@@ -11,14 +11,14 @@ import lombok.*;
 public class LoginResultDto {
   
   private String username;
-  private String name;
+  private String nickname;
   private String accessToken;
   private String refreshToken;
   
   public LoginResponseDto toResponseDto() {
     return LoginResponseDto.builder()
         .username(this.username)
-        .name(this.name)
+        .nickname(this.nickname)
         .accessToken(this.accessToken)
         .build();
   }

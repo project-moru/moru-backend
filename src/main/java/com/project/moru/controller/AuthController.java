@@ -1,15 +1,12 @@
 package com.project.moru.controller;
 
-import com.project.moru.common.jwt.JwtTokenProvider;
 import com.project.moru.common.utils.CookieUtils;
 import com.project.moru.common.utils.ApiResponse;
 import com.project.moru.domain.dto.auth.RefreshTokenResponseDto;
-import com.project.moru.domain.dto.user.LoginRequestDto;
-import com.project.moru.domain.dto.user.LoginResponseDto;
-import com.project.moru.domain.dto.user.LoginResultDto;
-import com.project.moru.domain.dto.user.RegisterRequestDto;
+import com.project.moru.domain.dto.auth.LoginRequestDto;
+import com.project.moru.domain.dto.auth.LoginResponseDto;
+import com.project.moru.domain.dto.auth.LoginResultDto;
 import com.project.moru.service.AuthService;
-import com.project.moru.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -26,24 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
   
   private final AuthService authService;
-  private final UserService userService;
-  private final JwtTokenProvider jwtTokenProvider;
-
-  @Operation(summary = "회원 등록", description = "새로운 회원 정보를 데이터베이스에 저장")
-//  @ApiResponses({
-//      @ApiResponse(responseCode = "201", description = "생성 성공"),
-//      @ApiResponse(responseCode = "400", description = "요청 형식 오류")
-//  })
-  @PostMapping("/register")
-  public ResponseEntity<ApiResponse<RegisterRequestDto>> registerUser
-      (
-          @RequestBody RegisterRequestDto request
-      ) {
-    
-    userService.registerUser(request);
-
-    return ResponseEntity.ok().body(ApiResponse.ok(request));
-  }
   
   @Operation(summary = "로그인 API")
 //  @ApiResponses({

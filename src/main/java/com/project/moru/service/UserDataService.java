@@ -1,17 +1,16 @@
 package com.project.moru.service;
 
 import com.project.moru.domain.entity.user.User;
-import com.project.moru.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
-@RequiredArgsConstructor
-public class UserDataService {
+import java.util.List;
+import java.util.Optional;
+
+public interface UserDataService {
+  List<User> findAllUsers();
   
-  private final UserRepository userRepository;
+  Optional<User> findUserById(Long userId);
   
-  public void saveUser(User user) {
-    userRepository.save(user);
-  }
+  User saveUser(User user);
+  
+  void deleteUserById(Long userId);
 }
