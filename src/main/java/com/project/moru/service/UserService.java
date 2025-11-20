@@ -10,9 +10,9 @@ import java.util.List;
 public interface UserService {
   @Transactional(readOnly = true) List<UserResponseDto> findAll();
   
-  @Transactional(readOnly = true) UserResponseDto findById(Long userId);
+  @Transactional(readOnly = true) UserResponseDto findByUsername(String username);
   
-  @Transactional UserResponseDto create(UserCreateRequestDto userCreateRequestDto);
+  @Transactional void create(UserCreateRequestDto userCreateRequestDto);
   
   @Transactional UserResponseDto update(Long id, UserUpdateRequestDto userUpdateRequestDto);
   

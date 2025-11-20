@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserResponseDto {
-  private final Long userId;
   private final String username;
   private final String nickname;
   private final Job job;

@@ -29,10 +29,9 @@ public class SecurityConfig {
         .authorizeRequests(auth -> auth
             .antMatchers(
                 "/api/auth/logout"
-//                "/api/auth/refresh"
             ).authenticated()
             .antMatchers(
-                "/api/**",
+                "/api/users/register",
                 "/api/auth/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",

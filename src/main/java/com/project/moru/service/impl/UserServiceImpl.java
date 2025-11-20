@@ -1,5 +1,11 @@
 package com.project.moru.service.impl;
 
+import com.project.moru.common.pipeline.UserRegisterPipeline;
+import com.project.moru.common.pipeline.step.impl.EncryptPasswordStep;
+import com.project.moru.common.pipeline.step.impl.MappingStep;
+import com.project.moru.common.pipeline.step.impl.SaveStep;
+import com.project.moru.common.pipeline.step.impl.ValidateStep;
+import com.project.moru.common.validator.UserCreateValidator;
 import com.project.moru.domain.dto.user.UserCreateRequestDto;
 import com.project.moru.domain.dto.user.UserResponseDto;
 import com.project.moru.domain.dto.user.UserUpdateRequestDto;
@@ -19,6 +25,7 @@ public class UserServiceImpl implements UserService {
   
   private final UserConverter userConverter;
   private final PasswordEncoder passwordEncoder;
+  private final UserCreateValidator userCreateValidator;
   
   private final UserDataService userDataService;
   
@@ -28,20 +35,22 @@ public class UserServiceImpl implements UserService {
   }
   
   @Override
-  public UserResponseDto findById(Long userId) {
+  public UserResponseDto findByUsername(String username) {
     return userConverter.fromEntityToRes(
-        userDataService.findUserById(userId).orElseThrow()
+        userDataService.findUserByUsername(username).orElseThrow()
     );
   }
   
   @Override
-  public UserResponseDto create(UserCreateRequestDto userCreateRequestDto) {
-    String password = userCreateRequestDto.getPassword();
-    userCreateRequestDto.setPassword(passwordEncoder.encode(password));
+  public void create(UserCreateRequestDto dto) {
+    UserRegisterPipeline pipeline = new UserRegisterPipeline(dto);
     
-    User user = userConverter.fromCreateReqToEntity(userCreateRequestDto);
-    
-    return userConverter.fromEntityToRes(userDataService.saveUser(user));
+    pipeline
+        .addStep(new ValidateStep(userCreateValidator))
+        .addStep(new EncryptPasswordStep(passwordEncoder))
+        .addStep(new MappingStep(userConverter))
+        .addStep(new SaveStep(userDataService))
+        .execute();
   }
   
   @Override
