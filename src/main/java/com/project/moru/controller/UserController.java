@@ -22,7 +22,7 @@ public class UserController {
   
   private final UserServiceImpl userService;
   
-  @PostMapping("/register")
+  @PostMapping()
   public ResponseEntity<ApiResponse<Void>> create(
       @Valid @RequestBody UserCreateRequestDto userCreateRequestDto
   ) {
@@ -32,7 +32,7 @@ public class UserController {
     return ResponseEntity.ok().body(ApiResponse.ok(201, "Created"));
   }
   
-  @GetMapping("/profile")
+  @GetMapping("/me")
   public ResponseEntity<ApiResponse<UserResponseDto>> getUserProfile(
       @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
@@ -42,7 +42,7 @@ public class UserController {
     return ResponseEntity.ok().body(ApiResponse.ok(userService.findByUsername(username)));
   }
   
-  @PatchMapping("/profile")
+  @PatchMapping("/me")
   public ResponseEntity<ApiResponse<UserResponseDto>> updateUserProfile(
       @AuthenticationPrincipal CustomUserDetails userDetails,
       @RequestBody UserUpdateRequestDto userUpdateRequestDto
@@ -59,9 +59,9 @@ public class UserController {
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
   
-  @DeleteMapping("/{id}")
-  public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id) {
-    userService.delete(id);
+  @DeleteMapping("/me")
+  public ResponseEntity<ApiResponse<Void>> delete(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    userService.delete(userDetails.getUserId());
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
 }
