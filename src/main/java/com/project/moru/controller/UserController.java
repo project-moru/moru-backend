@@ -6,6 +6,7 @@ import com.project.moru.domain.dto.user.UserResponseDto;
 import com.project.moru.domain.dto.user.UserUpdateRequestDto;
 import com.project.moru.domain.entity.user.CustomUserDetails;
 import com.project.moru.service.impl.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ public class UserController {
   
   @GetMapping("/me")
   public ResponseEntity<ApiResponse<UserResponseDto>> getUserProfile(
+      @Parameter(hidden = true)
       @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     
@@ -44,8 +46,9 @@ public class UserController {
   
   @PatchMapping("/me")
   public ResponseEntity<ApiResponse<UserResponseDto>> updateUserProfile(
+      @Parameter(hidden = true)
       @AuthenticationPrincipal CustomUserDetails userDetails,
-      @RequestBody UserUpdateRequestDto userUpdateRequestDto
+      @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto
       ) {
     
     Long id = userDetails.getUserId();
@@ -60,7 +63,9 @@ public class UserController {
   }
   
   @DeleteMapping("/me")
-  public ResponseEntity<ApiResponse<Void>> delete(@AuthenticationPrincipal CustomUserDetails userDetails) {
+  public ResponseEntity<ApiResponse<Void>> delete(
+      @Parameter(hidden = true)
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
     userService.delete(userDetails.getUserId());
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
