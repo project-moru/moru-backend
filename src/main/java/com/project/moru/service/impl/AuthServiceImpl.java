@@ -21,14 +21,9 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
   
+  private final AuthDataService authDataService;
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider jwtTokenProvider;
-  private final StringRedisTemplate redisTemplate;
-  
-  private static final String REFRESH_KEY_PREFIX = "auth:refresh:";
-  private final long accessTokenValidity = 3600000;
-  private final long refreshTokenValidity = 25200000;
-  
   
   @Override
   public LoginResultDto login(LoginRequestDto loginRequestDto) {
@@ -64,10 +59,9 @@ public class AuthServiceImpl implements AuthService {
   public void logout(HttpServletRequest request) {
     String accessToken = jwtTokenProvider.resolveToken(request);
     Long userId = jwtTokenProvider.getUserId(accessToken);
-    String key = REFRESH_KEY_PREFIX + userId;
     
     // redis 사용자 refresh token 삭제
-    redisTemplate.delete(key);
+    authDataService.delete(userId);
   }
   
   @Override
@@ -78,8 +72,7 @@ public class AuthServiceImpl implements AuthService {
     }
     
     Long userId = jwtTokenProvider.getUserId(refreshToken);
-    String key = REFRESH_KEY_PREFIX + userId;
-    String storedRefreshToken = redisTemplate.opsForValue().get(key);
+    String storedRefreshToken = authDataService.find(userId);
     
     if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
       throw new RuntimeException("유효하지 않은 리프레시 토큰입니다.");
@@ -87,10 +80,10 @@ public class AuthServiceImpl implements AuthService {
     
     String newAccess = jwtTokenProvider.generateAccessToken(userId);
     String newRefresh = jwtTokenProvider.generateRefreshToken(userId);
-    
-    redisTemplate.delete(key);
-    
-    redisTemplate.opsForValue().set( key, newRefresh, refreshTokenValidity, TimeUnit.MILLISECONDS);
+    authDataService.delete(userId);
+    authDataService.save(
+        userId, newRefresh, 25200000, TimeUnit.MILLISECONDS
+    );
     
     return RefreshTokenResponseDto.builder()
         .accessToken(newAccess)
@@ -108,10 +101,8 @@ public class AuthServiceImpl implements AuthService {
   }
   
   private void saveRefreshToken(RefreshTokenDto refreshTokenDto) {
-    String key = REFRESH_KEY_PREFIX + refreshTokenDto.getUserId();
-    
-    redisTemplate.opsForValue().set(
-        key,
+    authDataService.save(
+        refreshTokenDto.getUserId(),
         refreshTokenDto.getRefreshToken(),
         refreshTokenDto.getDuration(),
         refreshTokenDto.getUnit()
