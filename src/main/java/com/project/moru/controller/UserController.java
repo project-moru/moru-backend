@@ -23,7 +23,7 @@ public class UserController {
   
   private final UserServiceImpl userService;
   
-  @PostMapping()
+  @PostMapping("/register")
   public ResponseEntity<ApiResponse<Void>> create(
       @Valid @RequestBody UserCreateRequestDto userCreateRequestDto
   ) {

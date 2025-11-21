@@ -81,7 +81,7 @@ public class AuthServiceImpl implements AuthService {
     String newRefresh = jwtTokenProvider.generateRefreshToken(userId);
     authDataService.deleteRefreshToken(userId);
     authDataService.saveRefreshToken(
-        userId, newRefresh, 25200000, TimeUnit.MILLISECONDS
+        userId, newRefresh, 7, TimeUnit.DAYS
     );
     
     return RefreshTokenResponseDto.builder()

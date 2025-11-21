@@ -8,6 +8,7 @@ import com.project.moru.domain.dto.auth.LoginResponseDto;
 import com.project.moru.domain.dto.auth.LoginResultDto;
 import com.project.moru.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -41,6 +42,7 @@ public class AuthController {
   }
   
   @Operation(summary = "로그아웃 API")
+  @SecurityRequirement(name = "bearerAuth")
   @PostMapping("/logout")
   public  ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request, HttpServletResponse httpResponse) {
 
