@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request,
       HttpServletResponse response,
-      FilterChain filterChain) throws IOException {
+      FilterChain filterChain) throws IOException, ServletException {
     
     try {
       String header = request.getHeader("Authorization");
@@ -33,15 +33,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = header.substring(7);
         
         if (jwtTokenProvider.validateToken(token)) {
-          String username = jwtTokenProvider.getUsername(token);
-          UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+          Long userId = jwtTokenProvider.getUserId(token);
+          UserDetails userDetails = customUserDetailsService.loadUserById(userId);
           UsernamePasswordAuthenticationToken authentication =
               new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
       }
       
-      filterChain.doFilter(request, response);
     } catch (Exception e) { // 예외 처리 로직 구현해야함.
       SecurityContextHolder.clearContext();
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -49,5 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       response.getWriter().write("{\"success\":false, \"message\":\"" + e.getMessage() + "\"}");
     }
     
+    filterChain.doFilter(request, response);
   }
 }

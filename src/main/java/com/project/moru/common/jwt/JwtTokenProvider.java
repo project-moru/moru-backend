@@ -12,26 +12,19 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
   
-  /** 하드코딩 부분 수정 필요! **/
-  private final long accessTokenValidity = 3600000;
-  private final long refreshTokenValidity = 25200000;
+  // 하드코딩 부분 수정 필요!
   private final SecretKey secretKey = Keys.hmacShaKeyFor("my-secret-key-my-secret-key-my-secret-key-123456".getBytes());
   
-  /** Access-Token 생성 **/
-  public String generateAccessToken(String username) {
-    return buildToken(username, accessTokenValidity);
+  // Access-Token 생성
+  public String generateAccessToken(Long userId) {
+    return buildToken(userId, 3600000);
   }
-  
-  /** Refresh-Token 생성 */
-  public String generateRefreshToken(String username) {
-    return buildToken(username, refreshTokenValidity);
+  // Refresh-Token 생성
+  public String generateRefreshToken(Long userId) {
+    return buildToken(userId, 25200000);
   }
-  
-//  public String getUsername(String token) {
-//    return parseClaims(token).getSubject();
-//  }
 
-  public String getUsername(String token) {
+  public Long getUserId(String token) {
     try {
       // 1. 토큰 파싱
       Claims claims = Jwts.parserBuilder()
@@ -40,7 +33,7 @@ public class JwtTokenProvider {
               .parseClaimsJws(token)
               .getBody();
 
-      return claims.get("username", String.class);
+      return Long.valueOf(claims.getSubject());
 
     } catch (Exception e) {
       return null;
@@ -48,18 +41,29 @@ public class JwtTokenProvider {
   }
   
   /** Token 생성 */
-  private String buildToken(String username, long validity) {
+  private String buildToken(Long userId, long validity) {
     Date now = new Date();
     Date expiry = new Date(now.getTime() + validity);
     
     return Jwts.builder()
-        .claim("username",username)
-//        .setSubject(username)
+        .setSubject(userId.toString())
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(secretKey)
         .compact();
   }
+//  private String buildToken(String username, long validity) {
+//    Date now = new Date();
+//    Date expiry = new Date(now.getTime() + validity);
+//
+//    return Jwts.builder()
+//        .claim("username",username)
+////        .setSubject(username)
+//        .setIssuedAt(now)
+//        .setExpiration(expiry)
+//        .signWith(secretKey)
+//        .compact();
+//  }
   
   /** Authorization 헤더에서 accessToken 추출 **/
   public String resolveToken(HttpServletRequest request) {
@@ -88,8 +92,8 @@ public class JwtTokenProvider {
   /**
    * claims 파싱
    * 서명 / 만료시간 검증 **/
-  private Claims parseClaims(String token) {
-    return Jwts.parserBuilder()
+  private void parseClaims(String token) {
+    Jwts.parserBuilder()
         .setSigningKey(secretKey)
         .build()
         .parseClaimsJws(token)

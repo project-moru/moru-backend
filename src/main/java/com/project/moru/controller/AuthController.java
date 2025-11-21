@@ -25,10 +25,6 @@ public class AuthController {
   private final AuthService authService;
   
   @Operation(summary = "로그인 API")
-//  @ApiResponses({
-//      @ApiResponse(responseCode = "200", description = "로그인 성공"),
-//      @ApiResponse(responseCode = "400", description = "요청 형식 오류")
-//  })
   @PostMapping("/login")
   public ResponseEntity<ApiResponse<LoginResponseDto>> login(
       @RequestBody LoginRequestDto request,
@@ -45,10 +41,6 @@ public class AuthController {
   }
   
   @Operation(summary = "로그아웃 API")
-//  @ApiResponses({
-//      @ApiResponse(responseCode = "200", description = "로그아웃 성공"),
-//      @ApiResponse(responseCode = "400", description = "요청 형식 오류")
-//  })
   @PostMapping("/logout")
   public  ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request, HttpServletResponse httpResponse) {
 
@@ -66,10 +58,6 @@ public class AuthController {
   // access token 만료 시 재발급 요청 API 구현 필요
   // TODO: 2025/11/1  - Nano 구현완료
   @Operation(summary = "토큰 재발급용 API")
-//  @ApiResponses({
-//          @ApiResponse(responseCode = "200", description = "토큰 발급 성공"),
-//          @ApiResponse(responseCode = "400", description = "요청 형식 오류")
-//  })
   @PostMapping("/refresh")
   public ResponseEntity<ApiResponse<RefreshTokenResponseDto>> refresh
     (
