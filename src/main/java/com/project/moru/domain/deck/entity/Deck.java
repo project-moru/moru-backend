@@ -1,6 +1,7 @@
 package com.project.moru.domain.deck.entity;
 
 import com.project.moru.domain.entity.BaseEntity;
+import com.project.moru.domain.entity.card.Card;
 import com.project.moru.domain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Builder
@@ -33,6 +36,10 @@ public class Deck extends BaseEntity {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
+    @Column(name = "is_public")
+    @Builder.Default
+    private Status isPublic =  Status.PUBLIC;
+
+    @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DeckCard> deckCards = new ArrayList<>();
 }

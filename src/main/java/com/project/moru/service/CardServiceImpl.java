@@ -1,5 +1,7 @@
 package com.project.moru.service;
 
+import com.project.moru.common.exception.ErrorCode;
+import com.project.moru.common.exception.GeneralException;
 import com.project.moru.domain.dto.card.CardCreateRequestDto;
 import com.project.moru.domain.dto.card.CardUpdateRequestDto;
 import com.project.moru.domain.entity.card.Card;
@@ -24,18 +26,18 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Card findById(Long id) {
-        return cardRepository.findById(id).orElse(null);
+        return cardRepository.findById(id).orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
     }
 
     @Override
     public void deleteCardById(Long id, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
         Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Card not found"));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
 
         if (!user.getUserId().equals(card.getUser().getUserId())) {
-            throw new EntityNotFoundException("User not allowed to delete card");
+            throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
         cardRepository.deleteById(id);
     }
@@ -44,7 +46,7 @@ public class CardServiceImpl implements CardService {
     public Card saveCard(CardCreateRequestDto cardCreateRequestDto,  Long userId) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
 
         Card newCard = Card.builder()
                 .user(user)
