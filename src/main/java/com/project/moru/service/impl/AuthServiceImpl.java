@@ -8,7 +8,6 @@ import com.project.moru.domain.dto.auth.LoginResultDto;
 import com.project.moru.domain.entity.user.CustomUserDetails;
 import com.project.moru.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
   
-  private final AuthDataService authDataService;
+  private final AuthDataServiceImpl authDataService;
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider jwtTokenProvider;
   
@@ -61,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
     Long userId = jwtTokenProvider.getUserId(accessToken);
     
     // redis 사용자 refresh token 삭제
-    authDataService.delete(userId);
+    authDataService.deleteRefreshToken(userId);
   }
   
   @Override
@@ -72,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
     }
     
     Long userId = jwtTokenProvider.getUserId(refreshToken);
-    String storedRefreshToken = authDataService.find(userId);
+    String storedRefreshToken = authDataService.findRefreshToken(userId);
     
     if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
       throw new RuntimeException("유효하지 않은 리프레시 토큰입니다.");
@@ -80,8 +79,8 @@ public class AuthServiceImpl implements AuthService {
     
     String newAccess = jwtTokenProvider.generateAccessToken(userId);
     String newRefresh = jwtTokenProvider.generateRefreshToken(userId);
-    authDataService.delete(userId);
-    authDataService.save(
+    authDataService.deleteRefreshToken(userId);
+    authDataService.saveRefreshToken(
         userId, newRefresh, 25200000, TimeUnit.MILLISECONDS
     );
     
@@ -101,7 +100,7 @@ public class AuthServiceImpl implements AuthService {
   }
   
   private void saveRefreshToken(RefreshTokenDto refreshTokenDto) {
-    authDataService.save(
+    authDataService.saveRefreshToken(
         refreshTokenDto.getUserId(),
         refreshTokenDto.getRefreshToken(),
         refreshTokenDto.getDuration(),
