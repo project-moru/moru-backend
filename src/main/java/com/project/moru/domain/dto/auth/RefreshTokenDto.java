@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 @ToString
 public class RefreshTokenDto {
   
-  private String username;
+  private Long userId;
   private String refreshToken;
   private long duration;
   private TimeUnit unit;

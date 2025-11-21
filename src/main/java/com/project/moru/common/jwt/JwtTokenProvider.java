@@ -18,20 +18,20 @@ public class JwtTokenProvider {
   private final SecretKey secretKey = Keys.hmacShaKeyFor("my-secret-key-my-secret-key-my-secret-key-123456".getBytes());
   
   /** Access-Token 생성 **/
-  public String generateAccessToken(String username) {
-    return buildToken(username, accessTokenValidity);
+  public String generateAccessToken(Long userId) {
+    return buildToken(userId.toString(), accessTokenValidity);
   }
   
   /** Refresh-Token 생성 */
-  public String generateRefreshToken(String username) {
-    return buildToken(username, refreshTokenValidity);
+  public String generateRefreshToken(Long userId) {
+    return buildToken(userId.toString(), refreshTokenValidity);
   }
   
 //  public String getUsername(String token) {
 //    return parseClaims(token).getSubject();
 //  }
 
-  public String getUsername(String token) {
+  public Long getUserId(String token) {
     try {
       // 1. 토큰 파싱
       Claims claims = Jwts.parserBuilder()
@@ -40,7 +40,7 @@ public class JwtTokenProvider {
               .parseClaimsJws(token)
               .getBody();
 
-      return claims.get("username", String.class);
+      return Long.valueOf(claims.getSubject());
 
     } catch (Exception e) {
       return null;

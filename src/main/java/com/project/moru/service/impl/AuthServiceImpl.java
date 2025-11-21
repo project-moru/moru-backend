@@ -25,6 +25,7 @@ public class AuthServiceImpl implements AuthService {
   private final JwtTokenProvider jwtTokenProvider;
   private final StringRedisTemplate redisTemplate;
   
+  private static final String REFRESH_KEY_PREFIX = "auth:refresh:";
   private final long accessTokenValidity = 3600000;
   private final long refreshTokenValidity = 25200000;
   
@@ -38,13 +39,13 @@ public class AuthServiceImpl implements AuthService {
     );
     
     // access, refresh token 생성
-    String accessToken = jwtTokenProvider.generateAccessToken(userDetails.getUsername());
-    String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails.getUsername());
+    String accessToken = jwtTokenProvider.generateAccessToken(userDetails.getUserId());
+    String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails.getUserId());
     
     // [private] saveRefreshToken 메서드 호출 : redis에 refresh token 저장
     saveRefreshToken(
         RefreshTokenDto.builder()
-            .username(userDetails.getUsername())
+            .userId(userDetails.getUserId())
             .refreshToken(refreshToken)
             .duration(7)
             .unit(TimeUnit.DAYS)
@@ -62,10 +63,11 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public void logout(HttpServletRequest request) {
     String accessToken = jwtTokenProvider.resolveToken(request);
-    String username = jwtTokenProvider.getUsername(accessToken);
+    Long userId = jwtTokenProvider.getUserId(accessToken);
+    String key = REFRESH_KEY_PREFIX + userId;
     
     // redis 사용자 refresh token 삭제
-    redisTemplate.delete(username);
+    redisTemplate.delete(key);
   }
   
   @Override
@@ -75,19 +77,20 @@ public class AuthServiceImpl implements AuthService {
       throw new RuntimeException("유효하지 않은 토큰 입니다.");
     }
     
-    String username = jwtTokenProvider.getUsername(refreshToken);
-    String storedRefreshToken = redisTemplate.opsForValue().get(username);
+    Long userId = jwtTokenProvider.getUserId(refreshToken);
+    String key = REFRESH_KEY_PREFIX + userId;
+    String storedRefreshToken = redisTemplate.opsForValue().get(key);
     
     if (storedRefreshToken == null || !storedRefreshToken.equals(refreshToken)) {
       throw new RuntimeException("유효하지 않은 리프레시 토큰입니다.");
     }
     
-    String newAccess = jwtTokenProvider.generateAccessToken(username);
-    String newRefresh = jwtTokenProvider.generateRefreshToken(username);
+    String newAccess = jwtTokenProvider.generateAccessToken(userId);
+    String newRefresh = jwtTokenProvider.generateRefreshToken(userId);
     
-    redisTemplate.delete(username);
+    redisTemplate.delete(key);
     
-    redisTemplate.opsForValue().set( username, newRefresh, refreshTokenValidity, TimeUnit.MILLISECONDS);
+    redisTemplate.opsForValue().set( key, newRefresh, refreshTokenValidity, TimeUnit.MILLISECONDS);
     
     return RefreshTokenResponseDto.builder()
         .accessToken(newAccess)
@@ -105,8 +108,10 @@ public class AuthServiceImpl implements AuthService {
   }
   
   private void saveRefreshToken(RefreshTokenDto refreshTokenDto) {
+    String key = REFRESH_KEY_PREFIX + refreshTokenDto.getUserId();
+    
     redisTemplate.opsForValue().set(
-        refreshTokenDto.getUsername(),
+        key,
         refreshTokenDto.getRefreshToken(),
         refreshTokenDto.getDuration(),
         refreshTokenDto.getUnit()
