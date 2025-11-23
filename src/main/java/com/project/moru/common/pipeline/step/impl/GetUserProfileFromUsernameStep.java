@@ -2,21 +2,19 @@ package com.project.moru.common.pipeline.step.impl;
 
 import com.project.moru.common.pipeline.context.UserContext;
 import com.project.moru.common.pipeline.step.UserStep;
-import com.project.moru.common.strategy.UserMappingStrategy;
 import com.project.moru.domain.entity.user.User;
+import com.project.moru.service.UserDataService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class MappingStep<T> implements UserStep<T> {
+public class GetUserProfileFromUsernameStep<T> implements UserStep<T> {
   
-  private final UserMappingStrategy<T> strategy;
+  private final UserDataService userDataService;
+  private final String username;
   
   @Override
   public void execute(UserContext<T> context) {
-    User user = strategy.map(
-        context.getDto(), context.getUser()
-    );
-    
+    User user = userDataService.findUserByUsername(username).orElseThrow();
     context.setUser(user);
   }
 }

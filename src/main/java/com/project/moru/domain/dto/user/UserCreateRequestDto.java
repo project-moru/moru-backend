@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserCreateRequestDto {
+public class UserCreateRequestDto implements UserValidatable, PasswordChange {
   
   @Schema(description = "회원 아이디", example = "test01")
   @NotBlank(message = "아이디는 필수입니다.")

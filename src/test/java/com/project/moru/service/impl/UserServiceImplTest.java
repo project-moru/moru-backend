@@ -1,6 +1,5 @@
 package com.project.moru.service.impl;
 
-import com.project.moru.common.validator.UserCreateValidator;
 import com.project.moru.domain.dto.user.UserCreateRequestDto;
 import com.project.moru.domain.entity.user.User;
 import com.project.moru.mapper.struct.UserConverter;

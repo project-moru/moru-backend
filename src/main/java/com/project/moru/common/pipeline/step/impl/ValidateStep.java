@@ -1,17 +1,18 @@
 package com.project.moru.common.pipeline.step.impl;
 
-import com.project.moru.common.pipeline.context.UserRegisterContext;
-import com.project.moru.common.pipeline.step.UserRegisterStep;
-import com.project.moru.common.validator.UserCreateValidator;
+import com.project.moru.common.pipeline.context.UserContext;
+import com.project.moru.common.pipeline.step.UserStep;
+import com.project.moru.common.validator.Validator;
+import com.project.moru.domain.dto.user.UserValidatable;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ValidateStep implements UserRegisterStep {
+public class ValidateStep<T extends UserValidatable> implements UserStep<T> {
   
-  private final UserCreateValidator userCreateValidator;
+  private final Validator<T> validator;
   
   @Override
-  public void execute(UserRegisterContext context) {
-    userCreateValidator.validate(context.getDto());
+  public void execute(UserContext<T> context) {
+    validator.validate(context.getDto());
   }
 }

@@ -1,5 +1,7 @@
 package com.project.moru.common.pipeline;
 
-public interface Pipeline {
-  void execute();
+import com.project.moru.common.pipeline.context.UserContext;
+
+public interface Pipeline<T> {
+  UserContext<T> execute();
 }
