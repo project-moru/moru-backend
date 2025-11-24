@@ -2,7 +2,7 @@ package com.project.moru.domain.deck.dataservice;
 
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
-import com.project.moru.domain.deck.DeckMapper;
+import com.project.moru.mapper.struct.DeckConverter;
 import com.project.moru.domain.deck.dto.DeckRequestDto;
 import com.project.moru.domain.deck.dto.DeckResponseDto;
 import com.project.moru.domain.deck.entity.Deck;
@@ -27,14 +27,14 @@ public class DeckDataServiceImpl implements DeckDataService {
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final DeckCardRepository deckCardRepository;
-    private final DeckMapper deckMapper;
+    private final DeckConverter deckConverter;
 
     @Override
     public DeckResponseDto saveDeck(DeckRequestDto deckRequestDto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
 
-        Deck deck = deckMapper.toEntity(deckRequestDto, user);
+        Deck deck = deckConverter.toEntity(deckRequestDto, user);
 
         Deck savedDeck = deckRepository.save(deck);
 
@@ -42,7 +42,7 @@ public class DeckDataServiceImpl implements DeckDataService {
             linkCardsToDeck(savedDeck,deckRequestDto.getCardIds());
         }
 
-        return deckMapper.toDto(savedDeck);
+        return deckConverter.toDto(savedDeck);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class DeckDataServiceImpl implements DeckDataService {
         }
 
         return decks.stream()
-                .map(deckMapper::toDto)
+                .map(deckConverter::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +64,7 @@ public class DeckDataServiceImpl implements DeckDataService {
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
 
         if(deck.getUser().getUserId().equals(userId)){
-            return deckMapper.toDto(deck);
+            return deckConverter.toDto(deck);
         } else {
             throw new GeneralException(ErrorCode.NOT_FOUND_DECK);
         }

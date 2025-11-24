@@ -1,7 +1,7 @@
 package com.project.moru.domain.deck.entity;
 
+import com.project.moru.common.constant.Status;
 import com.project.moru.domain.entity.BaseEntity;
-import com.project.moru.domain.entity.card.Card;
 import com.project.moru.domain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

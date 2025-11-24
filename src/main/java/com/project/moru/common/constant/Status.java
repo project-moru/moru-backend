@@ -1,4 +1,4 @@
-package com.project.moru.domain.deck.entity;
+package com.project.moru.common.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -3,9 +3,11 @@ package com.project.moru.service;
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
 import com.project.moru.domain.dto.card.CardCreateRequestDto;
+import com.project.moru.domain.dto.card.CardResponseDto;
 import com.project.moru.domain.dto.card.CardUpdateRequestDto;
 import com.project.moru.domain.entity.card.Card;
 import com.project.moru.domain.entity.user.User;
+import com.project.moru.mapper.struct.CardConverter;
 import com.project.moru.repository.CardRepository;
 import com.project.moru.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +23,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
 
-    private CardRepository cardRepository;
-    private UserRepository userRepository;
-
+    private final CardRepository cardRepository;
+    private final UserRepository userRepository;
+    private final CardConverter cardConverter;
     @Override
-    public Card findById(Long id) {
-        return cardRepository.findById(id).orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
+    public CardResponseDto findById(Long id) {
+        Card card = cardRepository.findById(id)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
+        return cardConverter.fromEntityToRes(card);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public Card saveCard(CardCreateRequestDto cardCreateRequestDto,  Long userId) {
+    public CardResponseDto saveCard(CardCreateRequestDto cardCreateRequestDto,  Long userId) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
@@ -59,18 +63,18 @@ public class CardServiceImpl implements CardService {
                 .viewCount(0)
                 .likeCount(0)
                 .build();
-        return  cardRepository.save(newCard);
+
+        return  cardConverter.fromEntityToRes(cardRepository.save(newCard));
     }
 
     @Override
-    public Card modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId) {
+    public CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId) {
 
         Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Card not found"));
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
 
         if (!card.getUser().getUserId().equals(userId)) {
-            // 권한이 없다면 예외 발생 (예: IllegalStateException, AccessDeniedException 등)
-            throw new AccessDeniedException("You do not have permission to modify this card.");
+            throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
 
         card.updateCard(
@@ -80,12 +84,11 @@ public class CardServiceImpl implements CardService {
                 cardUpdateRequestDto.getImageUrl()
         );
 
-        return cardRepository.save(card);
+        return cardConverter.fromEntityToRes(cardRepository.save(card));
     }
 
     @Override
-    public List<Card> findAll() {
-        cardRepository.findAll();
-        return cardRepository.findAll();
+    public List<CardResponseDto> findAll() {
+        return cardConverter.toResList(cardRepository.findAll());
     }
 }

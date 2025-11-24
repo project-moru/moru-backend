@@ -1,6 +1,6 @@
 package com.project.moru.domain.deck.dto;
 
-import com.project.moru.domain.deck.entity.Status;
+import com.project.moru.common.constant.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
