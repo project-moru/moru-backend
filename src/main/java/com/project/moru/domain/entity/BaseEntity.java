@@ -1,7 +1,6 @@
 package com.project.moru.domain.entity;
 
 import lombok.Getter;
-import org.apache.ibatis.annotations.Update;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,10 +10,6 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 public class BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @CreationTimestamp
     @Column(name = "created_at")

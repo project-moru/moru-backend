@@ -3,6 +3,7 @@ package com.project.moru.domain.entity.user;
 import com.project.moru.common.constant.Job;
 import com.project.moru.common.constant.Use;
 import com.project.moru.domain.dto.user.UserUpdateRequestDto;
+import com.project.moru.domain.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")

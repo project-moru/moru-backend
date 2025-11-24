@@ -1,4 +1,4 @@
-package com.project.moru.service;
+package com.project.moru.service.impl;
 
 import com.project.moru.domain.dto.card.CardCreateRequestDto;
 import com.project.moru.domain.dto.card.CardUpdateRequestDto;
@@ -6,6 +6,7 @@ import com.project.moru.domain.entity.card.Card;
 import com.project.moru.domain.entity.user.User;
 import com.project.moru.repository.CardRepository;
 import com.project.moru.repository.UserRepository;
+import com.project.moru.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
