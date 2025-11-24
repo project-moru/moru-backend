@@ -4,7 +4,6 @@ import com.project.moru.common.utils.ApiResponse;
 import com.project.moru.domain.dto.card.CardCreateRequestDto;
 import com.project.moru.domain.dto.card.CardResponseDto;
 import com.project.moru.domain.dto.card.CardUpdateRequestDto;
-import com.project.moru.domain.entity.card.Card;
 import com.project.moru.domain.entity.user.User;
 import com.project.moru.service.CardService;
 import io.swagger.v3.oas.annotations.tags.Tag;
