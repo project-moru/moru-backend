@@ -11,7 +11,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DeckMapper {
 
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.userId", target = "userId")
     DeckResponseDto toDto(Deck deck);
 
     @Mapping(target = "user", ignore = true)

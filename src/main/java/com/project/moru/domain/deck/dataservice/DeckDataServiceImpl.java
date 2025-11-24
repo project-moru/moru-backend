@@ -42,19 +42,12 @@ public class DeckDataServiceImpl implements DeckDataService {
             linkCardsToDeck(savedDeck,deckRequestDto.getCardIds());
         }
 
-        return DeckResponseDto.builder()
-                .id(savedDeck.getId())
-                .userId(userId)
-                .title(savedDeck.getTitle())
-                .content(savedDeck.getContent())
-                .cardIds(savedDeck.getDeckCards().stream().map(DeckCard::getId).collect(Collectors.toList()))
-                .status(savedDeck.getIsPublic())
-                .build();
+        return deckMapper.toDto(savedDeck);
     }
 
     @Override
     public List<DeckResponseDto> findAllDecks(Long userId) {
-        List<Deck> decks = deckRepository.findAllByUserId(userId);
+        List<Deck> decks = deckRepository.findAllByUser_UserId(userId);
 
         if (decks.isEmpty()) {
             throw new GeneralException(ErrorCode.NOT_FOUND_DECK);
@@ -66,9 +59,15 @@ public class DeckDataServiceImpl implements DeckDataService {
     }
 
     @Override
-    public Deck findDeckById(Long deckId) {
-        return deckRepository.findById(deckId).
-                orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
+    public DeckResponseDto findDeckById(Long deckId,Long  userId) {
+        Deck deck = deckRepository.findById(deckId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
+
+        if(deck.getUser().getUserId().equals(userId)){
+            return deckMapper.toDto(deck);
+        } else {
+            throw new GeneralException(ErrorCode.NOT_FOUND_DECK);
+        }
     }
 
     @Override
