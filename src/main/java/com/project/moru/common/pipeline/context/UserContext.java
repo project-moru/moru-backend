@@ -1,6 +1,6 @@
 package com.project.moru.common.pipeline.context;
 
-import com.project.moru.domain.entity.user.User;
+import com.project.moru.user.domain.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

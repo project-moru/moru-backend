@@ -3,7 +3,7 @@ package com.project.moru.common.pipeline.step.impl;
 import com.project.moru.common.pipeline.context.UserContext;
 import com.project.moru.common.pipeline.step.UserStep;
 import com.project.moru.common.validator.Validator;
-import com.project.moru.domain.dto.user.UserValidatable;
+import com.project.moru.user.domain.dto.UserValidatable;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

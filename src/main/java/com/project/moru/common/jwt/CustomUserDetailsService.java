@@ -1,8 +1,8 @@
 package com.project.moru.common.jwt;
 
-import com.project.moru.domain.entity.user.CustomUserDetails;
-import com.project.moru.domain.entity.user.User;
-import com.project.moru.repository.UserRepository;
+import com.project.moru.user.domain.entity.CustomUserDetails;
+import com.project.moru.user.domain.entity.User;
+import com.project.moru.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

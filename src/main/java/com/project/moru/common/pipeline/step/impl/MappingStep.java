@@ -3,7 +3,7 @@ package com.project.moru.common.pipeline.step.impl;
 import com.project.moru.common.pipeline.context.UserContext;
 import com.project.moru.common.pipeline.step.UserStep;
 import com.project.moru.common.strategy.UserMappingStrategy;
-import com.project.moru.domain.entity.user.User;
+import com.project.moru.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

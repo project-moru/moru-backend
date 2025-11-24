@@ -2,7 +2,7 @@ package com.project.moru.common.pipeline.step.impl;
 
 import com.project.moru.common.pipeline.context.UserContext;
 import com.project.moru.common.pipeline.step.UserStep;
-import com.project.moru.service.UserDataService;
+import com.project.moru.user.service.UserDataService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
