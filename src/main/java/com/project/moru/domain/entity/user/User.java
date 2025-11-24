@@ -3,7 +3,7 @@ package com.project.moru.domain.entity.user;
 import com.project.moru.common.constant.Job;
 import com.project.moru.common.constant.Use;
 import com.project.moru.domain.dto.user.UserUpdateRequestDto;
-import com.project.moru.domain.entity.BaseEntity;
+import com.project.moru.domain.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;

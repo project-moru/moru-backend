@@ -27,12 +27,12 @@ public class SecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeRequests(auth -> auth
+            .antMatchers("/api/users/register").permitAll()
             .antMatchers(
+                "/api/users/**",
                 "/api/auth/logout"
-//                "/api/auth/refresh"
             ).authenticated()
             .antMatchers(
-                "/api/**",
                 "/api/auth/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",

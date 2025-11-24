@@ -1,6 +1,6 @@
 package com.project.moru.domain.entity.card;
 
-import com.project.moru.domain.entity.BaseEntity;
+import com.project.moru.domain.BaseEntity;
 import com.project.moru.domain.entity.user.User;
 import lombok.*;
 

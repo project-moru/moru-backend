@@ -22,8 +22,14 @@ public class UserDataServiceImpl implements UserDataService {
   public Optional<User> findUserById(Long userId) { return userRepository.findById(userId); }
   
   @Override
-  public User saveUser(User user) {
-    return userRepository.save(user);
+  public Optional<User> findUserByUsername(String username) { return userRepository.findByUsername(username); }
+  
+  @Override
+  public Optional<User> findUserByNickname(String nickname) { return userRepository.findByNickname(nickname); }
+  
+  @Override
+  public void saveUser(User user) {
+    userRepository.save(user);
   }
   
   @Override
