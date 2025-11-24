@@ -1,4 +1,4 @@
-package com.project.moru.service;
+package com.project.moru.service.impl;
 
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
@@ -6,6 +6,7 @@ import com.project.moru.domain.dto.card.CardCreateRequestDto;
 import com.project.moru.domain.dto.card.CardResponseDto;
 import com.project.moru.domain.dto.card.CardUpdateRequestDto;
 import com.project.moru.domain.entity.card.Card;
+import com.project.moru.service.CardService;
 import com.project.moru.domain.entity.user.User;
 import com.project.moru.mapper.struct.CardConverter;
 import com.project.moru.repository.CardRepository;

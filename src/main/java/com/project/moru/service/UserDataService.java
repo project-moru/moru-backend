@@ -10,7 +10,11 @@ public interface UserDataService {
   
   Optional<User> findUserById(Long userId);
   
-  User saveUser(User user);
+  Optional<User> findUserByUsername(String username);
+  
+  Optional<User> findUserByNickname(String nickname);
+  
+  void saveUser(User user);
   
   void deleteUserById(Long userId);
 }
