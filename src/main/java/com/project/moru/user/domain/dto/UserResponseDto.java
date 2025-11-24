@@ -1,7 +1,7 @@
 package com.project.moru.user.domain.dto;
 
-import com.project.moru.common.constant.Job;
-import com.project.moru.common.constant.Use;
+import com.project.moru.user.constant.Job;
+import com.project.moru.user.constant.Use;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

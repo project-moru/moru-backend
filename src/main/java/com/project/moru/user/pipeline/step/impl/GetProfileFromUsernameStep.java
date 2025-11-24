@@ -1,19 +1,19 @@
-package com.project.moru.common.pipeline.step.impl;
+package com.project.moru.user.pipeline.step.impl;
 
-import com.project.moru.common.pipeline.context.UserContext;
-import com.project.moru.common.pipeline.step.UserStep;
+import com.project.moru.user.pipeline.Context;
+import com.project.moru.user.pipeline.step.Step;
 import com.project.moru.user.domain.entity.User;
 import com.project.moru.user.service.UserDataService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GetUserProfileFromUsernameStep<T> implements UserStep<T> {
+public class GetProfileFromUsernameStep<T> implements Step<T> {
   
   private final UserDataService userDataService;
   private final String username;
   
   @Override
-  public void execute(UserContext<T> context) {
+  public void execute(Context<T> context) {
     User user = userDataService.findUserByUsername(username).orElseThrow();
     context.setUser(user);
   }

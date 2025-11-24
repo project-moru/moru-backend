@@ -1,4 +1,4 @@
-package com.project.moru.common.pipeline.context;
+package com.project.moru.user.pipeline;
 
 import com.project.moru.user.domain.entity.User;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class UserContext<T> {
+public class Context<T> {
   private final T dto;
   private User user;
 }

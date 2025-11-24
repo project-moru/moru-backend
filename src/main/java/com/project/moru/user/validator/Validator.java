@@ -1,5 +1,6 @@
-package com.project.moru.common.validator;
+package com.project.moru.user.validator;
 
+import com.project.moru.common.validator.ValidationException;
 import com.project.moru.user.domain.dto.UserValidatable;
 import com.project.moru.user.service.UserDataService;
 import lombok.RequiredArgsConstructor;

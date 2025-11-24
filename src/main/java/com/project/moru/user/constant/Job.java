@@ -1,4 +1,4 @@
-package com.project.moru.common.constant;
+package com.project.moru.user.constant;
 
 import lombok.Getter;
 

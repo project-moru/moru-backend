@@ -1,11 +1,11 @@
 package com.project.moru.user.service.impl;
 
-import com.project.moru.common.pipeline.UserPipeline;
-import com.project.moru.common.pipeline.context.UserContext;
-import com.project.moru.common.pipeline.step.impl.*;
-import com.project.moru.common.strategy.UserCreateMappingStrategy;
-import com.project.moru.common.strategy.UserUpdateMappingStrategy;
-import com.project.moru.common.validator.Validator;
+import com.project.moru.user.pipeline.UserPipeline;
+import com.project.moru.user.pipeline.Context;
+import com.project.moru.user.pipeline.step.impl.*;
+import com.project.moru.user.strategy.UserCreateMappingStrategy;
+import com.project.moru.user.strategy.UserUpdateMappingStrategy;
+import com.project.moru.user.validator.Validator;
 import com.project.moru.user.domain.dto.UserCreateRequestDto;
 import com.project.moru.user.domain.dto.UserResponseDto;
 import com.project.moru.user.domain.dto.UserUpdateRequestDto;
@@ -38,8 +38,8 @@ public class UserServiceImpl implements UserService {
     UserPipeline<Void> pipeline = new UserPipeline<>(null);
     
     // 유저 정보 조회
-    UserContext<Void> context = pipeline
-        .addStep(new GetUserProfileFromUsernameStep<>(userDataService, username))
+    Context<Void> context = pipeline
+        .addStep(new GetProfileFromUsernameStep<>(userDataService, username))
         .execute();
     
     return userConverter.fromEntityToRes( // Step 구현해야함.
@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService {
   public UserResponseDto update(Long id, UserUpdateRequestDto dto) {
     UserPipeline<UserUpdateRequestDto> pipeline = new UserPipeline<>(dto);
     
-    UserContext<UserUpdateRequestDto> context = pipeline
-        .addStep(new GetUserProfileStep<>(userDataService, id))
+    Context<UserUpdateRequestDto> context = pipeline
+        .addStep(new GetProfileStep<>(userDataService, id))
         .addStep(new MappingStep<>(new UserUpdateMappingStrategy()))
         .addStep(new EncryptPasswordStep<>(passwordEncoder))
         .addStep(new SaveStep<>(userDataService))
@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService {
     UserPipeline<Void> pipeline = new UserPipeline<>(null);
     
     pipeline
-        .addStep(new GetUserProfileStep<>(userDataService, id))
-        .addStep(new ConvertUserActivateStep<>())
+        .addStep(new GetProfileStep<>(userDataService, id))
+        .addStep(new ConvertActivateStep<>())
         .addStep(new SaveStep<>(userDataService))
         .execute();
   }

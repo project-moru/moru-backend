@@ -1,4 +1,4 @@
-package com.project.moru.common.strategy;
+package com.project.moru.user.strategy;
 
 import com.project.moru.user.domain.dto.UserUpdateRequestDto;
 import com.project.moru.user.domain.entity.User;
