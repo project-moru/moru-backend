@@ -1,6 +1,6 @@
 package com.project.moru.user.strategy;
 
-import com.project.moru.user.domain.entity.User;
+import com.project.moru.domain.entity.user.User;
 
 public interface UserMappingStrategy<T> {
   User map(T dto, User user);

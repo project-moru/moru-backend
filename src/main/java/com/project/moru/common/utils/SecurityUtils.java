@@ -1,6 +1,6 @@
 package com.project.moru.common.utils;
 
-import com.project.moru.user.domain.entity.CustomUserDetails;
+import com.project.moru.domain.entity.user.CustomUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

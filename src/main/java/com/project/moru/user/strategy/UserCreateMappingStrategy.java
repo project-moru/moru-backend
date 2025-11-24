@@ -1,8 +1,8 @@
 package com.project.moru.user.strategy;
 
-import com.project.moru.user.domain.dto.UserCreateRequestDto;
-import com.project.moru.user.domain.entity.User;
-import com.project.moru.user.mapper.struct.UserConverter;
+import com.project.moru.domain.dto.user.UserCreateRequestDto;
+import com.project.moru.domain.entity.user.User;
+import com.project.moru.mapper.struct.UserConverter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -2,8 +2,8 @@ package com.project.moru.user.pipeline.step.impl;
 
 import com.project.moru.user.pipeline.Context;
 import com.project.moru.user.pipeline.step.Step;
-import com.project.moru.user.domain.entity.User;
-import com.project.moru.user.service.UserDataService;
+import com.project.moru.domain.entity.user.User;
+import com.project.moru.service.UserDataService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

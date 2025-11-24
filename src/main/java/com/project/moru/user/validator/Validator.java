@@ -1,8 +1,8 @@
 package com.project.moru.user.validator;
 
 import com.project.moru.common.validator.ValidationException;
-import com.project.moru.user.domain.dto.UserValidatable;
-import com.project.moru.user.service.UserDataService;
+import com.project.moru.domain.dto.user.UserValidatable;
+import com.project.moru.service.UserDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
