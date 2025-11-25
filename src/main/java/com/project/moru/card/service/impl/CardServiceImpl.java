@@ -39,7 +39,7 @@ public class CardServiceImpl implements CardService {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
 
-        if (!user.getUserId().equals(card.getUser().getUserId())) {
+        if (!user.getId().equals(card.getUser().getId())) {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
         cardRepository.deleteById(id);
@@ -72,7 +72,7 @@ public class CardServiceImpl implements CardService {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
 
-        if (!card.getUser().getUserId().equals(userId)) {
+        if (!card.getUser().getId().equals(userId)) {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
 

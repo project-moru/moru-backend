@@ -34,17 +34,17 @@ public class CardController {
 
     @PostMapping("/")
     public ResponseEntity<ApiResponse<CardResponseDto>> save(@RequestBody CardCreateRequestDto cardCreateRequestDto, @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, user.getUserId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, user.getId())));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        cardService.deleteCardById(id, user.getUserId());
+        cardService.deleteCardById(id, user.getId());
         return ResponseEntity.ok().body(ApiResponse.ok());
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<CardResponseDto>> modify(@PathVariable Long id, @RequestBody CardUpdateRequestDto cardUpdateRequestDto, @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, user.getUserId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, user.getId())));
     }
 }

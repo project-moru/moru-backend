@@ -47,7 +47,7 @@ public class DeckDataServiceImpl implements DeckDataService {
 
     @Override
     public List<DeckResponseDto> findAllDecks(Long userId) {
-        List<Deck> decks = deckRepository.findAllByUser_UserId(userId);
+        List<Deck> decks = deckRepository.findAllByUser_Id(userId);
 
         if (decks.isEmpty()) {
             throw new GeneralException(ErrorCode.NOT_FOUND_DECK);
@@ -63,7 +63,7 @@ public class DeckDataServiceImpl implements DeckDataService {
         Deck deck = deckRepository.findById(deckId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
 
-        if(deck.getUser().getUserId().equals(userId)){
+        if(deck.getUser().getId().equals(userId)){
             return deckConverter.toDto(deck);
         } else {
             throw new GeneralException(ErrorCode.NOT_FOUND_DECK);
@@ -75,7 +75,7 @@ public class DeckDataServiceImpl implements DeckDataService {
 
         Deck deck = deckRepository.findById(deckId).orElseThrow();
 
-        if(deck.getUser().getUserId().equals(userId)){
+        if(deck.getUser().getId().equals(userId)){
             deckRepository.deleteById(deckId);
         } else {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);

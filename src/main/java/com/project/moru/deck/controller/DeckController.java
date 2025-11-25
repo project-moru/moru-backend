@@ -28,7 +28,7 @@ public class DeckController {
     public ResponseEntity<ApiResponse<List<DeckResponseDto>>> findAll(
             @Parameter(hidden = true) @AuthenticationPrincipal User user
     ) {
-        return ResponseEntity.ok().body(ApiResponse.ok(deckDataService.findAllDecks(user.getUserId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(deckDataService.findAllDecks(user.getId())));
     }
 
     @Operation(summary = "덱 단일 조회")
@@ -37,7 +37,7 @@ public class DeckController {
             @PathVariable Long id,
             @Parameter(hidden = true) @AuthenticationPrincipal User user
     ) {
-        return ResponseEntity.ok().body(ApiResponse.ok(deckDataService.findDeckById(id, user.getUserId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(deckDataService.findDeckById(id, user.getId())));
     }
 
     @Operation(summary = "덱 생성")
@@ -46,7 +46,7 @@ public class DeckController {
             @RequestBody DeckRequestDto deckRequestDto,
             @Parameter(hidden = true) @AuthenticationPrincipal User user)
     {
-        return ResponseEntity.ok().body(ApiResponse.ok(deckDataService.saveDeck(deckRequestDto, user.getUserId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(deckDataService.saveDeck(deckRequestDto, user.getId())));
     }
 
     @Operation(summary = "덱 삭제")
@@ -55,7 +55,7 @@ public class DeckController {
             @PathVariable Long id,
             @Parameter(hidden = true) @AuthenticationPrincipal User user
     ) {
-        deckDataService.deleteDeckById(id, user.getUserId());
+        deckDataService.deleteDeckById(id, user.getId());
         return ResponseEntity.ok().body(ApiResponse.ok());
     }
 }

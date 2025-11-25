@@ -5,16 +5,15 @@ import com.project.moru.deck.domain.dto.DeckResponseDto;
 import com.project.moru.deck.domain.entity.Deck;
 import com.project.moru.user.domain.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DeckConverter {
-//
-//    @Mapping(source = "user.userId", target = "userId")
+
+    @Mapping(source = "user.id", target = "userId")
     DeckResponseDto toDto(Deck deck);
-//
-//    @Mapping(target = "user", ignore = true)
-//    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "deckCards", ignore = true)
+    
+    @Mapping(target = "deckCards", ignore = true)
     Deck toEntity(DeckRequestDto deckRequestDto, User user);
 }

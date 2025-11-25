@@ -51,7 +51,7 @@ public class UserController {
       @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto
       ) {
     
-    Long id = userDetails.getUserId();
+    Long id = userDetails.getId();
     
     return ResponseEntity.ok().body(ApiResponse.ok(userService.update(id, userUpdateRequestDto)));
   }
@@ -66,7 +66,7 @@ public class UserController {
   public ResponseEntity<ApiResponse<Void>> delete(
       @Parameter(hidden = true)
       @AuthenticationPrincipal CustomUserDetails userDetails) {
-    userService.delete(userDetails.getUserId());
+    userService.delete(userDetails.getId());
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
 }
