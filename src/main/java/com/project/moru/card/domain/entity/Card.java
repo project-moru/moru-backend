@@ -14,10 +14,6 @@ import javax.persistence.*;
 @Getter
 @Table(name = "card")
 public class Card extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -68,4 +64,3 @@ public class Card extends BaseEntity {
         }
     }
 }
-
