@@ -9,14 +9,14 @@ import java.util.Collections;
 
 @Getter
 public class CustomUserDetails implements UserDetails {
-  private final Long userId;
+  private final Long id;
   private final String username; // 아이디
   private final String nickname;
   private final String password;
   private final Collection<? extends GrantedAuthority> authorities;
   
   public CustomUserDetails(User user) {
-    this.userId = user.getUserId();
+    this.id = user.getId();
     this.username = user.getUsername();
     this.nickname = user.getNickname();
     this.password = user.getPassword();

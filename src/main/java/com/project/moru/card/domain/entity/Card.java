@@ -2,10 +2,13 @@ package com.project.moru.card.domain.entity;
 
 import com.project.moru.common.constant.Status;
 import com.project.moru.common.domain.entity.BaseEntity;
+import com.project.moru.deck.domain.entity.DeckCard;
 import com.project.moru.user.domain.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -14,10 +17,6 @@ import javax.persistence.*;
 @Getter
 @Table(name = "card")
 public class Card extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -44,6 +43,9 @@ public class Card extends BaseEntity {
 
     @Column(name = "image_url")
     private String imageUrl;
+    
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DeckCard> deckCards = new ArrayList<>();
 
     public void addViewCount() {
         this.viewCount++;
@@ -68,4 +70,3 @@ public class Card extends BaseEntity {
         }
     }
 }
-

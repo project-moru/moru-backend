@@ -34,13 +34,13 @@ public class AuthServiceImpl implements AuthService {
     );
     
     // access, refresh token 생성
-    String accessToken = jwtTokenProvider.generateAccessToken(userDetails.getUserId());
-    String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails.getUserId());
+    String accessToken = jwtTokenProvider.generateAccessToken(userDetails.getId());
+    String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails.getId());
     
     // [private] saveRefreshToken 메서드 호출 : redis에 refresh token 저장
     saveRefreshToken(
         RefreshTokenDto.builder()
-            .userId(userDetails.getUserId())
+            .userId(userDetails.getId())
             .refreshToken(refreshToken)
             .duration(7)
             .unit(TimeUnit.DAYS)

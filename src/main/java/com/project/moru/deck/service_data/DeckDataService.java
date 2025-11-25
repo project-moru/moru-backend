@@ -2,6 +2,7 @@ package com.project.moru.deck.service_data;
 
 import com.project.moru.deck.domain.dto.DeckRequestDto;
 import com.project.moru.deck.domain.dto.DeckResponseDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

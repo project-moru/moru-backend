@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface DeckRepository extends JpaRepository<Deck, Long> {
-    List<Deck> findAllByUser_UserId(Long userId);
+    List<Deck> findAllByUser_Id(Long userId);
 }

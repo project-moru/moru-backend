@@ -5,6 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     // 400 Bad Request (잘못된 요청)
+    DUPLICATE_USERNAME(400, "이미 존재하는 아이디입니다."),
+    DUPLICATE_NICKNAME(400, "이미 존재하는 닉네임입니다."),
     NOT_VALID_FORMAT(400, "유효하지 않은 이메일 형식입니다."),
     NOT_FOUND_DECK(400, "덱을 찾을 수 없습니다"),
     NOT_FOUND_USER(400,"유저를 찾을 수 없습니다"),

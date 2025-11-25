@@ -15,22 +15,18 @@ import javax.persistence.*;
 @Getter
 @Table(name = "users")
 public class User extends BaseEntity {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
-  private Long userId;
   
-  @Column(name = "username", nullable = false, length = 50)
+  @Column(nullable = false, length = 50)
   private String username;
   
   @Column(nullable = false)
   private String password;
   
-  @Column(name = "nickname", length = 100)
+  @Column(length = 100)
   private String nickname;
   
   @Enumerated(EnumType.STRING)
-  @Column(name = "job", length = 50)
+  @Column(length = 50)
   private Job job;
   
   @Enumerated(EnumType.STRING)

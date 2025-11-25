@@ -1,7 +1,6 @@
 package com.project.moru.card.domain.dto;
 
 import com.project.moru.common.constant.Status;
-import com.project.moru.card.domain.entity.Card;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,16 +23,7 @@ public class CardCreateRequestDto {
     private String cardContent;
 
     @Builder.Default
-    private Status isPublic =  Status.PUBLIC;
+    private Status isPublic = Status.PUBLIC;
 
     private String imageUrl;
-
-    public static Card toEntity(CardCreateRequestDto cardCreateRequestDto) {
-        return Card.builder()
-                .cardName(cardCreateRequestDto.getCardName())
-                .cardContent(cardCreateRequestDto.getCardContent())
-                .isPublic(cardCreateRequestDto.getIsPublic())
-                .imageUrl(cardCreateRequestDto.getImageUrl())
-                .build();
-    }
 }
