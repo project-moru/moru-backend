@@ -1,5 +1,6 @@
 package com.project.moru.domain.dto.card;
 
+import com.project.moru.common.constant.Status;
 import com.project.moru.domain.entity.card.Card;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,8 @@ public class CardCreateRequestDto {
     @Size(max = 5000, message = "카드 내용은 5000자를 초과할 수 없습니다.")
     private String cardContent;
 
-    private Boolean isPublic;
+    @Builder.Default
+    private Status isPublic =  Status.PUBLIC;
 
     private String imageUrl;
 

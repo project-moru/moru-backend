@@ -1,6 +1,7 @@
 package com.project.moru.domain.entity.card;
 
-import com.project.moru.domain.BaseEntity;
+import com.project.moru.common.constant.Status;
+import com.project.moru.domain.entity.BaseEntity;
 import com.project.moru.domain.entity.user.User;
 import lombok.*;
 
@@ -16,7 +17,7 @@ public class Card extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id")
-    private Long cardId;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -28,8 +29,10 @@ public class Card extends BaseEntity {
     @Column(name = "card_content")
     private String cardContent;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "is_public")
-    private Boolean isPublic;
+    @Builder.Default
+    private Status isPublic =  Status.PUBLIC;
 
     @Column(name = "tag_count")
     private Integer tagCount;
@@ -51,7 +54,7 @@ public class Card extends BaseEntity {
         this.likeCount++;
     }
 
-    public void updateCard(String cardName, String cardContent, Boolean isPublic, String imageUrl) {
+    public void updateCard(String cardName, String cardContent, Status isPublic, String imageUrl) {
         if (cardName != null) {
             this.cardName = cardName;
         }
