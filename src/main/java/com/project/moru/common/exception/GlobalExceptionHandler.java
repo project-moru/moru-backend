@@ -1,6 +1,6 @@
 package com.project.moru.common.exception;
 
-import com.project.moru.common.dto.ErrorResponse;
+import com.project.moru.common.domain.dto.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

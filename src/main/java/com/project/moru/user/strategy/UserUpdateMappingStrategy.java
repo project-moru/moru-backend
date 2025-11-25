@@ -1,7 +1,7 @@
 package com.project.moru.user.strategy;
 
-import com.project.moru.domain.dto.user.UserUpdateRequestDto;
-import com.project.moru.domain.entity.user.User;
+import com.project.moru.user.domain.dto.UserUpdateRequestDto;
+import com.project.moru.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

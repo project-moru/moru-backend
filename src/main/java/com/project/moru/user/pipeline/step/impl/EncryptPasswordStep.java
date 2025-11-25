@@ -2,8 +2,8 @@ package com.project.moru.user.pipeline.step.impl;
 
 import com.project.moru.user.pipeline.Context;
 import com.project.moru.user.pipeline.step.Step;
-import com.project.moru.domain.dto.user.PasswordChange;
-import com.project.moru.domain.entity.user.User;
+import com.project.moru.user.domain.dto.PasswordChange;
+import com.project.moru.user.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
