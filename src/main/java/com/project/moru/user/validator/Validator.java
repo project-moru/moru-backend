@@ -1,5 +1,6 @@
 package com.project.moru.user.validator;
 
+import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.ValidationException;
 import com.project.moru.user.domain.dto.UserValidatable;
 import com.project.moru.user.service_data.UserDataService;
@@ -14,11 +15,11 @@ public class Validator<T extends UserValidatable> {
   
   public void validate(T dto) {
     if (userDataService.findUserByUsername(dto.getUsername()).isPresent()) {
-      throw new ValidationException("이미 존재하는 아이디입니다.");
+      throw new ValidationException(ErrorCode.DUPLICATE_USERNAME);
     }
     
     if (userDataService.findUserByNickname(dto.getNickname()).isPresent()) {
-      throw new ValidationException("이미 존재하는 닉네임입니다.");
+      throw new ValidationException(ErrorCode.DUPLICATE_NICKNAME);
     }
   }
 }

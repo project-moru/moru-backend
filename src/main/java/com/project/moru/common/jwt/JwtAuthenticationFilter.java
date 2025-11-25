@@ -1,5 +1,7 @@
 package com.project.moru.common.jwt;
 
+import com.project.moru.common.exception.ErrorCode;
+import com.project.moru.common.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,9 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       
     } catch (Exception e) { // 예외 처리 로직 구현해야함.
       SecurityContextHolder.clearContext();
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      response.setContentType("application/json;charset=UTF-8");
-      response.getWriter().write("{\"success\":false, \"message\":\"" + e.getMessage() + "\"}");
+      throw new GeneralException(ErrorCode.ACCESS_DENIED);
     }
     
     filterChain.doFilter(request, response);
