@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Builder
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Getter
 @Table(name = "deck")

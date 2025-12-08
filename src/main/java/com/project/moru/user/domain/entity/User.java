@@ -6,14 +6,14 @@ import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.user.domain.dto.UserUpdateRequestDto;
 import com.project.moru.common.domain.entity.BaseEntity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Getter
 @Table(name = "users")
