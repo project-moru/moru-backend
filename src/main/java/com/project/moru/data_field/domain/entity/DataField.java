@@ -1,6 +1,5 @@
 package com.project.moru.data_field.domain.entity;
 
-import com.project.moru.data_field.domain.dto.AttributeUpdateRequestDto;
 import com.project.moru.data_field.domain.dto.DataFieldUpdateRequestDto;
 import com.project.moru.user.domain.entity.User;
 import lombok.AllArgsConstructor;
