@@ -33,5 +33,5 @@ public class DataField {
   private String description;
   
   @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Attributes> attributes = new ArrayList<>();
+  private List<Attribute> attributes = new ArrayList<>();
 }
