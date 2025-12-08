@@ -1,5 +1,7 @@
 package com.project.moru.data_field.domain.entity;
 
+import com.project.moru.data_field.domain.dto.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.DataFieldUpdateRequestDto;
 import com.project.moru.user.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Builder
 @NoArgsConstructor
@@ -34,4 +37,14 @@ public class DataField {
   
   @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Attribute> attributes = new ArrayList<>();
+  
+  public void update(DataFieldUpdateRequestDto dto) {
+    Optional.ofNullable(dto.getName())
+        .filter(name -> !name.isBlank())
+        .ifPresent(name -> this.name = name);
+    
+    Optional.ofNullable(dto.getDescription())
+        .filter(description -> !description.isBlank())
+        .ifPresent(description -> this.description = description);
+  }
 }

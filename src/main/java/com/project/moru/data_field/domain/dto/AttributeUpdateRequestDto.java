@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AttributesUpdateRequestDto {
+public class AttributeUpdateRequestDto {
   @Schema(description = "속성 블록 이름", example = "문화재")
   @NotBlank(message = "블록 이름은 필수입니다.")
   private String name;

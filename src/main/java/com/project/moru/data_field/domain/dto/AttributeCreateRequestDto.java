@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AttributesCreateRequestDto {
+public class AttributeCreateRequestDto {
   @Schema(description = "데이터필드 ID (PRIMARY KEY)", example = "1")
   @NotBlank(message = "데이터필드 ID는 필수입니다.")
   private Long dataFieldId;

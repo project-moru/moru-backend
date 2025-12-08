@@ -8,7 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AttributesResponseDto {
+public class AttributeResponseDto {
   private Long id;
   private Long dataFieldId;
   private String name;
