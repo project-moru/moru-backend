@@ -12,18 +12,18 @@ import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
-
-    @Value("${server.servlet.context-path:/}")
-    private String contextPath;
-
-    @Value("${server.port:8080}")
-    private String serverPort;
+    
+    @Value("${swagger.server.url:localhost}")
+    private String serverUrl;
+    
+    @Value(("${swagger.server.description}"))
+    private String description;
 
     @Bean
     public OpenAPI openAPI() {
         Server server = new Server();
-        server.setUrl("http://localhost:" + serverPort + contextPath);
-        server.setDescription("로컬 개발 서버");
+        server.setUrl(serverUrl);
+        server.setDescription(description);
 
         Contact contact = new Contact();
         contact.setName("Moru Team");

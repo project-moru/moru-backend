@@ -1,8 +1,9 @@
-package com.project.moru.user.service;
+package com.project.moru.user.service.impl;
 
 import com.project.moru.user.pipeline.UserPipeline;
 import com.project.moru.user.pipeline.Context;
 import com.project.moru.user.pipeline.step.impl.*;
+import com.project.moru.user.service.UserService;
 import com.project.moru.user.strategy.UserCreateMappingStrategy;
 import com.project.moru.user.strategy.UserUpdateMappingStrategy;
 import com.project.moru.user.validator.Validator;

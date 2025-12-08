@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", builder = @Builder(disableBuilder = false))
+@Mapper(componentModel = "spring", builder = @Builder())
 public interface UserConverter {
   @Mapping(target = "useYn", constant = "Y")
   User fromCreateReqToEntity(UserCreateRequestDto dto);
