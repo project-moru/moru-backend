@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -29,4 +31,7 @@ public class DataField {
   
   @Column(columnDefinition = "TEXT")
   private String description;
+  
+  @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Attributes> attributes = new ArrayList<>();
 }
