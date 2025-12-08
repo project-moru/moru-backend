@@ -2,11 +2,14 @@ package com.project.moru.user.domain.entity;
 
 import com.project.moru.common.constant.Job;
 import com.project.moru.common.constant.Use;
+import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.user.domain.dto.UserUpdateRequestDto;
 import com.project.moru.common.domain.entity.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
@@ -32,6 +35,9 @@ public class User extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "use_yn", nullable = false)
   private Use useYn = Use.Y;
+  
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<DataField> dataFields = new ArrayList<>();
   
   public void update(UserUpdateRequestDto dto) {
     if (dto.getUsername() != null) this.username = dto.getUsername();
