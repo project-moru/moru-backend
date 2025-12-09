@@ -5,7 +5,9 @@ import com.project.moru.common.exception.GeneralException;
 import com.project.moru.data_field.domain.dto.*;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.mapper.DataFieldConverter;
+import com.project.moru.data_field.service.AttributeService;
 import com.project.moru.data_field.service.DataFieldService;
+import com.project.moru.data_field.service_data.AttributeDataService;
 import com.project.moru.data_field.service_data.DataFieldDataService;
 import com.project.moru.user.domain.entity.User;
 import com.project.moru.user.service.UserService;
@@ -22,6 +24,7 @@ import java.util.List;
 public class DataFieldServiceImpl implements DataFieldService {
   
   private final DataFieldDataService dataFieldDataService;
+  private final AttributeService attributeService;
   private final DataFieldConverter dataFieldConverter;
   private final UserDataService userDataService;
   
@@ -34,12 +37,24 @@ public class DataFieldServiceImpl implements DataFieldService {
   }
   
   @Override
+  @Transactional(readOnly = true)
+  public DataFieldDetailResponseDto getDataFieldById(Long dataFieldId, Long userId) {
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
+    if (!dataField.getUser().getId().equals(userId)) {
+      throw new GeneralException(ErrorCode.ACCESS_DENIED);
+    }
+    
+    return DataFieldDetailResponseDto.builder()
+        .dataField(dataFieldConverter.toDto(dataField))
+        .attributes(attributeService.getListByDataField(dataFieldId))
+        .build();
+  }
+  
+  @Override
   public DataFieldResponseDto register(DataFieldCreateRequestDto dto, Long userId) {
-    System.out.println("userId : " + userId);
     DataField dataField = dataFieldConverter.toEntity(dto, userDataService.findUserById(userId).orElseThrow(
         () -> new GeneralException(ErrorCode.NOT_FOUND_USER)
     ));
-    System.out.println("DataField.User.id : " + dataField.getUser().getId());
     return dataFieldConverter.toDto(dataFieldDataService.save(dataField));
   }
   

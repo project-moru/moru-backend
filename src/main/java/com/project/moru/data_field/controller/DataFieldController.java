@@ -1,9 +1,8 @@
 package com.project.moru.data_field.controller;
 
 import com.project.moru.common.utils.ApiResponse;
-import com.project.moru.data_field.domain.dto.DataFieldCreateRequestDto;
-import com.project.moru.data_field.domain.dto.DataFieldResponseDto;
-import com.project.moru.data_field.domain.dto.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.*;
+import com.project.moru.data_field.service.AttributeService;
 import com.project.moru.data_field.service.DataFieldService;
 import com.project.moru.user.domain.entity.CustomUserDetails;
 import com.project.moru.user.domain.entity.User;
@@ -26,6 +25,16 @@ import java.util.List;
 public class DataFieldController {
   
   private final DataFieldService dataFieldService;
+  private final AttributeService attributeService;
+  
+  @Operation(summary = "블록 생성 API")
+  @PostMapping("/attribute")
+  public ResponseEntity<ApiResponse<AttributeResponseDto>> createAttribute(
+      @RequestBody AttributeCreateRequestDto requestDto,
+      @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
+      ) {
+    return ResponseEntity.ok().body(ApiResponse.ok(attributeService.register(requestDto, userDetails.getId())));
+  }
   
   @Operation(summary = "데이터 필드 생성 API")
   @PostMapping()
@@ -46,12 +55,11 @@ public class DataFieldController {
   
   @Operation(summary = "데이터 필드 단일 조회 API")
   @GetMapping("/{data_field_id}")
-  public ResponseEntity<ApiResponse<DataFieldResponseDto>> getDataField(
+  public ResponseEntity<ApiResponse<DataFieldDetailResponseDto>> getDataField(
       @PathVariable Long data_field_id,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
-    // service 구현 필요
-    return ResponseEntity.ok().body(ApiResponse.ok());
+    return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.getDataFieldById(data_field_id, userDetails.getId())));
   }
   
   @Operation(summary = "데이터 필드 수정 API")

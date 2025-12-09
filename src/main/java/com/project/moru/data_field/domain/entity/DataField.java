@@ -42,4 +42,9 @@ public class DataField extends BaseEntity {
         .filter(description -> !description.isBlank())
         .ifPresent(description -> this.description = description);
   }
+  
+  public void addAttribute(Attribute attribute) {
+    attributes.add(attribute);
+    attribute.setDataField(this);
+  }
 }

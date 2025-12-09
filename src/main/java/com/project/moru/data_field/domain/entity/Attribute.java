@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.Optional;
 
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Entity
 @Getter
@@ -41,5 +41,12 @@ public class Attribute extends BaseEntity {
     
     Optional.ofNullable(dto.getType())
         .ifPresent(type -> this.type = type);
+  }
+  
+  public void setDataField(DataField dataField) {
+    this.dataField = dataField;
+    if (!dataField.getAttributes().contains(this)) {
+      dataField.getAttributes().add(this);
+    }
   }
 }

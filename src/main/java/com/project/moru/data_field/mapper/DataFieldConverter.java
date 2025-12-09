@@ -1,6 +1,7 @@
 package com.project.moru.data_field.mapper;
 
 import com.project.moru.data_field.domain.dto.DataFieldCreateRequestDto;
+import com.project.moru.data_field.domain.dto.DataFieldDetailResponseDto;
 import com.project.moru.data_field.domain.dto.DataFieldResponseDto;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.user.domain.entity.User;

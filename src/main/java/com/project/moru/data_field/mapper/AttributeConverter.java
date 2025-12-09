@@ -11,9 +11,12 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", builder = @Builder())
 public interface AttributeConverter {
-  @Mapping(target = "dataField.id", source = "dataFieldId")
-  Attribute toEntity(AttributeCreateRequestDto dto);
+  
   @Mapping(target = "dataFieldId", source = "dataField.id")
   AttributeResponseDto toDto(Attribute attribute);
+  
+  @Mapping(target = "dataField.id", source = "dataFieldId")
+  Attribute toEntity(AttributeCreateRequestDto dto);
+  
   List<AttributeResponseDto> toDtoList(List<Attribute> attributes);
 }
