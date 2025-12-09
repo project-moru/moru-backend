@@ -5,14 +5,14 @@ import com.project.moru.common.domain.entity.BaseEntity;
 import com.project.moru.deck.domain.entity.DeckCard;
 import com.project.moru.user.domain.entity.User;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Getter
 @Table(name = "card")

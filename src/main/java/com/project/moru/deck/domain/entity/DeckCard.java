@@ -2,18 +2,16 @@ package com.project.moru.deck.domain.entity;
 
 import com.project.moru.common.domain.entity.BaseEntity;
 import com.project.moru.card.domain.entity.Card;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
+@SuperBuilder
+@NoArgsConstructor
 @Entity
 @Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "deck_card")
 public class DeckCard extends BaseEntity {
 
