@@ -11,6 +11,7 @@ public enum ErrorCode {
     NOT_FOUND_DECK(400, "덱을 찾을 수 없습니다"),
     NOT_FOUND_USER(400,"유저를 찾을 수 없습니다"),
     NOT_FOUND_CARD(400,"카드를 찾을 수 없습니다"),
+    NOT_FOUND_DATA_FIELD(400,"카드를 찾을 수 없습니다"),
 
 
     // 403 Forbidden (권한 없음)

@@ -1,5 +1,7 @@
 package com.project.moru.data_field.service_data.impl;
 
+import com.project.moru.common.exception.ErrorCode;
+import com.project.moru.common.exception.GeneralException;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.repository.DataFieldRepository;
 import com.project.moru.data_field.service_data.DataFieldDataService;
@@ -16,8 +18,9 @@ public class DataFieldDataServiceImpl implements DataFieldDataService {
   
   @Override
   public DataField findById(Long dataFieldId) {
-    return dataFieldRepository.findById(dataFieldId)
-        .orElseThrow();
+    return dataFieldRepository.findById(dataFieldId).orElseThrow(
+        () -> new GeneralException(ErrorCode.NOT_FOUND_DATA_FIELD)
+    );
   }
   
   @Override

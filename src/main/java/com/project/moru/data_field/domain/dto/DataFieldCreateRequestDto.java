@@ -13,10 +13,6 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class DataFieldCreateRequestDto {
-  @Schema(description = "유저 ID (PRIMARY KEY)", example = "1 (테스트 유저 ID)")
-  @NotBlank(message = "유저 ID는 필수입니다.")
-  private Long userId;
-  
   @Schema(description = "필드 이름", example = "문화재")
   @NotBlank(message = "필드 이름은 필수입니다.")
   private String name;

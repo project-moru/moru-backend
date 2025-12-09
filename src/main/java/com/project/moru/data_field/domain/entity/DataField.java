@@ -3,6 +3,7 @@ package com.project.moru.data_field.domain.entity;
 import com.project.moru.common.domain.entity.BaseEntity;
 import com.project.moru.data_field.domain.dto.DataFieldUpdateRequestDto;
 import com.project.moru.user.domain.entity.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -12,16 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@SuperBuilder
-@NoArgsConstructor
+@SuperBuilder(toBuilder = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 @Table(name = "data_field")
 public class DataField extends BaseEntity {
   
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id",
-      foreignKey = @ForeignKey(name = "fk_data_field_user"))
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
   
   @Column(nullable = false)
@@ -41,5 +41,10 @@ public class DataField extends BaseEntity {
     Optional.ofNullable(dto.getDescription())
         .filter(description -> !description.isBlank())
         .ifPresent(description -> this.description = description);
+  }
+  
+  public void addAttribute(Attribute attribute) {
+    attributes.add(attribute);
+    attribute.setDataField(this);
   }
 }

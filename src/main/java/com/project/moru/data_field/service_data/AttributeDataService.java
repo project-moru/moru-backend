@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface AttributeDataService {
   Attribute findById(Long attributeId);
+  
   Attribute save(Attribute attribute);
+  
   void deleteById(Long attributeId);
+  
   List<Attribute> findAttributesByDataFieldId(Long dataFieldId);
 }

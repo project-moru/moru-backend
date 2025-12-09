@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AttributeService {
   List<AttributeResponseDto> getListByDataField(Long dataFieldId);
-  AttributeResponseDto register(AttributeCreateRequestDto dto);
+  AttributeResponseDto register(AttributeCreateRequestDto dto, Long userId);
   AttributeResponseDto update(Long attributeId, AttributeUpdateRequestDto dto);
   void delete(Long attributeId);
 }
