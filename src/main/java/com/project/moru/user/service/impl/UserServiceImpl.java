@@ -15,11 +15,13 @@ import com.project.moru.user.service_data.UserDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
   
   private final UserConverter userConverter;
@@ -29,11 +31,26 @@ public class UserServiceImpl implements UserService {
   private final UserDataService userDataService;
   
   @Override
+  @Transactional(readOnly = true)
   public List<UserResponseDto> findAll() {
     return userConverter.toResList(userDataService.findAllUsers());
   }
   
   @Override
+  @Transactional(readOnly = true)
+  public UserResponseDto findById(Long userId) {
+    UserPipeline<Void> pipeline = new UserPipeline<>(null);
+    
+    Context<Void> context = pipeline
+        .addStep(new GetProfileFromUserIdStep<>(userDataService, userId))
+        .execute();
+    return userConverter.fromEntityToRes(
+        context.getUser()
+    );
+  }
+  
+  @Override
+  @Transactional(readOnly = true)
   public UserResponseDto findByUsername(String username) {
     UserPipeline<Void> pipeline = new UserPipeline<>(null);
     

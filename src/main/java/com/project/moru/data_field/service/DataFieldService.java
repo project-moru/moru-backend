@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DataFieldService {
   List<DataFieldResponseDto> getListByUser(Long userId);
-  DataFieldResponseDto register(DataFieldCreateRequestDto dto);
-  DataFieldResponseDto update(Long dataFieldId, DataFieldUpdateRequestDto dto);
-  void delete(Long dataFieldId);
+  DataFieldResponseDto register(DataFieldCreateRequestDto dto, Long userId);
+  DataFieldResponseDto update(Long dataFieldId, DataFieldUpdateRequestDto dto, Long userId);
+  void delete(Long dataFieldId, Long userId);
 }
