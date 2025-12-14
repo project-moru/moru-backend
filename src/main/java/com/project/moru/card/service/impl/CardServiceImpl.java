@@ -25,6 +25,7 @@ public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardConverter cardConverter;
+
     @Override
     public CardResponseDto findById(Long id) {
         Card card = cardRepository.findById(id)
