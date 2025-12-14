@@ -52,9 +52,9 @@ public class CardController {
     @Operation(summary = "카드 삭제")
     public ResponseEntity<ApiResponse<Void>> delete(
             @PathVariable Long id,
-            @Parameter(hidden = true) @AuthenticationPrincipal User user
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        cardService.deleteCardById(id, user.getId());
+        cardService.deleteCardById(id, userDetails.getId());
         return ResponseEntity.ok().body(ApiResponse.ok());
     }
 
@@ -63,8 +63,8 @@ public class CardController {
     public ResponseEntity<ApiResponse<CardResponseDto>> modify(
             @PathVariable Long id,
             @RequestBody CardUpdateRequestDto cardUpdateRequestDto,
-            @Parameter(hidden = true) @AuthenticationPrincipal User user
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, user.getId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, userDetails.getId())));
     }
 }
