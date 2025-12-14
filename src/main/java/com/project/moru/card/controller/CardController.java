@@ -22,7 +22,7 @@ public class CardController {
 
     private final CardService cardService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<ApiResponse<List<CardResponseDto>>> findAll() {
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.findAll()));
     }
@@ -32,7 +32,7 @@ public class CardController {
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.findById(id)));
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ApiResponse<CardResponseDto>> save(@RequestBody CardCreateRequestDto cardCreateRequestDto, @AuthenticationPrincipal User user) {
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, user.getId())));
     }
