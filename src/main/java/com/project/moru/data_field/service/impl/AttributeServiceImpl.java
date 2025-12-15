@@ -5,11 +5,10 @@ import com.project.moru.common.exception.GeneralException;
 import com.project.moru.data_field.domain.dto.AttributeCreateRequestDto;
 import com.project.moru.data_field.domain.dto.AttributeResponseDto;
 import com.project.moru.data_field.domain.dto.AttributeUpdateRequestDto;
-import com.project.moru.data_field.domain.entity.Attribute;
+import com.project.moru.data_field.domain.entity.AttributeBlock;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.mapper.AttributeConverter;
 import com.project.moru.data_field.service.AttributeService;
-import com.project.moru.data_field.service.DataFieldService;
 import com.project.moru.data_field.service_data.AttributeDataService;
 import com.project.moru.data_field.service_data.DataFieldDataService;
 import lombok.AllArgsConstructor;
@@ -44,17 +43,17 @@ public class AttributeServiceImpl implements AttributeService {
       throw new GeneralException(ErrorCode.ACCESS_DENIED);
     }
     
-    Attribute attribute = attributeConverter.toEntity(dto);
-    dataField.addAttribute(attribute);
-    attribute = attributeDataService.save(attribute);
-    return attributeConverter.toDto(attribute);
+    AttributeBlock attributeBlock = attributeConverter.toEntity(dto);
+    dataField.addAttribute(attributeBlock);
+    attributeBlock = attributeDataService.save(attributeBlock);
+    return attributeConverter.toDto(attributeBlock);
   }
   
   @Override
   public AttributeResponseDto update(Long attributeId, AttributeUpdateRequestDto dto) {
-    Attribute attribute = attributeDataService.findById(attributeId);
-    attribute.update(dto);
-    return attributeConverter.toDto(attribute);
+    AttributeBlock attributeBlock = attributeDataService.findById(attributeId);
+    attributeBlock.update(dto);
+    return attributeConverter.toDto(attributeBlock);
   }
   
   @Override

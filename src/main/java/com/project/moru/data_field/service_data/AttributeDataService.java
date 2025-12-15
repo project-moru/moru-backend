@@ -1,15 +1,15 @@
 package com.project.moru.data_field.service_data;
 
-import com.project.moru.data_field.domain.entity.Attribute;
+import com.project.moru.data_field.domain.entity.AttributeBlock;
 
 import java.util.List;
 
 public interface AttributeDataService {
-  Attribute findById(Long attributeId);
+  AttributeBlock findById(Long attributeId);
   
-  Attribute save(Attribute attribute);
+  AttributeBlock save(AttributeBlock attributeBlock);
   
   void deleteById(Long attributeId);
   
-  List<Attribute> findAttributesByDataFieldId(Long dataFieldId);
+  List<AttributeBlock> findAttributesByDataFieldId(Long dataFieldId);
 }

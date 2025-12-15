@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -14,5 +13,6 @@ import java.util.List;
 @Setter
 public class DataFieldDetailResponseDto {
   private final DataFieldResponseDto dataField;
-  private final List<AttributeResponseDto> attributes;
+  private final List<AttributeResponseDto> attributeBlocks;
+  private final List<LinkResponseDto> linkBlocks;
 }

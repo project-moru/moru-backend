@@ -7,12 +7,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class DataFieldResponseDto {
+public class LinkResponseDto {
   private Long id;
-  private Long userId;
+  private Long dataFieldId;
   private String name;
-  private String description;
-  
-  private Long attributeCnt;
-  private Long linkCnt;
+  private Integer maxLinkCount;
 }

@@ -46,7 +46,7 @@ public class DataFieldServiceImpl implements DataFieldService {
     
     return DataFieldDetailResponseDto.builder()
         .dataField(dataFieldConverter.toDto(dataField))
-        .attributes(attributeService.getListByDataField(dataFieldId))
+        .attributeBlocks(attributeService.getListByDataField(dataFieldId))
         .build();
   }
   

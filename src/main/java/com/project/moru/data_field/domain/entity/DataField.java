@@ -31,7 +31,10 @@ public class DataField extends BaseEntity {
   private String description;
   
   @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Attribute> attributes = new ArrayList<>();
+  private List<AttributeBlock> attributeBlocks = new ArrayList<>();
+  
+  @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<LinkBlock> linkBlocks = new ArrayList<>();
   
   public void update(DataFieldUpdateRequestDto dto) {
     Optional.ofNullable(dto.getName())
@@ -43,8 +46,13 @@ public class DataField extends BaseEntity {
         .ifPresent(description -> this.description = description);
   }
   
-  public void addAttribute(Attribute attribute) {
-    attributes.add(attribute);
-    attribute.setDataField(this);
+  public void addAttribute(AttributeBlock attributeBlock) {
+    attributeBlocks.add(attributeBlock);
+    attributeBlock.setDataField(this);
+  }
+  
+  public void addLink(LinkBlock linkBlock) {
+    linkBlocks.add(linkBlock);
+    linkBlock.setDataField(this);
   }
 }
