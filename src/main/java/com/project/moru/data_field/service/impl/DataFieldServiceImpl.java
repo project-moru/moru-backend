@@ -5,12 +5,10 @@ import com.project.moru.common.exception.GeneralException;
 import com.project.moru.data_field.domain.dto.*;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.mapper.DataFieldConverter;
-import com.project.moru.data_field.service.AttributeService;
+import com.project.moru.data_field.service.AttributeBlockService;
 import com.project.moru.data_field.service.DataFieldService;
-import com.project.moru.data_field.service_data.AttributeDataService;
+import com.project.moru.data_field.service.LinkBlockService;
 import com.project.moru.data_field.service_data.DataFieldDataService;
-import com.project.moru.user.domain.entity.User;
-import com.project.moru.user.service.UserService;
 import com.project.moru.user.service_data.UserDataService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,8 @@ import java.util.List;
 public class DataFieldServiceImpl implements DataFieldService {
   
   private final DataFieldDataService dataFieldDataService;
-  private final AttributeService attributeService;
+  private final AttributeBlockService attributeBlockService;
+  private final LinkBlockService linkBlockService;
   private final DataFieldConverter dataFieldConverter;
   private final UserDataService userDataService;
   
@@ -46,7 +45,8 @@ public class DataFieldServiceImpl implements DataFieldService {
     
     return DataFieldDetailResponseDto.builder()
         .dataField(dataFieldConverter.toDto(dataField))
-        .attributeBlocks(attributeService.getListByDataField(dataFieldId))
+        .attributeBlocks(attributeBlockService.getListByDataField(dataFieldId))
+        .linkBlocks(linkBlockService.getListByDataField(dataFieldId))
         .build();
   }
   

@@ -4,7 +4,7 @@ import com.project.moru.data_field.domain.entity.AttributeBlock;
 
 import java.util.List;
 
-public interface AttributeDataService {
+public interface AttributeBlockDataService {
   AttributeBlock findById(Long attributeId);
   
   AttributeBlock save(AttributeBlock attributeBlock);

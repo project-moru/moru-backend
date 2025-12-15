@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AttributeRepository extends JpaRepository<AttributeBlock, Long> {
+public interface AttributeBlockRepository extends JpaRepository<AttributeBlock, Long> {
   List<AttributeBlock> findAttributesByDataFieldId(Long dataFieldId);
 }

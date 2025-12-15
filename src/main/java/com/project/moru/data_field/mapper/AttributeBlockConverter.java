@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring", builder = @Builder())
-public interface AttributeConverter {
+public interface AttributeBlockConverter {
   
   @Mapping(target = "dataFieldId", source = "dataField.id")
   AttributeResponseDto toDto(AttributeBlock attributeBlock);
