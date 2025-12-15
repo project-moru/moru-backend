@@ -12,4 +12,6 @@ public class DataFieldResponseDto {
   private Long userId;
   private String name;
   private String description;
+  
+  private Long linkedAttributeCnt;
 }
