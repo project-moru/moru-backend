@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +26,7 @@ public class BaseEntity {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "modified_at", nullable = false,
+    @Column(name = "updated_at", nullable = false,
         columnDefinition = "datetime(6) default current_timestamp(6)")
-    private LocalDateTime modifiedAt;
+    private LocalDateTime updatedAt;
 }

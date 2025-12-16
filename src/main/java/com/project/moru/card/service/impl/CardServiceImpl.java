@@ -1,6 +1,7 @@
 package com.project.moru.card.service.impl;
 
 import com.project.moru.card.service.CardService;
+import com.project.moru.common.constant.Status;
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
 import com.project.moru.card.domain.dto.CardCreateRequestDto;
@@ -27,9 +28,18 @@ public class CardServiceImpl implements CardService {
     private final CardConverter cardConverter;
 
     @Override
-    public CardResponseDto findById(Long id) {
+    public CardResponseDto findById(Long id, Long userId) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
+
+        if(!card.getStatus().equals(Status.PUBLIC)){
+            if (card.getUser().getId().equals(userId)) {
+                cardConverter.fromEntityToRes(card);
+            }
+            else {
+                throw new GeneralException(ErrorCode.NOT_FOUND_CARD);
+            }
+        }
         return cardConverter.fromEntityToRes(card);
     }
 
@@ -88,7 +98,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CardResponseDto> findAll() {
-        return cardConverter.toResList(cardRepository.findAll());
+    public List<CardResponseDto> findAll(Long userId) {
+        return cardConverter.toResList(cardRepository.findAllByUser_IdOrStatus(userId,Status.PUBLIC));
     }
 }

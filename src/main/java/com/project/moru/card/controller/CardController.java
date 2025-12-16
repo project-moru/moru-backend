@@ -29,14 +29,19 @@ public class CardController {
 
     @GetMapping("")
     @Operation(summary = "카드 전체 조회")
-    public ResponseEntity<ApiResponse<List<CardResponseDto>>> findAll() {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.findAll()));
+    public ResponseEntity<ApiResponse<List<CardResponseDto>>> findAll(
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.findAll(userDetails.getId())));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "카드 단일 조회")
-    public ResponseEntity<ApiResponse<CardResponseDto>> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.findById(id)));
+    public ResponseEntity<ApiResponse<CardResponseDto>> findById(
+            @PathVariable Long id,
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.findById(id, userDetails.getId())));
     }
 
     @PostMapping("")

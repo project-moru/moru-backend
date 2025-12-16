@@ -7,10 +7,10 @@ import com.project.moru.card.domain.dto.CardUpdateRequestDto;
 import java.util.List;
 
 public interface CardService {
-    CardResponseDto findById(Long id);
+    CardResponseDto findById(Long id, Long userId);
     void deleteCardById(Long id, Long userId);
     CardResponseDto saveCard(CardCreateRequestDto cardCreateRequestDto, Long userId);
     CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId);
-    List<CardResponseDto> findAll();
+    List<CardResponseDto> findAll(Long userId);
 
 }
