@@ -40,6 +40,8 @@ public class CardServiceImpl implements CardService {
                 throw new GeneralException(ErrorCode.NOT_FOUND_CARD);
             }
         }
+        card.addViewCount();
+        cardRepository.save(card);
         return cardConverter.fromEntityToRes(card);
     }
 
