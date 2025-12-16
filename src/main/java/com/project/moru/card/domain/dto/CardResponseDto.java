@@ -14,7 +14,7 @@ public class CardResponseDto {
     private final String cardName;
     private final String cardContent;
     private final String imageUrl;
-    private final Status isPublic;
+    private final Status status;
     private final Integer tagCount;
     private final Integer viewCount;
     private final Integer likeCount;

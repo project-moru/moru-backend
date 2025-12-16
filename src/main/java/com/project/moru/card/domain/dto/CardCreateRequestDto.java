@@ -25,6 +25,7 @@ public class CardCreateRequestDto {
     @Schema(description = "카드 내용", example = "card_content")
     private String cardContent;
 
+    @Schema(description = "덱 공개 범위", example = "PUBLIC")
     private Status status = Status.PUBLIC;
 
     @Schema(description = "이미지 주소", example = "http://xxx.xxxx.xxx")

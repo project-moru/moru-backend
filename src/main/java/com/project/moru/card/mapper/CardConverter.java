@@ -13,13 +13,11 @@ import java.util.List;
 public interface CardConverter {
     Card fromCreateReqToEntity(CardCreateRequestDto dto);
 
+//    @Mapping(source = "status", target = "status")
     @Mapping(source = "id", target = "cardId")                 // Card.id -> Dto.cardId
     @Mapping(source = "user.id", target = "userId")            // Card.user.id -> Dto.userId
     @Mapping(source = "user.nickname", target = "userNickname") // Card.user.nickname -> Dto.userNickname
     CardResponseDto fromEntityToRes(Card card);
 
-    @Mapping(source = "id", target = "cardId")                 // Card.id -> Dto.cardId
-    @Mapping(source = "user.id", target = "userId")            // Card.user.id -> Dto.userId
-    @Mapping(source = "user.nickname", target = "userNickname") // Card.user.nickname -> Dto.userNickname
     List<CardResponseDto> toResList(List<Card> cards);
 }

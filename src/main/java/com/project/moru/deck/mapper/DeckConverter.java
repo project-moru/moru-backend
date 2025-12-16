@@ -19,7 +19,8 @@ public interface DeckConverter {
     @Mapping(source = "status", target = "status")
     @Mapping(source = "deckCards", target = "cardIds")
     DeckResponseDto toDto(Deck deck);
-    
+
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "deckCards", ignore = true)
     @Mapping(source = "user", target = "user")
     Deck toEntity(DeckRequestDto deckRequestDto, User user);
@@ -29,7 +30,7 @@ public interface DeckConverter {
             return null;
         }
         return deckCards.stream()
-                .map(deckCard -> deckCard.getCard().getId()) // DeckCard에서 Card의 ID 추출
+                .map(deckCard -> deckCard.getCard().getId())
                 .collect(Collectors.toList());
     }
 }
