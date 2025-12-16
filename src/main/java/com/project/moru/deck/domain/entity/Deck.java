@@ -32,10 +32,15 @@ public class Deck extends BaseEntity {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_public")
+    @Column(name = "status")
     @Builder.Default
-    private Status isPublic =  Status.PUBLIC;
+    private Status status =  Status.PUBLIC;
 
+    @Builder.Default
     @OneToMany(mappedBy = "deck", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeckCard> deckCards = new ArrayList<>();
+
+    public void addDeckCard(DeckCard deckCard) {
+        this.deckCards.add(deckCard);
+    }
 }

@@ -14,6 +14,8 @@ public enum ErrorCode {
     NOT_FOUND_DATA_FIELD(400,"카드를 찾을 수 없습니다"),
 
 
+    NOT_EXIST_CARD(400,"존재하지 않는 카드가 있습니다"),
+
     // 403 Forbidden (권한 없음)
     ACCESS_DENIED(403,"접근 권한이 없습니다." );
 

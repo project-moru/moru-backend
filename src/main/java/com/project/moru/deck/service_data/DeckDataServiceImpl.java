@@ -16,6 +16,8 @@ import com.project.moru.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +39,6 @@ public class DeckDataServiceImpl implements DeckDataService {
         Deck deck = deckConverter.toEntity(deckRequestDto, user);
 
         Deck savedDeck = deckRepository.save(deck);
-
-        if(!deckRequestDto.getCardIds().isEmpty()){
-            linkCardsToDeck(savedDeck,deckRequestDto.getCardIds());
-        }
 
         return deckConverter.toDto(savedDeck);
     }
@@ -73,7 +71,8 @@ public class DeckDataServiceImpl implements DeckDataService {
     @Override
     public void deleteDeckById(Long deckId, Long userId) {
 
-        Deck deck = deckRepository.findById(deckId).orElseThrow();
+        Deck deck = deckRepository.findById(deckId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
 
         if(deck.getUser().getId().equals(userId)){
             deckRepository.deleteById(deckId);
@@ -82,19 +81,52 @@ public class DeckDataServiceImpl implements DeckDataService {
         }
     }
 
-    private void linkCardsToDeck(Deck deck, List<Long> cardIds) {
-        List<Card> cards = cardRepository.findAllById(cardIds);
-        if (cards.size() != cardIds.size()) {
-            throw new GeneralException(ErrorCode.NOT_FOUND_CARD);
+    @Override
+    public DeckResponseDto saveCardToDeck(Long deckId, Long userId, ArrayList<Long> cardIds) {
+
+        Deck deck = deckRepository.findById(deckId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
+
+        if (!deck.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
 
-        List<DeckCard> deckCards = cards.stream()
-                .map(card -> DeckCard.builder()
-                        .deck(deck)
-                        .card(card)
-                        .build())
-                .collect(Collectors.toList());
-        deckCardRepository.saveAll(deckCards);
+        List<Card> cards = cardRepository.findAllById(cardIds);
+        if (cards.size() != cardIds.size()) {
+            throw new GeneralException(ErrorCode.NOT_EXIST_CARD);
+        }
+
+        for (Card card : cards) {
+            DeckCard deckCard = DeckCard.builder()
+                    .deck(deck)
+                    .card(card)
+                    .build();
+
+            deck.addDeckCard(deckCard);
+
+            deckRepository.save(deck);
+        }
+        return deckConverter.toDto(deck);
+    }
+
+    @Override
+    @Transactional // 데이터 변경(삭제)이 일어나므로 필수
+    public DeckResponseDto removeCardFromDeck(Long deckId, Long userId, ArrayList<Long> cardIds) {
+
+        // 1. 덱 조회 및 에러 처리
+        Deck deck = deckRepository.findById(deckId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
+
+        // 2. 소유권 확인
+        if (!deck.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorCode.ACCESS_DENIED);
+        }
+
+        boolean isRemoved = deck.getDeckCards().removeIf(deckCard ->
+                cardIds.contains(deckCard.getCard().getId())
+        );
+
+        return deckConverter.toDto(deck);
     }
 
 }

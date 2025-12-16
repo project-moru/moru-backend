@@ -28,9 +28,9 @@ public class Card extends BaseEntity {
     private String cardContent;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "is_public")
+    @Column(name = "status")
     @Builder.Default
-    private Status isPublic =  Status.PUBLIC;
+    private Status status =  Status.PUBLIC;
 
     @Column(name = "tag_count")
     private Integer tagCount;
@@ -63,7 +63,7 @@ public class Card extends BaseEntity {
             this.cardContent = cardContent;
         }
         if (isPublic != null) {
-            this.isPublic = isPublic;
+            this.status = isPublic;
         }
         if (imageUrl != null) {
             this.imageUrl = imageUrl;
