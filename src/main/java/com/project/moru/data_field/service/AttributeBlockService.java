@@ -6,9 +6,9 @@ import com.project.moru.data_field.domain.dto.AttributeUpdateRequestDto;
 
 import java.util.List;
 
-public interface AttributeService {
+public interface AttributeBlockService {
   List<AttributeResponseDto> getListByDataField(Long dataFieldId);
-  AttributeResponseDto register(AttributeCreateRequestDto dto);
-  AttributeResponseDto update(Long attributeId, AttributeUpdateRequestDto dto);
-  void delete(Long attributeId);
+  AttributeResponseDto register(AttributeCreateRequestDto dto, Long userId);
+  AttributeResponseDto update(Long attributeBlockId, AttributeUpdateRequestDto dto);
+  void delete(Long attributeBlockId);
 }

@@ -10,12 +10,12 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.Optional;
 
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @Entity
 @Getter
-@Table(name = "attributes")
-public class Attribute extends BaseEntity {
+@Table(name = "data_field_attribute_block")
+public class AttributeBlock extends BaseEntity {
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "data_field_id", nullable = false)
@@ -41,5 +41,12 @@ public class Attribute extends BaseEntity {
     
     Optional.ofNullable(dto.getType())
         .ifPresent(type -> this.type = type);
+  }
+  
+  public void setDataField(DataField dataField) {
+    this.dataField = dataField;
+    if (!dataField.getAttributeBlocks().contains(this)) {
+      dataField.getAttributeBlocks().add(this);
+    }
   }
 }

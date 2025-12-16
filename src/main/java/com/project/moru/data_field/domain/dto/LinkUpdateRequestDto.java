@@ -12,11 +12,11 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Getter
 @Setter
-public class DataFieldCreateRequestDto {
-  @Schema(description = "필드 이름", example = "문화재")
-  @NotBlank(message = "필드 이름은 필수입니다.")
+public class LinkUpdateRequestDto {
+  @Schema(description = "연결 블록 이름", example = "테스트 블록")
+  @NotBlank(message = "블록 이름은 필수입니다.")
   private String name;
   
-  @Schema(description = "필드 설명", example = "국가 지정 문화재 정보를 관리합니다.")
-  private String description;
+  @Schema(description = "최대 연결 수", example = "2")
+  private Integer maxLinkCount;
 }
