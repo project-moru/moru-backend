@@ -16,6 +16,7 @@ import com.project.moru.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +38,6 @@ public class DeckDataServiceImpl implements DeckDataService {
         Deck deck = deckConverter.toEntity(deckRequestDto, user);
 
         Deck savedDeck = deckRepository.save(deck);
-
-        if(!deckRequestDto.getCardIds().isEmpty()){
-            linkCardsToDeck(savedDeck,deckRequestDto.getCardIds());
-        }
 
         return deckConverter.toDto(savedDeck);
     }
@@ -73,13 +70,42 @@ public class DeckDataServiceImpl implements DeckDataService {
     @Override
     public void deleteDeckById(Long deckId, Long userId) {
 
-        Deck deck = deckRepository.findById(deckId).orElseThrow();
+        Deck deck = deckRepository.findById(deckId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
 
         if(deck.getUser().getId().equals(userId)){
             deckRepository.deleteById(deckId);
         } else {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
+    }
+
+    @Override
+    public DeckResponseDto saveCardToDeck(Long deckId, Long userId, ArrayList<Long> cardIds) {
+
+        Deck deck = deckRepository.findById(deckId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
+
+        if (!deck.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorCode.ACCESS_DENIED);
+        }
+
+        List<Card> cards = cardRepository.findAllById(cardIds);
+        if (cards.size() != cardIds.size()) {
+            throw new GeneralException(ErrorCode.NOT_EXIST_CARD);
+        }
+
+        for (Card card : cards) {
+            DeckCard deckCard = DeckCard.builder()
+                    .deck(deck)
+                    .card(card)
+                    .build();
+
+            deck.addDeckCard(deckCard);
+
+            deckRepository.save(deck);
+        }
+        return deckConverter.toDto(deck);
     }
 
     private void linkCardsToDeck(Deck deck, List<Long> cardIds) {

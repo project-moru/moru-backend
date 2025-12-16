@@ -56,7 +56,7 @@ public class CardServiceImpl implements CardService {
                 .user(user)
                 .cardContent(cardCreateRequestDto.getCardContent())
                 .imageUrl(cardCreateRequestDto.getImageUrl())
-                .isPublic(cardCreateRequestDto.getIsPublic())
+                .status(cardCreateRequestDto.getStatus())
                 .imageUrl(cardCreateRequestDto.getImageUrl())
                 .cardName(cardCreateRequestDto.getCardName())
                 .tagCount(0)
@@ -80,7 +80,7 @@ public class CardServiceImpl implements CardService {
         card.updateCard(
                 cardUpdateRequestDto.getCardName(),
                 cardUpdateRequestDto.getCardContent(),
-                cardUpdateRequestDto.getIsPublic(),
+                cardUpdateRequestDto.getStatus(),
                 cardUpdateRequestDto.getImageUrl()
         );
 
