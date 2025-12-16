@@ -60,7 +60,7 @@ public class CardController {
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         cardService.deleteCardById(id, userDetails.getId());
-        return ResponseEntity.ok().body(ApiResponse.ok());
+        return ResponseEntity.ok().body(ApiResponse.ok(200,"삭제에 성공하였습니다."));
     }
 
     @PatchMapping("/{id}")

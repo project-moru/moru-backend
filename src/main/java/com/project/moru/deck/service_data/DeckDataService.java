@@ -13,4 +13,5 @@ public interface DeckDataService {
     DeckResponseDto findDeckById(Long deckId, Long userId);
     void  deleteDeckById(Long deckId, Long userId);
     DeckResponseDto saveCardToDeck(Long deckId, Long userId, ArrayList<Long> cardIds);
+    DeckResponseDto removeCardFromDeck(Long deckId, Long userId, ArrayList<Long> cardIds);
 }

@@ -60,7 +60,7 @@ public class DeckController {
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         deckDataService.deleteDeckById(id, userDetails.getId());
-        return ResponseEntity.ok().body(ApiResponse.ok());
+        return ResponseEntity.ok().body(ApiResponse.ok(200,"삭제에 성공하였습니다."));
     }
 
     @Operation(summary = "덱에 카드 추가")
@@ -71,5 +71,16 @@ public class DeckController {
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         return ResponseEntity.ok().body(ApiResponse.ok(deckDataService.saveCardToDeck(deckId, userDetails.getId(), cardIds)));
+    }
+
+    @Operation(summary = "덱에서 카드 제거")
+    @DeleteMapping("/{deckId}/cards")
+    public ResponseEntity<ApiResponse<DeckResponseDto>> removeCards(
+            @PathVariable Long deckId,
+            @RequestBody ArrayList<Long> cardIds,
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseEntity.ok()
+                .body(ApiResponse.ok(deckDataService.removeCardFromDeck(deckId, userDetails.getId(), cardIds)));
     }
 }
