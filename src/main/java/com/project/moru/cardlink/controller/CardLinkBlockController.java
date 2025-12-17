@@ -20,11 +20,20 @@ public class CardLinkBlockController {
   
   private final CardLinkService cardLinkService;
   
-  @Operation(summary = "카드 연결 블록 생성 API")
+  @Operation(summary = "연결 블록 카드 추가 API")
   @PostMapping()
   public ResponseEntity<ApiResponse<CardLinkBlockResponseDto>> createCardLinkBlock(
       @RequestBody CardLinkBlockCreateRequestDto requestDto
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(cardLinkService.register(requestDto)));
+  }
+  
+  @Operation(summary = "연결 블록 카드 삭제 API")
+  @DeleteMapping("/{card_link_block_id}")
+  public ResponseEntity<ApiResponse<Void>> deleteCardLinkBlock(
+      @PathVariable Long card_link_block_id
+  ) {
+    cardLinkService.delete(card_link_block_id);
+    return ResponseEntity.ok().body(ApiResponse.ok());
   }
 }
