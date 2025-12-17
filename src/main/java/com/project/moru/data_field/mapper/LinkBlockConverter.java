@@ -22,7 +22,6 @@ public interface LinkBlockConverter {
   LinkResponseDto toDto(LinkBlock linkBlock);
   
   @Mapping(target = "dataFieldId", source = "dataField.id")
-  @Mapping(target = "cardLinkBlocks", source = "cardLinkBlocks")
   LinkDetailResponseDto toDetailDto(LinkBlock linkBlock);
   
   @Mapping(target = "dataField.id", source = "dataFieldId")
