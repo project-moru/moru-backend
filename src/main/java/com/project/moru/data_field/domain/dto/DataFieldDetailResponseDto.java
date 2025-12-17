@@ -14,5 +14,5 @@ import java.util.List;
 public class DataFieldDetailResponseDto {
   private final DataFieldResponseDto dataField;
   private final List<AttributeResponseDto> attributeBlocks;
-  private final List<LinkResponseDto> linkBlocks;
+  private final List<LinkDetailResponseDto> linkBlocks;
 }
