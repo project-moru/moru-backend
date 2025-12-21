@@ -6,6 +6,8 @@ target/
 
 # Environment file
 src/main/resources/application*.properties
+src/main/resources/application*
+src/main/resources/application-aws.yaml
 
 ### STS ###
 .apt_generated
@@ -36,3 +38,5 @@ build/
 .vscode/
 
 application.properties
+/.env.properties
+/src/main/resources/application-aws.yaml
