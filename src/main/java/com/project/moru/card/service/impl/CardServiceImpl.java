@@ -85,7 +85,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId) {
+    @Transactional
+    public CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId, MultipartFile multipartFile) {
 
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
@@ -94,11 +95,13 @@ public class CardServiceImpl implements CardService {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
 
+        s3Utils.deleteFile(card.getImageUrl());
+
         card.updateCard(
                 cardUpdateRequestDto.getCardName(),
                 cardUpdateRequestDto.getCardContent(),
                 cardUpdateRequestDto.getStatus(),
-                cardUpdateRequestDto.getImageUrl()
+                s3Utils.uploadFile("cards", multipartFile)
         );
 
         return cardConverter.fromEntityToRes(cardRepository.save(card));

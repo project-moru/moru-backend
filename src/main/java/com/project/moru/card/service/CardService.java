@@ -11,7 +11,7 @@ public interface CardService {
     CardResponseDto findById(Long id, Long userId);
     void deleteCardById(Long id, Long userId);
     CardResponseDto saveCard(CardCreateRequestDto cardCreateRequestDto, Long userId, MultipartFile multipartFile);
-    CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId);
+    CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId, MultipartFile multipartFile);
     List<CardResponseDto> findAll(Long userId);
 
 }

@@ -66,13 +66,14 @@ public class CardController {
         return ResponseEntity.ok().body(ApiResponse.ok(200,"삭제에 성공하였습니다."));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "카드 수정")
     public ResponseEntity<ApiResponse<CardResponseDto>> modify(
             @PathVariable Long id,
-            @RequestBody CardUpdateRequestDto cardUpdateRequestDto,
+            CardUpdateRequestDto cardUpdateRequestDto,
+            @RequestPart("multipartFile") MultipartFile cardImage,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, userDetails.getId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, userDetails.getId(),cardImage)));
     }
 }
