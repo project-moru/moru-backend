@@ -12,9 +12,11 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,13 +46,14 @@ public class CardController {
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.findById(id, userDetails.getId())));
     }
 
-    @PostMapping("")
-    @Operation(summary = "카드 저장")
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "카드 만들기")
     public ResponseEntity<ApiResponse<CardResponseDto>> save(
-            @RequestBody CardCreateRequestDto cardCreateRequestDto,
+            CardCreateRequestDto cardCreateRequestDto,
+            @RequestPart("multipartFile") MultipartFile cardImage,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, userDetails.getId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, userDetails.getId(),cardImage)));
     }
 
     @DeleteMapping("/{id}")
@@ -63,13 +66,14 @@ public class CardController {
         return ResponseEntity.ok().body(ApiResponse.ok(200,"삭제에 성공하였습니다."));
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "카드 수정")
     public ResponseEntity<ApiResponse<CardResponseDto>> modify(
             @PathVariable Long id,
-            @RequestBody CardUpdateRequestDto cardUpdateRequestDto,
+            CardUpdateRequestDto cardUpdateRequestDto,
+            @RequestPart("multipartFile") MultipartFile cardImage,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, userDetails.getId())));
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.modifyCard(id,cardUpdateRequestDto, userDetails.getId(),cardImage)));
     }
 }

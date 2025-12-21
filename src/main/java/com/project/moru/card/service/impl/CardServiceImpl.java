@@ -8,12 +8,14 @@ import com.project.moru.card.domain.dto.CardCreateRequestDto;
 import com.project.moru.card.domain.dto.CardResponseDto;
 import com.project.moru.card.domain.dto.CardUpdateRequestDto;
 import com.project.moru.card.domain.entity.Card;
+import com.project.moru.common.utils.S3Utils;
 import com.project.moru.user.domain.entity.User;
 import com.project.moru.card.mapper.CardConverter;
 import com.project.moru.card.repository.CardRepository;
 import com.project.moru.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,6 +28,7 @@ public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
     private final CardConverter cardConverter;
+    private final S3Utils s3Utils;
 
     @Override
     public CardResponseDto findById(Long id, Long userId) {
@@ -52,6 +55,9 @@ public class CardServiceImpl implements CardService {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
 
+
+        s3Utils.deleteFile(card.getImageUrl());
+
         if (!user.getId().equals(card.getUser().getId())) {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
@@ -59,7 +65,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponseDto saveCard(CardCreateRequestDto cardCreateRequestDto,  Long userId) {
+    public CardResponseDto saveCard(CardCreateRequestDto cardCreateRequestDto, Long userId, MultipartFile multipartFile) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
@@ -67,9 +73,8 @@ public class CardServiceImpl implements CardService {
         Card newCard = Card.builder()
                 .user(user)
                 .cardContent(cardCreateRequestDto.getCardContent())
-                .imageUrl(cardCreateRequestDto.getImageUrl())
                 .status(cardCreateRequestDto.getStatus())
-                .imageUrl(cardCreateRequestDto.getImageUrl())
+                .imageUrl(s3Utils.uploadFile("cards", multipartFile))
                 .cardName(cardCreateRequestDto.getCardName())
                 .tagCount(0)
                 .viewCount(0)
@@ -80,7 +85,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId) {
+    @Transactional
+    public CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId, MultipartFile multipartFile) {
 
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
@@ -89,11 +95,13 @@ public class CardServiceImpl implements CardService {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
 
+        s3Utils.deleteFile(card.getImageUrl());
+
         card.updateCard(
                 cardUpdateRequestDto.getCardName(),
                 cardUpdateRequestDto.getCardContent(),
                 cardUpdateRequestDto.getStatus(),
-                cardUpdateRequestDto.getImageUrl()
+                s3Utils.uploadFile("cards", multipartFile)
         );
 
         return cardConverter.fromEntityToRes(cardRepository.save(card));
