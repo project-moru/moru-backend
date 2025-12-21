@@ -1,5 +1,6 @@
 package com.project.moru.card.domain.entity;
 
+import com.project.moru.cardlink.domain.entity.CardLinkBlock;
 import com.project.moru.common.constant.Status;
 import com.project.moru.common.domain.entity.BaseEntity;
 import com.project.moru.deck.domain.entity.DeckCard;
@@ -46,7 +47,10 @@ public class Card extends BaseEntity {
     
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DeckCard> deckCards = new ArrayList<>();
-
+    
+    @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CardLinkBlock> cardLinkBlocks = new ArrayList<>();
+    
     public void addViewCount() {
         this.viewCount++;
     }
