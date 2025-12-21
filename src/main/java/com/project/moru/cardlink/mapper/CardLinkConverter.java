@@ -13,6 +13,8 @@ import java.util.List;
 public interface CardLinkConverter {
   
   @Mapping(target = "cardId", source = "card.id")
+  @Mapping(target = "cardName", source = "card.cardName")
+  @Mapping(target = "imageUrl", source = "card.imageUrl")
   @Mapping(target = "linkBlockId", source = "linkBlock.id")
   CardLinkBlockResponseDto toDto(CardLinkBlock cardLinkBlock);
   

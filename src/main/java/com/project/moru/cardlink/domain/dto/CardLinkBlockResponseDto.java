@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class CardLinkBlockResponseDto {
   private Long id;
   private Long cardId;
+  private String cardName;
+  private String imageUrl;
   private Long linkBlockId;
 }
