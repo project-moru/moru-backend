@@ -28,6 +28,15 @@ public class DataFieldController {
   private final AttributeBlockService attributeBlockService;
   private final LinkBlockService linkBlockService;
   
+  @Operation(summary = "데이터 필드 생성 API")
+  @PostMapping()
+  public ResponseEntity<ApiResponse<DataFieldResponseDto>> createDataField(
+      @RequestBody DataFieldCreateRequestDto requestDto,
+      @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
+  ) {
+    return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.register(requestDto, userDetails.getId())));
+  }
+  
   @Operation(summary = "속성 블록 생성 API")
   @PostMapping("/attribute")
   public ResponseEntity<ApiResponse<AttributeResponseDto>> createAttributeBlock(
@@ -44,15 +53,6 @@ public class DataFieldController {
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(linkBlockService.register(requestDto, userDetails.getId())));
-  }
-  
-  @Operation(summary = "데이터 필드 생성 API")
-  @PostMapping()
-  public ResponseEntity<ApiResponse<DataFieldResponseDto>> createDataField(
-      @RequestBody DataFieldCreateRequestDto requestDto,
-      @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
-      ) {
-    return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.register(requestDto, userDetails.getId())));
   }
   
   @Operation(summary = "데이터 필드 목록 조회 API")
