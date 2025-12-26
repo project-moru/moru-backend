@@ -2,7 +2,7 @@ package com.project.moru.data_field.domain.entity;
 
 import com.project.moru.common.domain.entity.BaseEntity;
 import com.project.moru.data_field.constant.Type;
-import com.project.moru.data_field.domain.dto.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

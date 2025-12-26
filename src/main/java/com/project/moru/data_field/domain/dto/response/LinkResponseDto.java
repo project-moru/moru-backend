@@ -1,6 +1,5 @@
-package com.project.moru.data_field.domain.dto;
+package com.project.moru.data_field.domain.dto.response;
 
-import com.project.moru.data_field.constant.Type;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +7,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AttributeResponseDto {
+public class LinkResponseDto {
   private Long id;
   private Long dataFieldId;
   private String name;
-  private String placeHolder;
-  private Type type;
+  private Integer maxLinkCount;
 }

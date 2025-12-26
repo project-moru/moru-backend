@@ -2,7 +2,7 @@ package com.project.moru.data_field.domain.entity;
 
 import com.project.moru.cardlink.domain.entity.CardLinkBlock;
 import com.project.moru.common.domain.entity.BaseEntity;
-import com.project.moru.data_field.domain.dto.LinkUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

@@ -1,4 +1,4 @@
-package com.project.moru.data_field.domain.dto;
+package com.project.moru.data_field.domain.dto.create;
 
 import com.project.moru.data_field.constant.Type;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,10 +14,6 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class AttributeCreateRequestDto {
-  @Schema(description = "데이터필드 ID (PRIMARY KEY)", example = "1")
-  @NotBlank(message = "데이터필드 ID는 필수입니다.")
-  private Long dataFieldId;
-  
   @Schema(description = "속성 블록 이름", example = "문화재")
   @NotBlank(message = "블록 이름은 필수입니다.")
   private String name;

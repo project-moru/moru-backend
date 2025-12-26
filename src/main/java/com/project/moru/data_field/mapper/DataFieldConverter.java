@@ -1,7 +1,7 @@
 package com.project.moru.data_field.mapper;
 
-import com.project.moru.data_field.domain.dto.DataFieldCreateRequestDto;
-import com.project.moru.data_field.domain.dto.DataFieldResponseDto;
+import com.project.moru.data_field.domain.dto.create.DataFieldCreateRequestDto;
+import com.project.moru.data_field.domain.dto.response.DataFieldResponseDto;
 import com.project.moru.data_field.domain.entity.AttributeBlock;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.domain.entity.LinkBlock;
@@ -21,8 +21,10 @@ public interface DataFieldConverter {
   @Mapping(target = "linkCnt", source = "linkBlocks", qualifiedByName = "countLinks")
   DataFieldResponseDto toDto(DataField dataField);
   
+  @Mapping(target = "id", ignore = true)
   @Mapping(target = "user", source = "user")
   @Mapping(target = "attributeBlocks", ignore = true)
+  @Mapping(target = "linkBlocks", ignore = true)
   DataField toEntity(DataFieldCreateRequestDto dto, User user);
   
   List<DataFieldResponseDto> toDtoList(List<DataField> dataFields);

@@ -1,4 +1,4 @@
-package com.project.moru.data_field.domain.dto;
+package com.project.moru.data_field.domain.dto.update;
 
 import com.project.moru.data_field.constant.Type;
 import io.swagger.v3.oas.annotations.media.Schema;

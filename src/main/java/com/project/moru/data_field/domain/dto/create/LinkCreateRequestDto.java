@@ -1,4 +1,4 @@
-package com.project.moru.data_field.domain.dto;
+package com.project.moru.data_field.domain.dto.create;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LinkUpdateRequestDto {
+public class LinkCreateRequestDto {
   @Schema(description = "연결 블록 이름", example = "테스트 블록")
   @NotBlank(message = "블록 이름은 필수입니다.")
   private String name;

@@ -1,7 +1,17 @@
 package com.project.moru.data_field.controller;
 
 import com.project.moru.common.utils.ApiResponse;
-import com.project.moru.data_field.domain.dto.*;
+import com.project.moru.data_field.domain.dto.create.AttributeCreateRequestDto;
+import com.project.moru.data_field.domain.dto.create.DataFieldBundleCreateRequestDto;
+import com.project.moru.data_field.domain.dto.create.DataFieldCreateRequestDto;
+import com.project.moru.data_field.domain.dto.create.LinkCreateRequestDto;
+import com.project.moru.data_field.domain.dto.response.AttributeResponseDto;
+import com.project.moru.data_field.domain.dto.response.DataFieldDetailResponseDto;
+import com.project.moru.data_field.domain.dto.response.DataFieldResponseDto;
+import com.project.moru.data_field.domain.dto.response.LinkResponseDto;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import com.project.moru.data_field.service.AttributeBlockService;
 import com.project.moru.data_field.service.DataFieldService;
 import com.project.moru.data_field.service.LinkBlockService;
@@ -31,28 +41,30 @@ public class DataFieldController {
   @Operation(summary = "데이터 필드 생성 API")
   @PostMapping()
   public ResponseEntity<ApiResponse<DataFieldResponseDto>> createDataField(
-      @RequestBody DataFieldCreateRequestDto requestDto,
+      @RequestBody DataFieldBundleCreateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.register(requestDto, userDetails.getId())));
   }
   
   @Operation(summary = "속성 블록 생성 API")
-  @PostMapping("/attribute")
+  @PostMapping("/{dataFieldId}/attribute")
   public ResponseEntity<ApiResponse<AttributeResponseDto>> createAttributeBlock(
+      @PathVariable Long dataFieldId,
       @RequestBody AttributeCreateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
       ) {
-    return ResponseEntity.ok().body(ApiResponse.ok(attributeBlockService.register(requestDto, userDetails.getId())));
+    return ResponseEntity.ok().body(ApiResponse.ok(attributeBlockService.register(dataFieldId, requestDto, userDetails.getId())));
   }
   
   @Operation(summary = "연결 블록 생성 API")
-  @PostMapping("/link")
+  @PostMapping("/{dataFieldId}/link")
   public ResponseEntity<ApiResponse<LinkResponseDto>> createLinkBlock(
+      @PathVariable Long dataFieldId,
       @RequestBody LinkCreateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
-    return ResponseEntity.ok().body(ApiResponse.ok(linkBlockService.register(requestDto, userDetails.getId())));
+    return ResponseEntity.ok().body(ApiResponse.ok(linkBlockService.register(dataFieldId, requestDto, userDetails.getId())));
   }
   
   @Operation(summary = "데이터 필드 목록 조회 API")

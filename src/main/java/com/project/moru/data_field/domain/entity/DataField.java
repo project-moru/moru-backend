@@ -1,9 +1,10 @@
 package com.project.moru.data_field.domain.entity;
 
 import com.project.moru.common.domain.entity.BaseEntity;
-import com.project.moru.data_field.domain.dto.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
 import com.project.moru.user.domain.entity.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -30,9 +31,11 @@ public class DataField extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String description;
   
+  @Builder.Default
   @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<AttributeBlock> attributeBlocks = new ArrayList<>();
   
+  @Builder.Default
   @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<LinkBlock> linkBlocks = new ArrayList<>();
   
