@@ -5,6 +5,7 @@ import com.project.moru.common.exception.GeneralException;
 import com.project.moru.data_field.domain.dto.create.DataFieldBundleCreateRequestDto;
 import com.project.moru.data_field.domain.dto.create.DataFieldCreateRequestDto;
 import com.project.moru.data_field.domain.dto.response.DataFieldDetailResponseDto;
+import com.project.moru.data_field.domain.dto.response.DataFieldListResponseDto;
 import com.project.moru.data_field.domain.dto.response.DataFieldResponseDto;
 import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
 import com.project.moru.data_field.domain.entity.DataField;
@@ -15,6 +16,7 @@ import com.project.moru.data_field.service.AttributeBlockService;
 import com.project.moru.data_field.service.DataFieldService;
 import com.project.moru.data_field.service.LinkBlockService;
 import com.project.moru.data_field.service_data.DataFieldDataService;
+import com.project.moru.user.domain.entity.User;
 import com.project.moru.user.service_data.UserDataService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -70,10 +72,18 @@ public class DataFieldServiceImpl implements DataFieldService {
   
   @Override
   @Transactional(readOnly = true)
-  public List<DataFieldResponseDto> getListByUser(Long userId) {
-    return dataFieldConverter.toDtoList(
+  public DataFieldListResponseDto getListByUser(Long userId) {
+    List<DataFieldResponseDto> dataFields = dataFieldConverter.toDtoList(
         dataFieldDataService.findDataFieldsByUserId(userId)
     );
+    
+    User user = userDataService.findUserById(userId)
+        .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
+    
+    return DataFieldListResponseDto.builder()
+        .defaultDataFieldId(user.getDefaultDataFieldId())
+        .dataFields(dataFields)
+        .build();
   }
   
   @Override
@@ -112,5 +122,19 @@ public class DataFieldServiceImpl implements DataFieldService {
     } else {
       throw new GeneralException(ErrorCode.ACCESS_DENIED);
     }
+  }
+  
+  @Override
+  public void changeDefaultDataField(Long dataFieldId, Long userId) {
+    User user = userDataService.findUserById(userId)
+        .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
+    
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
+    
+    if (!dataField.getUser().getId().equals(userId)) {
+      throw new GeneralException(ErrorCode.ACCESS_DENIED);
+    }
+    
+    user.changeDefaultDataFieldId(dataFieldId);
   }
 }

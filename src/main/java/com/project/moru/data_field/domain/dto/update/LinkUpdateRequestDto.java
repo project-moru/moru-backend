@@ -19,4 +19,7 @@ public class LinkUpdateRequestDto {
   
   @Schema(description = "최대 연결 수", example = "2")
   private Integer maxLinkCount;
+  
+  @Schema(description = "필수 여부", example = "false")
+  private Boolean required;
 }

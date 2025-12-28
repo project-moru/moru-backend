@@ -12,4 +12,5 @@ public class LinkResponseDto {
   private Long dataFieldId;
   private String name;
   private Integer maxLinkCount;
+  private Boolean required;
 }

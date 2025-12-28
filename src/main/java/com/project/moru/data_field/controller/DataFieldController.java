@@ -3,12 +3,8 @@ package com.project.moru.data_field.controller;
 import com.project.moru.common.utils.ApiResponse;
 import com.project.moru.data_field.domain.dto.create.AttributeCreateRequestDto;
 import com.project.moru.data_field.domain.dto.create.DataFieldBundleCreateRequestDto;
-import com.project.moru.data_field.domain.dto.create.DataFieldCreateRequestDto;
 import com.project.moru.data_field.domain.dto.create.LinkCreateRequestDto;
-import com.project.moru.data_field.domain.dto.response.AttributeResponseDto;
-import com.project.moru.data_field.domain.dto.response.DataFieldDetailResponseDto;
-import com.project.moru.data_field.domain.dto.response.DataFieldResponseDto;
-import com.project.moru.data_field.domain.dto.response.LinkResponseDto;
+import com.project.moru.data_field.domain.dto.response.*;
 import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
 import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
 import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
@@ -24,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "data field", description = "데이터 필드 API")
 @SecurityRequirement(name = "bearerAuth")
@@ -69,7 +63,7 @@ public class DataFieldController {
   
   @Operation(summary = "데이터 필드 목록 조회 API")
   @GetMapping()
-  public ResponseEntity<ApiResponse<List<DataFieldResponseDto>>> getDataFieldsByUser(
+  public ResponseEntity<ApiResponse<DataFieldListResponseDto>> getDataFieldsByUser(
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.getListByUser(userDetails.getId())));
@@ -137,6 +131,20 @@ public class DataFieldController {
       @PathVariable Long id
   ) {
     linkBlockService.delete(id);
+    return ResponseEntity.ok().body(ApiResponse.ok());
+  }
+  
+  @PatchMapping("/default")
+  public ResponseEntity<ApiResponse<Void>> changeDefaultDataField(
+      @RequestBody Long dataFieldId,
+      @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
+  ) {
+    
+    dataFieldService.changeDefaultDataField(
+        dataFieldId,
+        userDetails.getId()
+    );
+    
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
 }

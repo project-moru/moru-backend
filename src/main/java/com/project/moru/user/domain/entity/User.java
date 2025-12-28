@@ -36,6 +36,9 @@ public class User extends BaseEntity {
   @Column(name = "use_yn", nullable = false)
   private Use useYn = Use.Y;
   
+  @Column(name = "default_data_field_id")
+  private Long defaultDataFieldId;
+  
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<DataField> dataFields = new ArrayList<>();
   
@@ -55,5 +58,9 @@ public class User extends BaseEntity {
     } else {
       this.useYn = Use.Y;
     }
+  }
+  
+  public void changeDefaultDataFieldId(Long dataFieldId) {
+    this.defaultDataFieldId = dataFieldId;
   }
 }
