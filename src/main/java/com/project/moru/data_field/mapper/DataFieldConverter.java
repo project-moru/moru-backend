@@ -13,19 +13,21 @@ import org.mapstruct.Named;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", builder = @Builder())
+@Mapper(
+    componentModel = "spring",
+    builder = @Builder()
+)
 public interface DataFieldConverter {
-  
-  @Mapping(target = "userId", source = "user.id")
-  @Mapping(target = "attributeCnt", source = "attributeBlocks", qualifiedByName = "countAttributes")
-  @Mapping(target = "linkCnt", source = "linkBlocks", qualifiedByName = "countLinks")
-  DataFieldResponseDto toDto(DataField dataField);
-  
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "user", source = "user")
   @Mapping(target = "attributeBlocks", ignore = true)
   @Mapping(target = "linkBlocks", ignore = true)
   DataField toEntity(DataFieldCreateRequestDto dto, User user);
+  
+  @Mapping(target = "userId", source = "user.id")
+  @Mapping(target = "attributeCnt", source = "attributeBlocks", qualifiedByName = "countAttributes")
+  @Mapping(target = "linkCnt", source = "linkBlocks", qualifiedByName = "countLinks")
+  DataFieldResponseDto toDto(DataField dataField);
   
   List<DataFieldResponseDto> toDtoList(List<DataField> dataFields);
   
