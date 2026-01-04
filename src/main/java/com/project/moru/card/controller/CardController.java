@@ -27,8 +27,15 @@ public class CardController {
 
     private final CardService cardService;
 
+    @GetMapping("/my")
+    @Operation(summary = "내 카드 전체 조회")
+    public ResponseEntity<ApiResponse<List<CardResponseDto>>> findAllMyCards(
+    ) {
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.findAllMyCards()));
+    }
+
     @GetMapping("")
-    @Operation(summary = "카드 전체 조회")
+    @Operation(summary = "전체 카드 조회")
     public ResponseEntity<ApiResponse<List<CardResponseDto>>> findAll(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {

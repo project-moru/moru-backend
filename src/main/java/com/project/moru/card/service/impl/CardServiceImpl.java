@@ -103,4 +103,9 @@ public class CardServiceImpl implements CardService {
     public List<CardResponseDto> findAll(Long userId) {
         return cardConverter.toResList(cardRepository.findAllByUser_IdOrStatus(userId,Status.PUBLIC));
     }
+
+    @Override
+    public List<CardResponseDto> findAllMyCards() {
+        return cardConverter.toResList(cardRepository.findAllByStatus(Status.PUBLIC));
+    }
 }

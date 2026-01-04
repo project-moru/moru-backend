@@ -96,16 +96,15 @@ public class DeckDataServiceImpl implements DeckDataService {
             throw new GeneralException(ErrorCode.NOT_EXIST_CARD);
         }
 
-        for (Card card : cards) {
-            DeckCard deckCard = DeckCard.builder()
-                    .deck(deck)
-                    .card(card)
-                    .build();
+        List<DeckCard> newDeckCards = cards.stream()
+                .map(card -> DeckCard.builder()
+                        .deck(deck)
+                        .card(card)
+                        .build())
+                .collect(Collectors.toList());
 
-            deck.addDeckCard(deckCard);
+        newDeckCards.forEach(deck::addDeckCard);
 
-            deckRepository.save(deck);
-        }
         return deckConverter.toDto(deck);
     }
 
