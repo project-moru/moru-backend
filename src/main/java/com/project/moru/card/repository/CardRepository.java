@@ -9,4 +9,5 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<Card, Long> {
 
     List<Card> findAllByUser_IdOrStatus(Long userId, Status status);
+    List<Card> findAllByStatus(Status status);
 }

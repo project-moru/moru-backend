@@ -13,5 +13,6 @@ public interface CardService {
     CardResponseDto saveCard(CardCreateRequestDto cardCreateRequestDto, Long userId, MultipartFile multipartFile);
     CardResponseDto modifyCard(Long id, CardUpdateRequestDto cardUpdateRequestDto, Long userId, MultipartFile multipartFile);
     List<CardResponseDto> findAll(Long userId);
+    List<CardResponseDto> findAllMyCards();
 
 }
