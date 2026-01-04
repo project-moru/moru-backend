@@ -1,5 +1,7 @@
 package com.project.moru.user.service.impl;
 
+import com.project.moru.data_field.service_data.DataFieldDataService;
+import com.project.moru.user.domain.dto.*;
 import com.project.moru.user.pipeline.UserPipeline;
 import com.project.moru.user.pipeline.Context;
 import com.project.moru.user.pipeline.step.impl.*;
@@ -7,9 +9,6 @@ import com.project.moru.user.service.UserService;
 import com.project.moru.user.strategy.UserCreateMappingStrategy;
 import com.project.moru.user.strategy.UserUpdateMappingStrategy;
 import com.project.moru.user.validator.Validator;
-import com.project.moru.user.domain.dto.UserCreateRequestDto;
-import com.project.moru.user.domain.dto.UserResponseDto;
-import com.project.moru.user.domain.dto.UserUpdateRequestDto;
 import com.project.moru.user.mapper.UserConverter;
 import com.project.moru.user.service_data.UserDataService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +28,7 @@ public class UserServiceImpl implements UserService {
   private final Validator<UserCreateRequestDto> userCreateValidator;
   
   private final UserDataService userDataService;
+  private final DataFieldDataService dataFieldDataService;
   
   @Override
   @Transactional(readOnly = true)
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     pipeline
         .addStep(new ValidateStep<>(userCreateValidator))
         .addStep(new MappingStep<>(new UserCreateMappingStrategy(userConverter)))
-        .addStep(new EncryptPasswordStep<>(passwordEncoder))
+        .addStep(new EncryptPwdStep<>(passwordEncoder))
         .addStep(new SaveStep<>(userDataService))
         .execute();
   }
@@ -85,11 +85,32 @@ public class UserServiceImpl implements UserService {
     Context<UserUpdateRequestDto> context = pipeline
         .addStep(new GetProfileStep<>(userDataService, id))
         .addStep(new MappingStep<>(new UserUpdateMappingStrategy()))
-        .addStep(new EncryptPasswordStep<>(passwordEncoder))
         .addStep(new SaveStep<>(userDataService))
         .execute();
     
     return userConverter.fromEntityToRes(context.getUser());
+  }
+  
+  @Override
+  public void pwdChange(Long userId, PwdChangeRequestDto dto) {
+    UserPipeline<PwdChangeRequestDto> pipeline = new UserPipeline<>(dto);
+    
+    pipeline
+        .addStep(new GetProfileStep<>(userDataService, userId))
+        .addStep(new PwdChangeStep<>(passwordEncoder))
+        .addStep(new SaveStep<>(userDataService))
+        .execute();
+  }
+  
+  @Override
+  public void dataFieldChange(Long userId, DataFieldChangeRequestDto dto) {
+    UserPipeline<DataFieldChangeRequestDto> pipeline = new UserPipeline<>(dto);
+    
+    pipeline
+        .addStep(new GetProfileStep<>(userDataService, userId))
+        .addStep(new DataFieldChangeStep<>(dataFieldDataService))
+        .addStep(new SaveStep<>(userDataService))
+        .execute();
   }
   
   // 로직 : 유저 정보 조회 - 유저 활성화/비활성화 - 저장

@@ -1,4 +1,4 @@
-package com.project.moru.data_field.domain.dto;
+package com.project.moru.data_field.domain.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

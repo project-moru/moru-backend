@@ -1,7 +1,14 @@
 package com.project.moru.data_field.controller;
 
 import com.project.moru.common.utils.ApiResponse;
-import com.project.moru.data_field.domain.dto.*;
+import com.project.moru.data_field.domain.dto.create.AttributeCreateRequestDto;
+import com.project.moru.data_field.domain.dto.create.DataFieldBundleCreateRequestDto;
+import com.project.moru.data_field.domain.dto.create.LinkCreateRequestDto;
+import com.project.moru.data_field.domain.dto.response.*;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldBundleUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import com.project.moru.data_field.service.AttributeBlockService;
 import com.project.moru.data_field.service.DataFieldService;
 import com.project.moru.data_field.service.LinkBlockService;
@@ -14,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "data field", description = "데이터 필드 API")
 @SecurityRequirement(name = "bearerAuth")
@@ -31,33 +36,35 @@ public class DataFieldController {
   @Operation(summary = "데이터 필드 생성 API")
   @PostMapping()
   public ResponseEntity<ApiResponse<DataFieldResponseDto>> createDataField(
-      @RequestBody DataFieldCreateRequestDto requestDto,
+      @RequestBody DataFieldBundleCreateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.register(requestDto, userDetails.getId())));
   }
   
   @Operation(summary = "속성 블록 생성 API")
-  @PostMapping("/attribute")
+  @PostMapping("/{dataFieldId}/attribute")
   public ResponseEntity<ApiResponse<AttributeResponseDto>> createAttributeBlock(
+      @PathVariable Long dataFieldId,
       @RequestBody AttributeCreateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
       ) {
-    return ResponseEntity.ok().body(ApiResponse.ok(attributeBlockService.register(requestDto, userDetails.getId())));
+    return ResponseEntity.ok().body(ApiResponse.ok(attributeBlockService.register(dataFieldId, requestDto, userDetails.getId())));
   }
   
   @Operation(summary = "연결 블록 생성 API")
-  @PostMapping("/link")
+  @PostMapping("/{dataFieldId}/link")
   public ResponseEntity<ApiResponse<LinkResponseDto>> createLinkBlock(
+      @PathVariable Long dataFieldId,
       @RequestBody LinkCreateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
-    return ResponseEntity.ok().body(ApiResponse.ok(linkBlockService.register(requestDto, userDetails.getId())));
+    return ResponseEntity.ok().body(ApiResponse.ok(linkBlockService.register(dataFieldId, requestDto, userDetails.getId())));
   }
   
   @Operation(summary = "데이터 필드 목록 조회 API")
   @GetMapping()
-  public ResponseEntity<ApiResponse<List<DataFieldResponseDto>>> getDataFieldsByUser(
+  public ResponseEntity<ApiResponse<DataFieldListResponseDto>> getDataFieldsByUser(
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.getListByUser(userDetails.getId())));
@@ -76,7 +83,7 @@ public class DataFieldController {
   @PatchMapping("/{data_field_id}")
   public ResponseEntity<ApiResponse<DataFieldResponseDto>> patchDataField(
       @PathVariable Long data_field_id,
-      @RequestBody DataFieldUpdateRequestDto requestDto,
+      @RequestBody DataFieldBundleUpdateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.update(data_field_id, requestDto, userDetails.getId())));
@@ -106,7 +113,7 @@ public class DataFieldController {
       @PathVariable Long data_field_id,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
-    dataFieldService.delete(data_field_id, userDetails.getId());
+    dataFieldService.delete(data_field_id, userDetails);
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
   

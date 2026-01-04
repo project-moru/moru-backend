@@ -12,6 +12,6 @@ public class LoginRequestDto {
   @Schema(description = "회원 아이디", example = "test01")
   private String username;
 
-  @Schema(description = "비밀번호", example = "1234")
+  @Schema(description = "비밀번호", example = "test!1234")
   private String password;
 }

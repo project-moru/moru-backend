@@ -1,9 +1,12 @@
 package com.project.moru.data_field.domain.entity;
 
 import com.project.moru.common.domain.entity.BaseEntity;
-import com.project.moru.data_field.domain.dto.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import com.project.moru.user.domain.entity.User;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -30,9 +33,11 @@ public class DataField extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   private String description;
   
+  @Builder.Default
   @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<AttributeBlock> attributeBlocks = new ArrayList<>();
   
+  @Builder.Default
   @OneToMany(mappedBy = "dataField", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<LinkBlock> linkBlocks = new ArrayList<>();
   
@@ -44,6 +49,20 @@ public class DataField extends BaseEntity {
     Optional.ofNullable(dto.getDescription())
         .filter(description -> !description.isBlank())
         .ifPresent(description -> this.description = description);
+  }
+  
+  public void updateLinkBlocks(List<LinkUpdateRequestDto> dtos) {
+    this.linkBlocks.clear();
+    dtos.forEach(dto ->
+        this.linkBlocks.add(LinkBlock.from(dto, this))
+    );
+  }
+  
+  public void updateAttributeBlocks(List<AttributeUpdateRequestDto> dtos) {
+    this.attributeBlocks.clear();
+    dtos.forEach(dto ->
+        this.attributeBlocks.add(AttributeBlock.from(dto, this))
+    );
   }
   
   public void addAttribute(AttributeBlock attributeBlock) {

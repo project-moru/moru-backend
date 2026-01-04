@@ -7,6 +7,7 @@ import com.project.moru.user.domain.dto.UserUpdateRequestDto;
 import com.project.moru.common.domain.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ public class User extends BaseEntity {
   private String password;
   
   @Column(length = 100)
+  private String name;
+  
+  @Column(length = 100)
   private String nickname;
   
   @Enumerated(EnumType.STRING)
@@ -35,6 +39,9 @@ public class User extends BaseEntity {
   @Enumerated(EnumType.STRING)
   @Column(name = "use_yn", nullable = false)
   private Use useYn = Use.Y;
+  
+  @Column(name = "default_data_field_id")
+  private Long defaultDataFieldId;
   
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<DataField> dataFields = new ArrayList<>();
@@ -55,5 +62,13 @@ public class User extends BaseEntity {
     } else {
       this.useYn = Use.Y;
     }
+  }
+  
+  public void changeDefaultDataFieldId(Long dataFieldId) {
+    this.defaultDataFieldId = dataFieldId;
+  }
+  
+  public void clearDefaultDataField() {
+    this.defaultDataFieldId = null;
   }
 }

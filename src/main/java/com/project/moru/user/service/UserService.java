@@ -1,8 +1,6 @@
 package com.project.moru.user.service;
 
-import com.project.moru.user.domain.dto.UserCreateRequestDto;
-import com.project.moru.user.domain.dto.UserResponseDto;
-import com.project.moru.user.domain.dto.UserUpdateRequestDto;
+import com.project.moru.user.domain.dto.*;
 
 import java.util.List;
 
@@ -15,9 +13,13 @@ public interface UserService {
   
   void create(UserCreateRequestDto userCreateRequestDto);
   
-  UserResponseDto update(Long id, UserUpdateRequestDto userUpdateRequestDto);
+  UserResponseDto update(Long userId, UserUpdateRequestDto userUpdateRequestDto);
   
-  void toggleUserUseYn(Long id);
+  void pwdChange(Long userId, PwdChangeRequestDto pwdChangeRequestDto);
+  
+  void dataFieldChange(Long userId, DataFieldChangeRequestDto dataFieldChangeRequestDto);
+  
+  void toggleUserUseYn(Long userId);
   
   void delete(Long userId);
 }

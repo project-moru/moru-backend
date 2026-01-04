@@ -1,4 +1,4 @@
-package com.project.moru.data_field.domain.dto;
+package com.project.moru.data_field.domain.dto.update;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Getter
 @Setter
-public class DataFieldCreateRequestDto {
+public class DataFieldUpdateRequestDto {
   @Schema(description = "필드 이름", example = "문화재")
   @NotBlank(message = "필드 이름은 필수입니다.")
   private String name;

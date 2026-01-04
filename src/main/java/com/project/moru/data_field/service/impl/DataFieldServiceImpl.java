@@ -2,13 +2,25 @@ package com.project.moru.data_field.service.impl;
 
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
-import com.project.moru.data_field.domain.dto.*;
+import com.project.moru.data_field.domain.dto.create.DataFieldBundleCreateRequestDto;
+import com.project.moru.data_field.domain.dto.create.DataFieldCreateRequestDto;
+import com.project.moru.data_field.domain.dto.response.DataFieldDetailResponseDto;
+import com.project.moru.data_field.domain.dto.response.DataFieldListResponseDto;
+import com.project.moru.data_field.domain.dto.response.DataFieldResponseDto;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldBundleUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import com.project.moru.data_field.domain.entity.DataField;
+import com.project.moru.data_field.mapper.AttributeBlockConverter;
 import com.project.moru.data_field.mapper.DataFieldConverter;
+import com.project.moru.data_field.mapper.LinkBlockConverter;
 import com.project.moru.data_field.service.AttributeBlockService;
 import com.project.moru.data_field.service.DataFieldService;
 import com.project.moru.data_field.service.LinkBlockService;
 import com.project.moru.data_field.service_data.DataFieldDataService;
+import com.project.moru.user.domain.entity.CustomUserDetails;
+import com.project.moru.user.domain.entity.User;
 import com.project.moru.user.service_data.UserDataService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,14 +37,72 @@ public class DataFieldServiceImpl implements DataFieldService {
   private final AttributeBlockService attributeBlockService;
   private final LinkBlockService linkBlockService;
   private final DataFieldConverter dataFieldConverter;
+  private final AttributeBlockConverter attributeBlockConverter;
+  private final LinkBlockConverter linkBlockConverter;
   private final UserDataService userDataService;
   
   @Override
+  public DataFieldResponseDto register(DataFieldBundleCreateRequestDto dto, Long userId) {
+    
+    // 1. DataField 생성
+    DataFieldCreateRequestDto dataFieldDto = dto.getDataField();
+    DataField dataField = dataFieldConverter.toEntity(
+        dataFieldDto,
+        userDataService.findUserById(userId)
+            .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER))
+    );
+    DataField savedDataField = dataFieldDataService.save(dataField);
+    
+    // 2. 속성블록 확인
+    if (dto.getAttributeBlocks() != null) {
+      dto.getAttributeBlocks().forEach(attr ->
+          savedDataField.addAttribute(
+              attributeBlockConverter.toEntity(attr)
+          )
+      );
+    }
+    
+    // 3. 연결블록 확인
+    if (dto.getLinkBlocks() != null) {
+      dto.getLinkBlocks().forEach(link ->
+        savedDataField.addLink(
+            linkBlockConverter.toEntity(link)
+        )
+      );
+    }
+    
+    return dataFieldConverter.toDto(savedDataField);
+  }
+  
+  @Override
+  public DataFieldResponseDto update(Long dataFieldId, DataFieldBundleUpdateRequestDto dto, Long userId) {
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
+    
+    if (!dataField.getUser().getId().equals(userId)) {
+      throw new GeneralException(ErrorCode.ACCESS_DENIED);
+    }
+    
+    dataField.update(dto.getDataField());
+    dataField.updateLinkBlocks(dto.getLinkBlocks());
+    dataField.updateAttributeBlocks(dto.getAttributeBlocks());
+    
+    return dataFieldConverter.toDto(dataField);
+  }
+  
+  @Override
   @Transactional(readOnly = true)
-  public List<DataFieldResponseDto> getListByUser(Long userId) {
-    return dataFieldConverter.toDtoList(
+  public DataFieldListResponseDto getListByUser(Long userId) {
+    List<DataFieldResponseDto> dataFields = dataFieldConverter.toDtoList(
         dataFieldDataService.findDataFieldsByUserId(userId)
     );
+    
+    User user = userDataService.findUserById(userId)
+        .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
+    
+    return DataFieldListResponseDto.builder()
+        .defaultDataFieldId(user.getDefaultDataFieldId())
+        .dataFields(dataFields)
+        .build();
   }
   
   @Override
@@ -51,33 +121,19 @@ public class DataFieldServiceImpl implements DataFieldService {
   }
   
   @Override
-  public DataFieldResponseDto register(DataFieldCreateRequestDto dto, Long userId) {
-    DataField dataField = dataFieldConverter.toEntity(dto, userDataService.findUserById(userId).orElseThrow(
-        () -> new GeneralException(ErrorCode.NOT_FOUND_USER)
-    ));
-    return dataFieldConverter.toDto(dataFieldDataService.save(dataField));
-  }
-  
-  @Override
-  public DataFieldResponseDto update(Long dataFieldId, DataFieldUpdateRequestDto dto, Long userId) {
-    DataField dataField = dataFieldDataService.findById(dataFieldId);
+  public void delete(Long dataFieldId, CustomUserDetails userDetails) {
     
-    if (!dataField.getUser().getId().equals(userId)) {
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
+    User user = dataField.getUser();
+    
+    if (!user.getId().equals(userDetails.getId())) {
       throw new GeneralException(ErrorCode.ACCESS_DENIED);
     }
     
-    dataField.update(dto);
-    return dataFieldConverter.toDto(dataField);
-  }
-  
-  @Override
-  public void delete(Long dataFieldId, Long userId) {
-    DataField dataField = dataFieldDataService.findById(dataFieldId);
-    
-    if (dataField.getUser().getId().equals(userId)) {
-      dataFieldDataService.deleteById(dataFieldId);
-    } else {
-      throw new GeneralException(ErrorCode.ACCESS_DENIED);
+    if (dataFieldId.equals(user.getDefaultDataFieldId())) {
+      user.clearDefaultDataField();
     }
+    
+    dataFieldDataService.deleteById(dataFieldId);
   }
 }

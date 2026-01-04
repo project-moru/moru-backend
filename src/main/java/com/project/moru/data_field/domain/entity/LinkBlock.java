@@ -2,7 +2,7 @@ package com.project.moru.data_field.domain.entity;
 
 import com.project.moru.cardlink.domain.entity.CardLinkBlock;
 import com.project.moru.common.domain.entity.BaseEntity;
-import com.project.moru.data_field.domain.dto.LinkUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -30,6 +30,14 @@ public class LinkBlock extends BaseEntity {
   
   @OneToMany(mappedBy = "linkBlock", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CardLinkBlock> cardLinkBlocks = new ArrayList<>();
+  
+  public static LinkBlock from(LinkUpdateRequestDto dto, DataField dataField) {
+    LinkBlock linkBlock = new LinkBlock();
+    linkBlock.dataField = dataField;
+    linkBlock.name = dto.getName();
+    linkBlock.maxLinkCount = dto.getMaxLinkCount();
+    return linkBlock;
+  }
   
   public void update(LinkUpdateRequestDto dto) {
     Optional.ofNullable(dto.getName())

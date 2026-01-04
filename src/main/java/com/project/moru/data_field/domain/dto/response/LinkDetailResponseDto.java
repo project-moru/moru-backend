@@ -1,4 +1,4 @@
-package com.project.moru.data_field.domain.dto;
+package com.project.moru.data_field.domain.dto.response;
 
 import com.project.moru.cardlink.domain.dto.CardLinkBlockResponseDto;
 import lombok.AllArgsConstructor;

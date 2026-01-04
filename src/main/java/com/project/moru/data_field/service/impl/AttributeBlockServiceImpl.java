@@ -2,9 +2,9 @@ package com.project.moru.data_field.service.impl;
 
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
-import com.project.moru.data_field.domain.dto.AttributeCreateRequestDto;
-import com.project.moru.data_field.domain.dto.AttributeResponseDto;
-import com.project.moru.data_field.domain.dto.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.create.AttributeCreateRequestDto;
+import com.project.moru.data_field.domain.dto.response.AttributeResponseDto;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
 import com.project.moru.data_field.domain.entity.AttributeBlock;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.mapper.AttributeBlockConverter;
@@ -36,8 +36,8 @@ public class AttributeBlockServiceImpl implements AttributeBlockService {
   }
   
   @Override
-  public AttributeResponseDto register(AttributeCreateRequestDto dto, Long userId) {
-    DataField dataField = dataFieldDataService.findById(dto.getDataFieldId());
+  public AttributeResponseDto register(Long dataFieldId, AttributeCreateRequestDto dto, Long userId) {
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
     
     if (!dataField.getUser().getId().equals(userId)) {
       throw new GeneralException(ErrorCode.ACCESS_DENIED);

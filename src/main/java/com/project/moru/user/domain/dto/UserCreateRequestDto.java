@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserCreateRequestDto implements UserValidatable, PasswordChange {
+public class UserCreateRequestDto implements UserValidatable, EncryptPwd {
   
   @Schema(description = "회원 아이디", example = "test01")
   @NotBlank(message = "아이디는 필수입니다.")
@@ -27,6 +27,10 @@ public class UserCreateRequestDto implements UserValidatable, PasswordChange {
       message = "비밀번호에는 최소 1개의 특수문자가 포함되어야 합니다."
   )
   private String password;
+  
+  @Schema(description = "이름", example = "모루")
+  @NotBlank(message = "이름은 필수입니다.")
+  private String name;
   
   @Schema(description = "별명", example = "테스터1")
   @NotBlank(message = "별명은 필수입니다.")

@@ -2,7 +2,7 @@ package com.project.moru.data_field.domain.entity;
 
 import com.project.moru.common.domain.entity.BaseEntity;
 import com.project.moru.data_field.constant.Type;
-import com.project.moru.data_field.domain.dto.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -29,6 +29,19 @@ public class AttributeBlock extends BaseEntity {
   
   @Enumerated(EnumType.STRING)
   private Type type;
+  
+  @Column(name = "is_required", nullable = false)
+  private Boolean required;
+  
+  public static AttributeBlock from(AttributeUpdateRequestDto dto, DataField dataField) {
+    AttributeBlock block = new AttributeBlock();
+    block.dataField = dataField;
+    block.name = dto.getName();
+    block.placeHolder = dto.getPlaceHolder();
+    block.type = dto.getType();
+    block.required = dto.getRequired();
+    return block;
+  }
   
   public void update(AttributeUpdateRequestDto dto) {
     Optional.ofNullable(dto.getName())

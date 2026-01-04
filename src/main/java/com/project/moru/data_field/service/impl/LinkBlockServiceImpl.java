@@ -2,10 +2,10 @@ package com.project.moru.data_field.service.impl;
 
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
-import com.project.moru.data_field.domain.dto.LinkCreateRequestDto;
-import com.project.moru.data_field.domain.dto.LinkDetailResponseDto;
-import com.project.moru.data_field.domain.dto.LinkResponseDto;
-import com.project.moru.data_field.domain.dto.LinkUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.create.LinkCreateRequestDto;
+import com.project.moru.data_field.domain.dto.response.LinkDetailResponseDto;
+import com.project.moru.data_field.domain.dto.response.LinkResponseDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.domain.entity.LinkBlock;
 import com.project.moru.data_field.mapper.LinkBlockConverter;
@@ -36,8 +36,8 @@ public class LinkBlockServiceImpl implements LinkBlockService {
   }
   
   @Override
-  public LinkResponseDto register(LinkCreateRequestDto dto, Long userId) {
-    DataField dataField = dataFieldDataService.findById(dto.getDataFieldId());
+  public LinkResponseDto register(Long dataFieldId, LinkCreateRequestDto dto, Long userId) {
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
     
     if (!dataField.getUser().getId().equals(userId)) {
       throw new GeneralException(ErrorCode.ACCESS_DENIED);

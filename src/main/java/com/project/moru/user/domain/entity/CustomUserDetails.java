@@ -11,15 +11,19 @@ import java.util.Collections;
 public class CustomUserDetails implements UserDetails {
   private final Long id;
   private final String username; // 아이디
+  private final String name;
   private final String nickname;
   private final String password;
+  private final Long defaultDataFieldId;
   private final Collection<? extends GrantedAuthority> authorities;
   
   public CustomUserDetails(User user) {
     this.id = user.getId();
     this.username = user.getUsername();
+    this.name = user.getName();
     this.nickname = user.getNickname();
     this.password = user.getPassword();
+    this.defaultDataFieldId = user.getDefaultDataFieldId();
     this.authorities = Collections.emptyList();
   }
   
