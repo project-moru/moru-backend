@@ -37,3 +37,4 @@ build/
 
 application.properties
 /src/main/resources/application-aws.yaml
+/.env.properties
