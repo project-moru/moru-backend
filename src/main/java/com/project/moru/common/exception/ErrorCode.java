@@ -12,6 +12,9 @@ public enum ErrorCode {
     NOT_FOUND_USER(400,"유저를 찾을 수 없습니다"),
     NOT_FOUND_CARD(400,"카드를 찾을 수 없습니다"),
     NOT_FOUND_DATA_FIELD(400,"카드를 찾을 수 없습니다"),
+    INVALID_FILE_URL(400, "유효하지 않은 파일주소 입니다" ),
+    NOT_UPLOAD_IMAGE(400,"이미지 업로드에 실패하였습니다" ),
+    FAILED_DELETE_IMAGE(400,"이미지 삭제에 실패하였습니다." ),
 
 
     NOT_EXIST_CARD(400,"존재하지 않는 카드가 있습니다"),

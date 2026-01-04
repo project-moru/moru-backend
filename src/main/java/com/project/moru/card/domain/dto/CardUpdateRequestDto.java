@@ -20,7 +20,4 @@ public class CardUpdateRequestDto {
     private String cardContent;
 
     private Status status;
-
-    private String imageUrl;
-
 }

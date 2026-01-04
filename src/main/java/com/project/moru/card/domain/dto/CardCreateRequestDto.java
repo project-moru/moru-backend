@@ -2,15 +2,13 @@ package com.project.moru.card.domain.dto;
 
 import com.project.moru.common.constant.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +25,4 @@ public class CardCreateRequestDto {
 
     @Schema(description = "덱 공개 범위", example = "PUBLIC")
     private Status status = Status.PUBLIC;
-
-    @Schema(description = "이미지 주소", example = "http://xxx.xxxx.xxx")
-    private String imageUrl;
 }

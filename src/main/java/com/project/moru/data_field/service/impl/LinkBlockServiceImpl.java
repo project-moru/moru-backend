@@ -3,6 +3,7 @@ package com.project.moru.data_field.service.impl;
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
 import com.project.moru.data_field.domain.dto.LinkCreateRequestDto;
+import com.project.moru.data_field.domain.dto.LinkDetailResponseDto;
 import com.project.moru.data_field.domain.dto.LinkResponseDto;
 import com.project.moru.data_field.domain.dto.LinkUpdateRequestDto;
 import com.project.moru.data_field.domain.entity.DataField;
@@ -28,8 +29,8 @@ public class LinkBlockServiceImpl implements LinkBlockService {
   private final DataFieldDataService dataFieldDataService;
   
   @Override
-  public List<LinkResponseDto> getListByDataField(Long dataFieldId) {
-    return linkBlockConverter.toDtoList(
+  public List<LinkDetailResponseDto> getListByDataField(Long dataFieldId) {
+    return linkBlockConverter.toDetailDtoList(
         linkBlockDataService.findLinksByDataFieldId(dataFieldId)
     );
   }

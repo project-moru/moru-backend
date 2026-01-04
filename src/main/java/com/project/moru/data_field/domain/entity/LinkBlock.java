@@ -1,5 +1,6 @@
 package com.project.moru.data_field.domain.entity;
 
+import com.project.moru.cardlink.domain.entity.CardLinkBlock;
 import com.project.moru.common.domain.entity.BaseEntity;
 import com.project.moru.data_field.domain.dto.LinkUpdateRequestDto;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SuperBuilder(toBuilder = true)
@@ -24,6 +27,9 @@ public class LinkBlock extends BaseEntity {
   
   @Column(name = "max_link_count")
   private Integer maxLinkCount;
+  
+  @OneToMany(mappedBy = "linkBlock", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<CardLinkBlock> cardLinkBlocks = new ArrayList<>();
   
   public void update(LinkUpdateRequestDto dto) {
     Optional.ofNullable(dto.getName())
