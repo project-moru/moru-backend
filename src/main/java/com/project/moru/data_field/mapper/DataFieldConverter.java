@@ -20,6 +20,7 @@ import java.util.List;
 public interface DataFieldConverter {
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "user", source = "user")
+  @Mapping(target = "name", source = "dto.name")
   @Mapping(target = "attributeBlocks", ignore = true)
   @Mapping(target = "linkBlocks", ignore = true)
   DataField toEntity(DataFieldCreateRequestDto dto, User user);

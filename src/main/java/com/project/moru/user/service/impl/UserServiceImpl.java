@@ -1,5 +1,6 @@
 package com.project.moru.user.service.impl;
 
+import com.project.moru.user.domain.dto.PwdChangeRequestDto;
 import com.project.moru.user.pipeline.UserPipeline;
 import com.project.moru.user.pipeline.Context;
 import com.project.moru.user.pipeline.step.impl.*;
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
     pipeline
         .addStep(new ValidateStep<>(userCreateValidator))
         .addStep(new MappingStep<>(new UserCreateMappingStrategy(userConverter)))
-        .addStep(new EncryptPasswordStep<>(passwordEncoder))
+        .addStep(new EncryptPwdStep<>(passwordEncoder))
         .addStep(new SaveStep<>(userDataService))
         .execute();
   }
@@ -85,11 +86,21 @@ public class UserServiceImpl implements UserService {
     Context<UserUpdateRequestDto> context = pipeline
         .addStep(new GetProfileStep<>(userDataService, id))
         .addStep(new MappingStep<>(new UserUpdateMappingStrategy()))
-        .addStep(new EncryptPasswordStep<>(passwordEncoder))
         .addStep(new SaveStep<>(userDataService))
         .execute();
     
     return userConverter.fromEntityToRes(context.getUser());
+  }
+  
+  @Override
+  public void pwdChange(Long userId, PwdChangeRequestDto dto) {
+    UserPipeline<PwdChangeRequestDto> pipeline = new UserPipeline<>(dto);
+    
+    Context<PwdChangeRequestDto> context = pipeline
+        .addStep(new GetProfileStep<>(userDataService, userId))
+        .addStep(new PwdChangeStep<>(passwordEncoder))
+        .addStep(new SaveStep<>(userDataService))
+        .execute();
   }
   
   // 로직 : 유저 정보 조회 - 유저 활성화/비활성화 - 저장

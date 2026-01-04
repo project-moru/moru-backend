@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 public class UserResponseDto {
   private final String username;
+  private final String name;
   private final String nickname;
   private final Job job;
   private final Use useYn;
