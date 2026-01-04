@@ -1,12 +1,11 @@
 package com.project.moru.card.controller;
 
-import com.project.moru.common.utils.ApiResponse;
 import com.project.moru.card.domain.dto.CardCreateRequestDto;
 import com.project.moru.card.domain.dto.CardResponseDto;
 import com.project.moru.card.domain.dto.CardUpdateRequestDto;
-import com.project.moru.user.domain.entity.CustomUserDetails;
-import com.project.moru.user.domain.entity.User;
 import com.project.moru.card.service.CardService;
+import com.project.moru.common.utils.ApiResponse;
+import com.project.moru.user.domain.entity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,15 +28,15 @@ public class CardController {
 
     private final CardService cardService;
 
-    @GetMapping("/my")
-    @Operation(summary = "내 카드 전체 조회")
+    @GetMapping("")
+    @Operation(summary = "전체 카드 전체 조회")
     public ResponseEntity<ApiResponse<List<CardResponseDto>>> findAllMyCards(
     ) {
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.findAllMyCards()));
     }
 
-    @GetMapping("")
-    @Operation(summary = "전체 카드 조회")
+    @GetMapping("/my")
+    @Operation(summary = "내 카드 조회")
     public ResponseEntity<ApiResponse<List<CardResponseDto>>> findAll(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
