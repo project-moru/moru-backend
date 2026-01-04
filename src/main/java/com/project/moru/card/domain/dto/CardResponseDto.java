@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 public class CardResponseDto {
     private final Long cardId;
     private final String cardName;
-    private final String cardContent;
     private final String imageUrl;
     private final Status status;
     private final Integer tagCount;
@@ -24,4 +23,5 @@ public class CardResponseDto {
     private final LocalDateTime createdAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime updatedAt;
+    private final Long dataFieldId;
 }
