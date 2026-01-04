@@ -14,6 +14,7 @@ public class CustomUserDetails implements UserDetails {
   private final String name;
   private final String nickname;
   private final String password;
+  private final Long defaultDataFieldId;
   private final Collection<? extends GrantedAuthority> authorities;
   
   public CustomUserDetails(User user) {
@@ -22,6 +23,7 @@ public class CustomUserDetails implements UserDetails {
     this.name = user.getName();
     this.nickname = user.getNickname();
     this.password = user.getPassword();
+    this.defaultDataFieldId = user.getDefaultDataFieldId();
     this.authorities = Collections.emptyList();
   }
   

@@ -112,7 +112,7 @@ public class DataFieldController {
       @PathVariable Long data_field_id,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
-    dataFieldService.delete(data_field_id, userDetails.getId());
+    dataFieldService.delete(data_field_id, userDetails);
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
   

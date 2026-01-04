@@ -16,6 +16,7 @@ import com.project.moru.data_field.service.AttributeBlockService;
 import com.project.moru.data_field.service.DataFieldService;
 import com.project.moru.data_field.service.LinkBlockService;
 import com.project.moru.data_field.service_data.DataFieldDataService;
+import com.project.moru.user.domain.entity.CustomUserDetails;
 import com.project.moru.user.domain.entity.User;
 import com.project.moru.user.service_data.UserDataService;
 import lombok.AllArgsConstructor;
@@ -114,14 +115,20 @@ public class DataFieldServiceImpl implements DataFieldService {
   }
   
   @Override
-  public void delete(Long dataFieldId, Long userId) {
-    DataField dataField = dataFieldDataService.findById(dataFieldId);
+  public void delete(Long dataFieldId, CustomUserDetails userDetails) {
     
-    if (dataField.getUser().getId().equals(userId)) {
-      dataFieldDataService.deleteById(dataFieldId);
-    } else {
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
+    User user = dataField.getUser();
+    
+    if (!user.getId().equals(userDetails.getId())) {
       throw new GeneralException(ErrorCode.ACCESS_DENIED);
     }
+    
+    if (dataFieldId.equals(user.getDefaultDataFieldId())) {
+      user.clearDefaultDataField();
+    }
+    
+    dataFieldDataService.deleteById(dataFieldId);
   }
   
   @Override

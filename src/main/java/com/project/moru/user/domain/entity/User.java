@@ -7,6 +7,7 @@ import com.project.moru.user.domain.dto.UserUpdateRequestDto;
 import com.project.moru.common.domain.entity.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -65,5 +66,9 @@ public class User extends BaseEntity {
   
   public void changeDefaultDataFieldId(Long dataFieldId) {
     this.defaultDataFieldId = dataFieldId;
+  }
+  
+  public void clearDefaultDataField() {
+    this.defaultDataFieldId = null;
   }
 }

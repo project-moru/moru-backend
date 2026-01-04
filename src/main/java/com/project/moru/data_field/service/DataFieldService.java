@@ -5,12 +5,13 @@ import com.project.moru.data_field.domain.dto.response.DataFieldDetailResponseDt
 import com.project.moru.data_field.domain.dto.response.DataFieldListResponseDto;
 import com.project.moru.data_field.domain.dto.response.DataFieldResponseDto;
 import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
+import com.project.moru.user.domain.entity.CustomUserDetails;
 
 public interface DataFieldService {
   DataFieldListResponseDto getListByUser(Long userId);
   DataFieldDetailResponseDto getDataFieldById(Long dataFieldId, Long userId);
   DataFieldResponseDto register(DataFieldBundleCreateRequestDto dto, Long userId);
   DataFieldResponseDto update(Long dataFieldId, DataFieldUpdateRequestDto dto, Long userId);
-  void delete(Long dataFieldId, Long userId);
+  void delete(Long dataFieldId, CustomUserDetails userDetails);
   void changeDefaultDataField(Long dataFieldId, Long userId);
 }
