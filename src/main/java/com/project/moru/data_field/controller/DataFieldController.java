@@ -6,6 +6,7 @@ import com.project.moru.data_field.domain.dto.create.DataFieldBundleCreateReques
 import com.project.moru.data_field.domain.dto.create.LinkCreateRequestDto;
 import com.project.moru.data_field.domain.dto.response.*;
 import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldBundleUpdateRequestDto;
 import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
 import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import com.project.moru.data_field.service.AttributeBlockService;
@@ -82,7 +83,7 @@ public class DataFieldController {
   @PatchMapping("/{data_field_id}")
   public ResponseEntity<ApiResponse<DataFieldResponseDto>> patchDataField(
       @PathVariable Long data_field_id,
-      @RequestBody DataFieldUpdateRequestDto requestDto,
+      @RequestBody DataFieldBundleUpdateRequestDto requestDto,
       @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
   ) {
     return ResponseEntity.ok().body(ApiResponse.ok(dataFieldService.update(data_field_id, requestDto, userDetails.getId())));

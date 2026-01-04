@@ -31,6 +31,14 @@ public class LinkBlock extends BaseEntity {
   @OneToMany(mappedBy = "linkBlock", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CardLinkBlock> cardLinkBlocks = new ArrayList<>();
   
+  public static LinkBlock from(LinkUpdateRequestDto dto, DataField dataField) {
+    LinkBlock linkBlock = new LinkBlock();
+    linkBlock.dataField = dataField;
+    linkBlock.name = dto.getName();
+    linkBlock.maxLinkCount = dto.getMaxLinkCount();
+    return linkBlock;
+  }
+  
   public void update(LinkUpdateRequestDto dto) {
     Optional.ofNullable(dto.getName())
         .filter(name -> !name.isBlank())

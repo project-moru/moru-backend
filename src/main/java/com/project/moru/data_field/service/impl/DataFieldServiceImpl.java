@@ -7,7 +7,10 @@ import com.project.moru.data_field.domain.dto.create.DataFieldCreateRequestDto;
 import com.project.moru.data_field.domain.dto.response.DataFieldDetailResponseDto;
 import com.project.moru.data_field.domain.dto.response.DataFieldListResponseDto;
 import com.project.moru.data_field.domain.dto.response.DataFieldResponseDto;
+import com.project.moru.data_field.domain.dto.update.AttributeUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.DataFieldBundleUpdateRequestDto;
 import com.project.moru.data_field.domain.dto.update.DataFieldUpdateRequestDto;
+import com.project.moru.data_field.domain.dto.update.LinkUpdateRequestDto;
 import com.project.moru.data_field.domain.entity.DataField;
 import com.project.moru.data_field.mapper.AttributeBlockConverter;
 import com.project.moru.data_field.mapper.DataFieldConverter;
@@ -72,6 +75,21 @@ public class DataFieldServiceImpl implements DataFieldService {
   }
   
   @Override
+  public DataFieldResponseDto update(Long dataFieldId, DataFieldBundleUpdateRequestDto dto, Long userId) {
+    DataField dataField = dataFieldDataService.findById(dataFieldId);
+    
+    if (!dataField.getUser().getId().equals(userId)) {
+      throw new GeneralException(ErrorCode.ACCESS_DENIED);
+    }
+    
+    dataField.update(dto.getDataField());
+    dataField.updateLinkBlocks(dto.getLinkBlocks());
+    dataField.updateAttributeBlocks(dto.getAttributeBlocks());
+    
+    return dataFieldConverter.toDto(dataField);
+  }
+  
+  @Override
   @Transactional(readOnly = true)
   public DataFieldListResponseDto getListByUser(Long userId) {
     List<DataFieldResponseDto> dataFields = dataFieldConverter.toDtoList(
@@ -100,18 +118,6 @@ public class DataFieldServiceImpl implements DataFieldService {
         .attributeBlocks(attributeBlockService.getListByDataField(dataFieldId))
         .linkBlocks(linkBlockService.getListByDataField(dataFieldId))
         .build();
-  }
-  
-  @Override
-  public DataFieldResponseDto update(Long dataFieldId, DataFieldUpdateRequestDto dto, Long userId) {
-    DataField dataField = dataFieldDataService.findById(dataFieldId);
-    
-    if (!dataField.getUser().getId().equals(userId)) {
-      throw new GeneralException(ErrorCode.ACCESS_DENIED);
-    }
-    
-    dataField.update(dto);
-    return dataFieldConverter.toDto(dataField);
   }
   
   @Override
