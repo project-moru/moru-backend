@@ -19,10 +19,8 @@ public class CardCreateRequestDto {
     @Size(max = 100, message = "카드 제목은 100자를 초과할 수 없습니다.")
     private String cardName;
 
-    @Size(max = 5000, message = "카드 내용은 5000자를 초과할 수 없습니다.")
-    @Schema(description = "카드 내용", example = "card_content")
-    private String cardContent;
-
     @Schema(description = "덱 공개 범위", example = "PUBLIC")
     private Status status = Status.PUBLIC;
+
+    private Long dataFieldId;
 }

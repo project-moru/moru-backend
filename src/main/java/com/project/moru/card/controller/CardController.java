@@ -55,7 +55,7 @@ public class CardController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "카드 만들기")
     public ResponseEntity<ApiResponse<CardResponseDto>> save(
-            CardCreateRequestDto cardCreateRequestDto,
+            @ModelAttribute CardCreateRequestDto cardCreateRequestDto,
             @RequestPart("multipartFile") MultipartFile cardImage,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {

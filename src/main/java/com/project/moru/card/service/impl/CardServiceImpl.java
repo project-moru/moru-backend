@@ -9,6 +9,8 @@ import com.project.moru.card.domain.dto.CardResponseDto;
 import com.project.moru.card.domain.dto.CardUpdateRequestDto;
 import com.project.moru.card.domain.entity.Card;
 import com.project.moru.common.utils.S3Utils;
+import com.project.moru.data_field.domain.entity.DataField;
+import com.project.moru.data_field.repository.DataFieldRepository;
 import com.project.moru.user.domain.entity.User;
 import com.project.moru.card.mapper.CardConverter;
 import com.project.moru.card.repository.CardRepository;
@@ -29,6 +31,7 @@ public class CardServiceImpl implements CardService {
     private final UserRepository userRepository;
     private final CardConverter cardConverter;
     private final S3Utils s3Utils;
+    private final DataFieldRepository dataFieldRepository;
 
     @Override
     public CardResponseDto findById(Long id, Long userId) {
@@ -70,9 +73,13 @@ public class CardServiceImpl implements CardService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
 
+        Long dataFiledId = cardCreateRequestDto.getDataFieldId();
+        DataField dataField = dataFieldRepository.findById(dataFiledId)
+                .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DATA_FIELD));
+
         Card newCard = Card.builder()
                 .user(user)
-                .cardContent(cardCreateRequestDto.getCardContent())
+                .dataField(dataField)
                 .status(cardCreateRequestDto.getStatus())
                 .imageUrl(s3Utils.uploadFile("cards", multipartFile))
                 .cardName(cardCreateRequestDto.getCardName())
@@ -95,16 +102,28 @@ public class CardServiceImpl implements CardService {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
 
-        s3Utils.deleteFile(card.getImageUrl());
+        DataField newDataField = null;
+        if (cardUpdateRequestDto.getDataFiledId() != null) {
+            newDataField = dataFieldRepository.findById(cardUpdateRequestDto.getDataFiledId())
+                    .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DATA_FIELD));
+        }
+
+        String newImageUrl = card.getImageUrl();
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            if (card.getImageUrl() != null) {
+                s3Utils.deleteFile(card.getImageUrl());
+            }
+            newImageUrl = s3Utils.uploadFile("cards", multipartFile);
+        }
 
         card.updateCard(
                 cardUpdateRequestDto.getCardName(),
-                cardUpdateRequestDto.getCardContent(),
                 cardUpdateRequestDto.getStatus(),
-                s3Utils.uploadFile("cards", multipartFile)
+                newDataField,
+                newImageUrl
         );
 
-        return cardConverter.fromEntityToRes(cardRepository.save(card));
+        return cardConverter.fromEntityToRes(card);
     }
 
     @Override
@@ -116,4 +135,9 @@ public class CardServiceImpl implements CardService {
     public List<CardResponseDto> findAllMyCards() {
         return cardConverter.toResList(cardRepository.findAllByStatus(Status.PUBLIC));
     }
+
+//    @Override
+//    public void toggleLike(Long cardId, Long userId) {
+//
+//    }
 }
