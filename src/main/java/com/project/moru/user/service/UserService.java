@@ -1,9 +1,6 @@
 package com.project.moru.user.service;
 
-import com.project.moru.user.domain.dto.PwdChangeRequestDto;
-import com.project.moru.user.domain.dto.UserCreateRequestDto;
-import com.project.moru.user.domain.dto.UserResponseDto;
-import com.project.moru.user.domain.dto.UserUpdateRequestDto;
+import com.project.moru.user.domain.dto.*;
 
 import java.util.List;
 
@@ -19,6 +16,8 @@ public interface UserService {
   UserResponseDto update(Long userId, UserUpdateRequestDto userUpdateRequestDto);
   
   void pwdChange(Long userId, PwdChangeRequestDto pwdChangeRequestDto);
+  
+  void dataFieldChange(Long userId, DataFieldChangeRequestDto dataFieldChangeRequestDto);
   
   void toggleUserUseYn(Long userId);
   

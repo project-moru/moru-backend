@@ -130,18 +130,4 @@ public class DataFieldServiceImpl implements DataFieldService {
     
     dataFieldDataService.deleteById(dataFieldId);
   }
-  
-  @Override
-  public void changeDefaultDataField(Long dataFieldId, Long userId) {
-    User user = userDataService.findUserById(userId)
-        .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
-    
-    DataField dataField = dataFieldDataService.findById(dataFieldId);
-    
-    if (!dataField.getUser().getId().equals(userId)) {
-      throw new GeneralException(ErrorCode.ACCESS_DENIED);
-    }
-    
-    user.changeDefaultDataFieldId(dataFieldId);
-  }
 }

@@ -133,18 +133,4 @@ public class DataFieldController {
     linkBlockService.delete(id);
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
-  
-  @PatchMapping("/default")
-  public ResponseEntity<ApiResponse<Void>> changeDefaultDataField(
-      @RequestBody Long dataFieldId,
-      @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
-  ) {
-    
-    dataFieldService.changeDefaultDataField(
-        dataFieldId,
-        userDetails.getId()
-    );
-    
-    return ResponseEntity.ok().body(ApiResponse.ok());
-  }
 }

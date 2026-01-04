@@ -1,6 +1,7 @@
 package com.project.moru.user.controller;
 
 import com.project.moru.common.utils.ApiResponse;
+import com.project.moru.user.domain.dto.DataFieldChangeRequestDto;
 import com.project.moru.user.domain.dto.PwdChangeRequestDto;
 import com.project.moru.user.domain.dto.UserResponseDto;
 import com.project.moru.user.domain.dto.UserUpdateRequestDto;
@@ -60,6 +61,18 @@ public class UserController {
   ) {
     Long id = userDetails.getId();
     userService.pwdChange(id, pwdChangeRequestDto);
+    return ResponseEntity.ok().body(ApiResponse.ok());
+  }
+  
+  @Operation(summary = "기본 데이터필드 저장 API")
+  @PatchMapping("/me/default-data-field")
+  public ResponseEntity<ApiResponse<Void>> changeDefaultDataField(
+      @Parameter(hidden = true)
+      @AuthenticationPrincipal CustomUserDetails userDetails,
+      @RequestBody DataFieldChangeRequestDto dataFieldChangeRequestDto
+      ) {
+    Long id = userDetails.getId();
+    userService.dataFieldChange(id, dataFieldChangeRequestDto);
     return ResponseEntity.ok().body(ApiResponse.ok());
   }
   

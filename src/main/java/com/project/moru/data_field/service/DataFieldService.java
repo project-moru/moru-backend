@@ -13,5 +13,4 @@ public interface DataFieldService {
   DataFieldResponseDto register(DataFieldBundleCreateRequestDto dto, Long userId);
   DataFieldResponseDto update(Long dataFieldId, DataFieldUpdateRequestDto dto, Long userId);
   void delete(Long dataFieldId, CustomUserDetails userDetails);
-  void changeDefaultDataField(Long dataFieldId, Long userId);
 }
