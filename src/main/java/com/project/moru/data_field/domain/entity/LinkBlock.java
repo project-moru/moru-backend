@@ -28,9 +28,6 @@ public class LinkBlock extends BaseEntity {
   @Column(name = "max_link_count")
   private Integer maxLinkCount;
   
-  @Column(name = "is_required", nullable = false)
-  private Boolean required;
-  
   @OneToMany(mappedBy = "linkBlock", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<CardLinkBlock> cardLinkBlocks = new ArrayList<>();
   

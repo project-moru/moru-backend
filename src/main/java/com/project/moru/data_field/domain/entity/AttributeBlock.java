@@ -30,6 +30,9 @@ public class AttributeBlock extends BaseEntity {
   @Enumerated(EnumType.STRING)
   private Type type;
   
+  @Column(name = "is_required", nullable = false)
+  private Boolean required;
+  
   public void update(AttributeUpdateRequestDto dto) {
     Optional.ofNullable(dto.getName())
         .filter(name -> !name.isBlank())

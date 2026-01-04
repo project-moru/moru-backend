@@ -15,7 +15,6 @@ public class LinkDetailResponseDto {
   private Long dataFieldId;
   private String name;
   private Integer maxLinkCount;
-  private Boolean required;
   
   private List<CardLinkBlockResponseDto> cardLinkBlocks;
 }

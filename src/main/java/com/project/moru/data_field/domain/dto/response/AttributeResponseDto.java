@@ -14,4 +14,5 @@ public class AttributeResponseDto {
   private String name;
   private String placeHolder;
   private Type type;
+  private Boolean required;
 }

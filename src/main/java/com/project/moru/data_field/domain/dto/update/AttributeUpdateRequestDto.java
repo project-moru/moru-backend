@@ -26,4 +26,7 @@ public class AttributeUpdateRequestDto {
       allowableValues = {"TEXT", "IMAGE", "NUMBER"}
   )
   private Type type;
+  
+  @Schema(description = "필수 여부", example = "false")
+  private Boolean required;
 }
