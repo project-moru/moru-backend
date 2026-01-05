@@ -33,16 +33,6 @@ public class AttributeBlock extends BaseEntity {
   @Column(name = "is_required", nullable = false)
   private Boolean required;
   
-  public static AttributeBlock from(AttributeUpdateRequestDto dto, DataField dataField) {
-    AttributeBlock block = new AttributeBlock();
-    block.dataField = dataField;
-    block.name = dto.getName();
-    block.placeHolder = dto.getPlaceHolder();
-    block.type = dto.getType();
-    block.required = dto.getRequired();
-    return block;
-  }
-  
   public void update(AttributeUpdateRequestDto dto) {
     Optional.ofNullable(dto.getName())
         .filter(name -> !name.isBlank())
@@ -54,6 +44,9 @@ public class AttributeBlock extends BaseEntity {
     
     Optional.ofNullable(dto.getType())
         .ifPresent(type -> this.type = type);
+    
+    Optional.ofNullable(dto.getRequired())
+        .ifPresent(required -> this.required = required);
   }
   
   public void setDataField(DataField dataField) {

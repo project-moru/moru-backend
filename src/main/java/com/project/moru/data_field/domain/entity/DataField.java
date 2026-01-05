@@ -14,7 +14,10 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -52,17 +55,47 @@ public class DataField extends BaseEntity {
   }
   
   public void updateLinkBlocks(List<LinkUpdateRequestDto> dtos) {
+    Map<String, LinkBlock> existing =
+        this.linkBlocks.stream()
+            .collect(Collectors.toMap(
+                LinkBlock::getName,
+                Function.identity()
+            ));
+    
     this.linkBlocks.clear();
-    dtos.forEach(dto ->
-        this.linkBlocks.add(LinkBlock.from(dto, this))
-    );
+    
+    for (LinkUpdateRequestDto dto : dtos) {
+      
+      LinkBlock block =
+          existing.getOrDefault(dto.getName(), new LinkBlock());
+      
+      block.update(dto);
+      block.setDataField(this);
+      
+      this.linkBlocks.add(block);
+    }
   }
   
   public void updateAttributeBlocks(List<AttributeUpdateRequestDto> dtos) {
+    Map<String, AttributeBlock> existing =
+        this.attributeBlocks.stream()
+            .collect(Collectors.toMap(
+                AttributeBlock::getName,
+                Function.identity()
+            ));
+    
     this.attributeBlocks.clear();
-    dtos.forEach(dto ->
-        this.attributeBlocks.add(AttributeBlock.from(dto, this))
-    );
+    
+    for (AttributeUpdateRequestDto dto : dtos) {
+      
+      AttributeBlock block =
+          existing.getOrDefault(dto.getName(), new AttributeBlock());
+      
+      block.update(dto);
+      block.setDataField(this);
+      
+      this.attributeBlocks.add(block);
+    }
   }
   
   public void addAttribute(AttributeBlock attributeBlock) {
