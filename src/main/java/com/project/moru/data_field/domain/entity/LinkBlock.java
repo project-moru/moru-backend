@@ -40,10 +40,7 @@ public class LinkBlock extends BaseEntity {
         .ifPresent(cnt -> this.maxLinkCount = cnt);
   }
   
-  public void setDataField(DataField dataField) {
+  public void attachDataField(DataField dataField) {
     this.dataField = dataField;
-    if (!dataField.getLinkBlocks().contains(this)) {
-      dataField.getLinkBlocks().add(this);
-    }
   }
 }
