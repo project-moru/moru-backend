@@ -49,10 +49,7 @@ public class AttributeBlock extends BaseEntity {
         .ifPresent(required -> this.required = required);
   }
   
-  public void setDataField(DataField dataField) {
+  public void attachDataField(DataField dataField) {
     this.dataField = dataField;
-    if (!dataField.getAttributeBlocks().contains(this)) {
-      dataField.getAttributeBlocks().add(this);
-    }
   }
 }

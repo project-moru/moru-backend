@@ -70,7 +70,7 @@ public class DataField extends BaseEntity {
           existing.getOrDefault(dto.getName(), new LinkBlock());
       
       block.update(dto);
-      block.setDataField(this);
+      block.attachDataField(this);
       
       this.linkBlocks.add(block);
     }
@@ -92,7 +92,7 @@ public class DataField extends BaseEntity {
           existing.getOrDefault(dto.getName(), new AttributeBlock());
       
       block.update(dto);
-      block.setDataField(this);
+      block.attachDataField(this);
       
       this.attributeBlocks.add(block);
     }
@@ -100,11 +100,11 @@ public class DataField extends BaseEntity {
   
   public void addAttribute(AttributeBlock attributeBlock) {
     attributeBlocks.add(attributeBlock);
-    attributeBlock.setDataField(this);
+    attributeBlock.attachDataField(this);
   }
   
   public void addLink(LinkBlock linkBlock) {
     linkBlocks.add(linkBlock);
-    linkBlock.setDataField(this);
+    linkBlock.attachDataField(this);
   }
 }
