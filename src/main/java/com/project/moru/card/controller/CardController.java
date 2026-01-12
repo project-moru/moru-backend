@@ -51,13 +51,14 @@ public class CardController {
     ) {
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.findById(id, userDetails.getId())));
     }
-
+    
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "카드 만들기")
+    @Operation(summary = "카드 생성")
     public ResponseEntity<ApiResponse<CardResponseDto>> save(
-            @ModelAttribute CardCreateRequestDto cardCreateRequestDto,
-            @RequestPart("multipartFile") MultipartFile cardImage,
-            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
+        @RequestPart("card") CardCreateRequestDto cardCreateRequestDto,
+        @RequestPart("multipartFile") MultipartFile cardImage,
+        @Parameter(hidden = true)
+        @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, userDetails.getId(),cardImage)));
     }

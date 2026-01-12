@@ -5,7 +5,6 @@ import com.project.moru.deck.service_data.DeckDataService;
 import com.project.moru.deck.domain.dto.DeckRequestDto;
 import com.project.moru.deck.domain.dto.DeckResponseDto;
 import com.project.moru.user.domain.entity.CustomUserDetails;
-import com.project.moru.user.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

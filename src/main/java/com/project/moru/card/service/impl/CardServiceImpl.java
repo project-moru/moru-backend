@@ -69,12 +69,11 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardResponseDto saveCard(CardCreateRequestDto cardCreateRequestDto, Long userId, MultipartFile multipartFile) {
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_USER));
-
-        Long dataFiledId = cardCreateRequestDto.getDataFieldId();
-        DataField dataField = dataFieldRepository.findById(dataFiledId)
+        
+        Long dataFieldId = cardCreateRequestDto.getDataFieldId();
+        DataField dataField = dataFieldRepository.findById(dataFieldId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DATA_FIELD));
 
         Card newCard = Card.builder()
