@@ -58,10 +58,6 @@ public class Card extends BaseEntity {
         this.viewCount++;
     }
 
-    public void addLikeCount() {
-        this.likeCount++;
-    }
-
     public void updateCard(String cardName,  Status status, DataField dataField, String imageUrl) {
         if (cardName != null) this.cardName = cardName;
         if (status != null) this.status = status;

@@ -1,5 +1,6 @@
 package com.project.moru.card.service.impl;
 
+import com.project.moru.card.service.CardLikeService;
 import com.project.moru.card.service.CardService;
 import com.project.moru.common.constant.Status;
 import com.project.moru.common.exception.ErrorCode;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,23 +34,21 @@ public class CardServiceImpl implements CardService {
     private final CardConverter cardConverter;
     private final S3Utils s3Utils;
     private final DataFieldRepository dataFieldRepository;
+    private final CardLikeService cardLikeService;
 
     @Override
+    @Transactional
     public CardResponseDto findById(Long id, Long userId) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_CARD));
 
-        if(!card.getStatus().equals(Status.PUBLIC)){
-            if (card.getUser().getId().equals(userId)) {
-                cardConverter.fromEntityToRes(card);
-            }
-            else {
-                throw new GeneralException(ErrorCode.NOT_FOUND_CARD);
-            }
+        if (!Status.PUBLIC.equals(card.getStatus()) && !card.getUser().getId().equals(userId)) {
+            throw new GeneralException(ErrorCode.NOT_FOUND_CARD);
         }
-        card.addViewCount();
-        cardRepository.save(card);
-        return cardConverter.fromEntityToRes(card);
+
+        // 3. DTO 변환 및 Redis 좋아요 수 결합 후 리턴
+        return cardConverter.fromEntityToRes(card)
+                .updateLike(cardLikeService.getLikeCount(id));
     }
 
     @Override
@@ -128,16 +128,19 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public List<CardResponseDto> findAll(Long userId) {
-        return cardConverter.toResList(cardRepository.findAllByUser_IdOrStatus(userId,Status.PUBLIC));
+        List<Card> cards = cardRepository.findAllByUser_IdOrStatus(userId, Status.PUBLIC);
+        return cards.stream()
+                .map(card -> cardConverter.fromEntityToRes(card)
+                        .updateLike(cardLikeService.getLikeCount(card.getId())))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<CardResponseDto> findAllMyCards() {
-        return cardConverter.toResList(cardRepository.findAllByStatus(Status.PUBLIC));
+        List<Card> cards = cardRepository.findAllByStatus(Status.PUBLIC);
+        return cards.stream()
+                .map(card -> cardConverter.fromEntityToRes(card)
+                        .updateLike(cardLikeService.getLikeCount(card.getId())))
+                .collect(Collectors.toList());
     }
-
-//    @Override
-//    public void toggleLike(Long cardId, Long userId) {
-//
-//    }
 }
