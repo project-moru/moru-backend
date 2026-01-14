@@ -61,15 +61,12 @@ public class CardController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "카드 생성")
     public ResponseEntity<ApiResponse<CardResponseDto>> save(
-            // 👇 [핵심] 실제로는 String으로 받지만, Swagger에게는 DTO라고 알려줍니다.
             @Parameter(description = "카드 정보", schema = @Schema(implementation = CardCreateRequestDto.class))
             @RequestPart("card") String cardJson,
 
             @RequestPart("multipartFile") MultipartFile cardImage,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) throws JsonProcessingException {
-
-        // String으로 들어온 데이터를 DTO로 변환 (서버 에러 방지용)
         CardCreateRequestDto cardCreateRequestDto = objectMapper.readValue(cardJson, CardCreateRequestDto.class);
 
         return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, userDetails.getId(), cardImage)));
