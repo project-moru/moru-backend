@@ -43,7 +43,7 @@ public class Card extends BaseEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_field_id")
     private DataField dataField;
 

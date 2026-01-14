@@ -1,5 +1,6 @@
 package com.project.moru.deck.service_data;
 
+import com.project.moru.deck.domain.dto.DeckCardAddRequestDto;
 import com.project.moru.deck.domain.dto.DeckRequestDto;
 import com.project.moru.deck.domain.dto.DeckResponseDto;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,6 @@ public interface DeckDataService {
     List<DeckResponseDto> findAllDecks(Long userId);
     DeckResponseDto findDeckById(Long deckId, Long userId);
     void  deleteDeckById(Long deckId, Long userId);
-    DeckResponseDto saveCardToDeck(Long deckId, Long userId, ArrayList<Long> cardIds);
-    DeckResponseDto removeCardFromDeck(Long deckId, Long userId, ArrayList<Long> cardIds);
+    DeckResponseDto saveCardToDeck(Long deckId, Long userId, DeckCardAddRequestDto cardIds);
+    DeckResponseDto removeCardFromDeck(Long deckId, Long userId, DeckCardAddRequestDto cardIds);
 }

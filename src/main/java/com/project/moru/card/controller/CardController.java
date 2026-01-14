@@ -1,5 +1,7 @@
 package com.project.moru.card.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.moru.card.domain.dto.CardCreateRequestDto;
 import com.project.moru.card.domain.dto.CardResponseDto;
 import com.project.moru.card.domain.dto.CardUpdateRequestDto;
@@ -8,6 +10,7 @@ import com.project.moru.common.utils.ApiResponse;
 import com.project.moru.user.domain.entity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,7 @@ import java.util.List;
 public class CardController {
 
     private final CardService cardService;
+    private final ObjectMapper objectMapper;
 
     @GetMapping("")
     @Operation(summary = "전체 카드 전체 조회")
@@ -53,13 +57,20 @@ public class CardController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "카드 만들기")
+    @Operation(summary = "카드 생성")
     public ResponseEntity<ApiResponse<CardResponseDto>> save(
-            @ModelAttribute CardCreateRequestDto cardCreateRequestDto,
+            // 👇 [핵심] 실제로는 String으로 받지만, Swagger에게는 DTO라고 알려줍니다.
+            @Parameter(description = "카드 정보", schema = @Schema(implementation = CardCreateRequestDto.class))
+            @RequestPart("card") String cardJson,
+
             @RequestPart("multipartFile") MultipartFile cardImage,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, userDetails.getId(),cardImage)));
+    ) throws JsonProcessingException {
+
+        // String으로 들어온 데이터를 DTO로 변환 (서버 에러 방지용)
+        CardCreateRequestDto cardCreateRequestDto = objectMapper.readValue(cardJson, CardCreateRequestDto.class);
+
+        return ResponseEntity.ok().body(ApiResponse.ok(cardService.saveCard(cardCreateRequestDto, userDetails.getId(), cardImage)));
     }
 
     @DeleteMapping("/{id}")
