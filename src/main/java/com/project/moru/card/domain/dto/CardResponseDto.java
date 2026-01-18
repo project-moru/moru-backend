@@ -16,7 +16,7 @@ public class CardResponseDto {
     private final Status status;
     private final Integer tagCount;
     private final Integer viewCount;
-    private final Integer likeCount;
+    private Integer likeCount;
     private final Long userId;
     private final String userNickname;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
@@ -24,4 +24,9 @@ public class CardResponseDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime updatedAt;
     private final Long dataFieldId;
+
+    public CardResponseDto updateLike(Long count) {
+        this.likeCount = count.intValue();
+        return this;
+    }
 }

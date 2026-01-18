@@ -43,7 +43,7 @@ public class Card extends BaseEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "data_field_id")
     private DataField dataField;
 
@@ -56,10 +56,6 @@ public class Card extends BaseEntity {
 
     public void addViewCount() {
         this.viewCount++;
-    }
-
-    public void addLikeCount() {
-        this.likeCount++;
     }
 
     public void updateCard(String cardName,  Status status, DataField dataField, String imageUrl) {

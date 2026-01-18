@@ -1,6 +1,7 @@
 package com.project.moru.deck.controller;
 
 import com.project.moru.common.utils.ApiResponse;
+import com.project.moru.deck.domain.dto.DeckCardAddRequestDto;
 import com.project.moru.deck.service_data.DeckDataService;
 import com.project.moru.deck.domain.dto.DeckRequestDto;
 import com.project.moru.deck.domain.dto.DeckResponseDto;
@@ -66,7 +67,7 @@ public class DeckController {
     @Operation(summary = "덱에 카드 추가")
     @PostMapping("/{deckId}/cards")
     public ResponseEntity<ApiResponse<DeckResponseDto>> cardSave(
-        @RequestBody ArrayList<Long> cardIds,
+        @RequestBody DeckCardAddRequestDto cardIds,
         @PathVariable Long deckId,
         @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
@@ -77,10 +78,10 @@ public class DeckController {
     @DeleteMapping("/{deckId}/cards")
     public ResponseEntity<ApiResponse<DeckResponseDto>> removeCards(
             @PathVariable Long deckId,
-            @RequestBody ArrayList<Long> cardIds,
+            @RequestBody DeckCardAddRequestDto cardIds,
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        return ResponseEntity.ok()
-                .body(ApiResponse.ok(deckDataService.removeCardFromDeck(deckId, userDetails.getId(), cardIds)));
+        deckDataService.removeCardFromDeck(deckId, userDetails.getId(), cardIds);
+        return ResponseEntity.ok().body(ApiResponse.ok(200,"삭제에 성공하였습니다."));
     }
 }

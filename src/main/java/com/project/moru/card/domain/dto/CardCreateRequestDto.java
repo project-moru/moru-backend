@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class CardCreateRequestDto {
 
     @NotBlank(message = "카드 제목은 필수입니다.")

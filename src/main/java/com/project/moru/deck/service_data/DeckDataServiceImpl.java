@@ -2,6 +2,7 @@ package com.project.moru.deck.service_data;
 
 import com.project.moru.common.exception.ErrorCode;
 import com.project.moru.common.exception.GeneralException;
+import com.project.moru.deck.domain.dto.DeckCardAddRequestDto;
 import com.project.moru.deck.mapper.DeckConverter;
 import com.project.moru.deck.domain.dto.DeckRequestDto;
 import com.project.moru.deck.domain.dto.DeckResponseDto;
@@ -82,7 +83,8 @@ public class DeckDataServiceImpl implements DeckDataService {
     }
 
     @Override
-    public DeckResponseDto saveCardToDeck(Long deckId, Long userId, ArrayList<Long> cardIds) {
+    @Transactional
+    public DeckResponseDto saveCardToDeck(Long deckId, Long userId, DeckCardAddRequestDto cardAddRequestDto) {
 
         Deck deck = deckRepository.findById(deckId)
                 .orElseThrow(() -> new GeneralException(ErrorCode.NOT_FOUND_DECK));
@@ -90,6 +92,7 @@ public class DeckDataServiceImpl implements DeckDataService {
         if (!deck.getUser().getId().equals(userId)) {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
+        List<Long> cardIds = cardAddRequestDto.getCardIds();
 
         List<Card> cards = cardRepository.findAllById(cardIds);
         if (cards.size() != cardIds.size()) {
@@ -110,7 +113,7 @@ public class DeckDataServiceImpl implements DeckDataService {
 
     @Override
     @Transactional // 데이터 변경(삭제)이 일어나므로 필수
-    public DeckResponseDto removeCardFromDeck(Long deckId, Long userId, ArrayList<Long> cardIds) {
+    public DeckResponseDto removeCardFromDeck(Long deckId, Long userId, DeckCardAddRequestDto deckCardAddRequestDto) {
 
         // 1. 덱 조회 및 에러 처리
         Deck deck = deckRepository.findById(deckId)
@@ -120,6 +123,8 @@ public class DeckDataServiceImpl implements DeckDataService {
         if (!deck.getUser().getId().equals(userId)) {
             throw new GeneralException(ErrorCode.ACCESS_DENIED);
         }
+
+        List<Long> cardIds = deckCardAddRequestDto.getCardIds();
 
         boolean isRemoved = deck.getDeckCards().removeIf(deckCard ->
                 cardIds.contains(deckCard.getCard().getId())

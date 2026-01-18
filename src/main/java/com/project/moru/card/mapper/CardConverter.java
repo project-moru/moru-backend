@@ -17,6 +17,7 @@ public interface CardConverter {
     @Mapping(source = "id", target = "cardId")                 // Card.id -> Dto.cardId
     @Mapping(source = "user.id", target = "userId")            // Card.user.id -> Dto.userId
     @Mapping(source = "user.nickname", target = "userNickname") // Card.user.nickname -> Dto.userNickname
+    @Mapping(source = "dataField.id", target = "dataFieldId")
     CardResponseDto fromEntityToRes(Card card);
 
     List<CardResponseDto> toResList(List<Card> cards);
